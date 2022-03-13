@@ -21,26 +21,41 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+
         if (AuthApiClient.instance.hasToken()) { //카카오 자동로그인 체크
             UserApiClient.instance.accessTokenInfo { _, error ->
                 if (error != null) {
                     if (error is KakaoSdkError && error.isInvalidTokenError() == true) {
                         //로그인 필요
-                    }
-                    else {
+                    } else {
                         //기타 에러
                     }
-                }
-                else {
+                } else {
                     //토큰 유효성 체크 성공(필요 시 토큰 갱신됨)
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+
+
                     startActivity(intent)
+                    finish()
                 }
             }
-        }
-        else {
+        } else {
             //로그인 필요
+        }
+
+        //구글 자동로그인
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+        if (account == null) {
+
+        } else {
+            Log.e(
+                "이름", account.id +
+                        account.familyName + account.givenName
+            )
+            startActivity(intent)
+            finish()
         }
 
 
@@ -59,4 +74,5 @@ class LoginActivity : AppCompatActivity() {
 //        mGoogleSignInClient.signOut()
 //        구글 로그아웃
     }
+
 }

@@ -36,6 +36,19 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
             Log.e("TAG", "카카오계정으로 로그인 실패", error)
         } else if (token != null) {
             Log.e("TAG", "카카오계정으로 로그인 성공 ${token.accessToken}")
+            UserApiClient.instance.me { user, error ->
+                if (error != null) {
+                    Log.e("카카오정보실패", "사용자 정보 요청 실패", error)
+                } else if (user != null) {
+                    Log.e(
+                        "정보", "사용자 정보 요청 성공" +
+                                "\n회원번호: ${user.id}" +
+                                "\n이메일: ${user.kakaoAccount?.email}" +
+                                "\n닉네임: ${user.kakaoAccount?.profile?.nickname}" +
+                                "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
+                    )
+                }
+            }
             navController.navigate(R.id.action_socialLoginFragment_to_loginSuccessFragment2)
         }
     }
@@ -43,25 +56,21 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .build()
-        var mGoogleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
-        mGoogleSignInClient.signOut()
-        val account = GoogleSignIn.getLastSignedInAccount(requireContext())
-        if (account==null){
-            Log.e("asdf","로그인하세요")
 
-        }
 
         binding.signInButton.setOnClickListener {
-
+            //구글 로그인 초기화
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build()
+            var mGoogleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
             var signInIntent: Intent = mGoogleSignInClient.getSignInIntent()
             startActivityForResult(signInIntent, 333)
         }
 
         binding.llKakaoLogin.setOnClickListener {
             if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
+
                 UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
                     if (error != null) {
                         Log.e("TAG", "카카오톡으로 로그인 실패", error)
@@ -76,6 +85,7 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
                         )
                     } else if (token != null) {
                         Log.i("TAG", "카카오톡으로 로그인 성공 ${token.accessToken}")
+
                         navController.navigate(R.id.action_socialLoginFragment_to_loginSuccessFragment2)
                     }
                 }
@@ -91,10 +101,18 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 333) {
-            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
-            val account = task.getResult(ApiException::class.java)
-            Log.e("이름", account.familyName + account.givenName)
-            navController.navigate(R.id.action_socialLoginFragment_to_loginSuccessFragment2)
+            try {
+                val task: Task<GoogleSignInAccount> =
+                    GoogleSignIn.getSignedInAccountFromIntent(data)
+                val account = task.getResult(ApiException::class.java)
+                Log.e("이름", account.familyName + account.givenName)
+                navController.navigate(R.id.action_socialLoginFragment_to_loginSuccessFragment2)
+
+
+            } catch (e: ApiException) {
+                Log.e("failed", "signInResult:failed code=" + e.statusCode)
+            }
+
         }
     }
 }
