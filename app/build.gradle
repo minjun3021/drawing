@@ -4,7 +4,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 
 }
-
+apply plugin: 'com.android.application'
 android {
     compileSdk 32
 
@@ -64,4 +64,5 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-service:$androidxLifecycleVersion"
 
     implementation "com.kakao.sdk:v2-user:2.8.6"
+    implementation 'com.google.android.gms:play-services-auth:20.1.0'
 }
