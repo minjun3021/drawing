@@ -1,9 +1,16 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    file("versions.properties").withInputStream {
+        def props = new Properties()
+        props.load(it)
+        props.forEach { key, value ->
+            ext[key] = value
+        }
+    }
     repositories {
         google()
         jcenter()
-        maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/'}
+        maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/' }
     }
     dependencies {
         def nav_version = "2.4.1"
