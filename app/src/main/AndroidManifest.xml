@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:exported="true"
             >
 
@@ -40,7 +40,7 @@
         </activity>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true">
 
         </activity>
