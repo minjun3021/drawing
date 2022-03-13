@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2265" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/bg_drawing.xml" value="0.118" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/bg_login_button.xml" value="0.2265" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_asdfasdfasdf.xml" value="0.1205" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_drawing.xml" value="0.1205" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_kakao.xml" value="0.2265" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2265" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_logo_kakao.xml" value="0.2265" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_people.xml" value="0.1205" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_setting.xml" value="0.1205" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_suss.xml" value="0.118" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_weather_cloud.xml" value="0.118" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/activity_main.xml" value="0.176" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_login_success.xml" value="0.136" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_main.xml" value="0.15714285714285714" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_social_login.xml" value="0.152" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/item_recycler_drawing.xml" value="0.12" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1205" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

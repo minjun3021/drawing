@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_login"
+    app:startDestination="@id/socialLoginFragment">
+
+    <fragment
+        android:id="@+id/socialLoginFragment"
+        tools:layout="@layout/fragment_social_login"
+        android:name="com.example.drwaing.SocialLoginFragment"
+        android:label="SocialLoginFragment" >
+
+        <action
+            android:id="@+id/action_socialLoginFragment_to_loginSuccessFragment2"
+            app:destination="@id/loginSuccessFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginSuccessFragment"
+        android:name="com.example.drwaing.LoginSuccessFragment"
+        android:label="fragment_login_success"
+        tools:layout="@layout/fragment_login_success" >
+
+    </fragment>
+</navigation>
