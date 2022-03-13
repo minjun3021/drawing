@@ -24,7 +24,11 @@ import com.kakao.sdk.user.UserApiClient
 class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
 
     private val binding: FragmentSocialLoginBinding by viewBinding(FragmentSocialLoginBinding::bind)
-    private val navController: NavController get() = findNavController(requireActivity(), R.id.nav_login_host)
+    private val navController: NavController
+        get() = findNavController(
+            requireActivity(),
+            R.id.nav_login_host
+        )
 
 
     private val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
@@ -39,11 +43,19 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+        var mGoogleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+        mGoogleSignInClient.signOut()
+        val account = GoogleSignIn.getLastSignedInAccount(requireContext())
+        if (account==null){
+            Log.e("asdf","로그인하세요")
+
+        }
+
         binding.signInButton.setOnClickListener {
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build()
-            var mGoogleSignInClient = GoogleSignIn.getClient(context!!, gso)
+
             var signInIntent: Intent = mGoogleSignInClient.getSignInIntent()
             startActivityForResult(signInIntent, 333)
         }
@@ -81,7 +93,7 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
         if (requestCode == 333) {
             val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             val account = task.getResult(ApiException::class.java)
-            Log.e("이름",account.familyName+account.givenName)
+            Log.e("이름", account.familyName + account.givenName)
             navController.navigate(R.id.action_socialLoginFragment_to_loginSuccessFragment2)
         }
     }
