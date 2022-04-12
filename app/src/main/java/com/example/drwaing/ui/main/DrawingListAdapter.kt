@@ -52,6 +52,7 @@ class DrawingListAdapter :
                 newItem: DrawingListData
             ): Boolean {
                 Log.e("item","item");
+                //TODO: 여기서 Header 와 DrawingData 를 구분하는게 맞는지? 맞다면 그방법을 모르겠음..
                 return oldItem == newItem
 
             }

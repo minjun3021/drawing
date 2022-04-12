@@ -52,6 +52,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
             }
             drawingListAdapter.submitList(drawingList)
+            //TODO: 어댑터에서 오버라이드한 onCurrentListChanged가 왜 호출이 안되는지?
             Log.e("changed","fragment")
         }
 
