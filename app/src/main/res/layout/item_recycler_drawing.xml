@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="6sp"
+        android:id="@+id/recyler_item_drawing_date"
+        android:text="2022.00.00 금요일"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/recyler_item_drawing_weather"
+        app:layout_constraintTop_toTopOf="@id/recyler_item_drawing_weather"></TextView>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/recyler_item_drawing_weather"
+        android:src="@drawable/ic_drawing"
+        app:layout_constraintLeft_toRightOf="@id/recyler_item_drawing_date"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:src="@drawable/bg_drawing"
+        android:paddingBottom="20dp"
+        app:layout_constraintTop_toBottomOf="@id/recyler_item_drawing_weather"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_height="wrap_content"/>
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
