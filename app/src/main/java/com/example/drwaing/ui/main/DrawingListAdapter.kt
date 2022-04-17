@@ -51,19 +51,27 @@ class DrawingListAdapter :
                 oldItem: DrawingListData,
                 newItem: DrawingListData
             ): Boolean {
-                Log.e("item","item");
-                //TODO: 여기서 Header 와 DrawingData 를 구분하는게 맞는지? 맞다면 그방법을 모르겠음..
-                return oldItem == newItem
+
+                if(oldItem is DrawingListData.Header && newItem is DrawingListData.Header)
+                    return true
+
+                else if(oldItem is DrawingListData.DrawingData && newItem is DrawingListData.DrawingData){
+                    return oldItem.drawingId==newItem.drawingId
+                }
+
+                else return false
 
             }
 
             override fun areContentsTheSame(
                 oldItem: DrawingListData,
                 newItem: DrawingListData
-            ): Boolean {
-                Log.e("content","content");
-                return oldItem == newItem
-            }
+            ): Boolean =
+                (oldItem is DrawingListData.DrawingData && newItem is DrawingListData.DrawingData
+                        && oldItem.date == newItem.date)
+
+
+
         }
     }
 
@@ -83,7 +91,7 @@ class DrawingListAdapter :
                     false
                 )
             )
-            else -> ListViewHolder(
+            else -> DrawingDataViewHolder(
                 ItemRecyclerDrawingBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -96,14 +104,14 @@ class DrawingListAdapter :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var item = getItem(position)
         when (holder) {
-            is ListViewHolder -> {
+            is DrawingDataViewHolder -> {
                 holder.onBindView(item as DrawingListData.DrawingData)
-                Log.e("asdf", "asdf")
+
             }
 
             is HeaderViewHolder -> {
                 holder.onBindView(item as DrawingListData.Header)
-                Log.e("fdas", "fdas")
+
             }
         }
     }
@@ -112,11 +120,11 @@ class DrawingListAdapter :
         previousList: MutableList<DrawingListData>,
         currentList: MutableList<DrawingListData>
     ) {
-        Log.e("onCurrentListChanged","adapter")
+        Log.e("onCurrentListChanged", "adapter")
         super.onCurrentListChanged(previousList, currentList)
     }
 
-    class ListViewHolder(val binding: ItemRecyclerDrawingBinding) :
+    class DrawingDataViewHolder(val binding: ItemRecyclerDrawingBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBindView(item: DrawingListData.DrawingData) {
             binding.recylerItemDrawingDate.setText(item.date)

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.drwaing.R
 import com.example.drwaing.databinding.FragmentMainBinding
 import com.example.drwaing.extension.viewBinding
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Fragment의 onViewCreated 와 onCreateView의 차이는 뭐일지 공부하기
@@ -31,7 +31,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         drawingList.add(DrawingListData.Header)
         for (i in 1..20) {
-            drawingList.add(DrawingListData.DrawingData(i.toString(), "", ""))
+            drawingList.add(DrawingListData.DrawingData(i.toString(), "", "",Random().nextInt()))
         }
 
 
@@ -44,16 +44,17 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         }
         binding.fragmentMainPeople.setOnClickListener {
-            drawingList.clear()
 
-            for (i in  20 downTo 1) {
-
-                drawingList.add(DrawingListData.DrawingData(i.toString(), "", ""))
+            var list: ArrayList<DrawingListData> = ArrayList()
+            list.add(DrawingListData.Header)
+            for (i in  1..20) {
+                var randomNum : Int =Random().nextInt(4)+1
+                list.add(DrawingListData.DrawingData(randomNum.toString(), "", "",randomNum))
 
             }
-            drawingListAdapter.submitList(drawingList)
-            //TODO: 어댑터에서 오버라이드한 onCurrentListChanged가 왜 호출이 안되는지?
-            Log.e("changed","fragment")
+
+              drawingListAdapter.submitList(list)
+
         }
 
 

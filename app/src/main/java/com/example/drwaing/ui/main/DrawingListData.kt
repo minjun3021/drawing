@@ -13,12 +13,14 @@ package com.example.drwaing.ui.main
 
 //object 더 공부하기
 sealed class DrawingListData {
+
     object Header : DrawingListData()
 
     // TODO : 리스트 스펙 받아서 구현
     data class DrawingData(
         val date: String,
         val weather : String,
-        val imageRes : String
+        val imageRes : String,
+        val drawingId : Int
     ) : DrawingListData()
 }
