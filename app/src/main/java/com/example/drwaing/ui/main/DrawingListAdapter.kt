@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drwaing.R
-import com.example.drwaing.databinding.FragmentLoginSuccessBinding
 import com.example.drwaing.databinding.ItemRecyclerDrawingBinding
 import com.example.drwaing.databinding.ItemRecyclerFirstTitleBinding
 import com.example.drwaing.extension.viewBinding

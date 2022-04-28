@@ -20,9 +20,13 @@
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/name_rainy__state_enabled.xml" value="0.1" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/activity_main.xml" value="0.176" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_drawing_diary_content.xml" value="0.15104166666666666" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_login_success.xml" value="0.136" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_main.xml" value="0.1" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_making_diary.xml" value="0.15104166666666666" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_social_login.xml" value="0.152" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_success_lottie.xml" value="0.15104166666666666" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_typing_diary_content.xml" value="0.15104166666666666" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/item_recycler_drawing.xml" value="0.264" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/item_recycler_first_title.xml" value="0.2" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1205" />

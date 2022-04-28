@@ -9,5 +9,48 @@
         android:id="@+id/mainFragment"
         android:name="com.example.drwaing.ui.main.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_makingDiaryFragment"
+            app:destination="@id/makingDiaryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/makingDiaryFragment"
+        tools:layout="@layout/fragment_making_diary"
+        android:name="com.example.drwaing.ui.diary.MakingDiaryFragment"
+        android:label="MakingDiaryFragment" >
+        <action
+            android:id="@+id/action_makingDiaryFragment_to_drawingDiaryContentFragment"
+            app:destination="@id/drawingDiaryContentFragment" />
+        <action
+            android:id="@+id/action_makingDiaryFragment_to_successLottieFragment2"
+            app:destination="@id/successLottieFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/drawingDiaryContentFragment"
+        android:name="com.example.drwaing.ui.diary.DrawingDiaryContentFragment"
+        tools:layout="@layout/fragment_drawing_diary_content"
+        android:label="DrawingDiaryContentFragment" >
+        <action
+            android:id="@+id/action_drawingDiaryContentFragment_to_makingDiaryFragment"
+            app:destination="@id/makingDiaryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/typingDiaryContentFragment"
+        android:name="com.example.drwaing.ui.diary.TypingDiaryContentFragment"
+        tools:layout="@layout/fragment_typing_diary_content"
+        android:label="TypingDiaryContentFragment" >
+        <action
+            android:id="@+id/action_typingDiaryContentFragment_to_makingDiaryFragment"
+            app:destination="@id/makingDiaryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/successLottieFragment2"
+        android:name="com.example.drwaing.SuccessLottieFragment"
+        tools:layout="@layout/fragment_success_lottie"
+        android:label="SuccessLottieFragment" >
+        <action
+            android:id="@+id/action_successLottieFragment2_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
 </navigation>

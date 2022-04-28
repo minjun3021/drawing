@@ -11,15 +11,16 @@
         android:name="com.example.drwaing.ui.login.SocialLoginFragment"
         android:label="SocialLoginFragment" >
 
+
         <action
-            android:id="@+id/action_socialLoginFragment_to_loginSuccessFragment2"
-            app:destination="@id/loginSuccessFragment" />
+            android:id="@+id/action_socialLoginFragment_to_successLottieFragment"
+            app:destination="@id/successLottieFragment" />
     </fragment>
     <fragment
-        android:id="@+id/loginSuccessFragment"
-        android:name="com.example.drwaing.ui.login.LoginSuccessFragment"
-        android:label="fragment_login_success"
-        tools:layout="@layout/fragment_login_success" >
+        android:id="@+id/successLottieFragment"
+        tools:layout="@layout/fragment_success_lottie"
+        android:name="com.example.drwaing.SuccessLottieFragment"
+        android:label="SuccessLottieFragment" />
 
-    </fragment>
+
 </navigation>
