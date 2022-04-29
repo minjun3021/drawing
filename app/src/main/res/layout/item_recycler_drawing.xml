@@ -10,8 +10,11 @@
         android:layout_height="wrap_content"
         android:lineSpacingExtra="6sp"
         android:id="@+id/recyler_item_drawing_date"
+        android:letterSpacing="0.15"
         android:text="2022.00.00 금요일"
+        android:fontFamily="@font/uhbeeseulvely2"
         android:textSize="14sp"
+        android:textColor="#111111"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/recyler_item_drawing_weather"
         app:layout_constraintTop_toTopOf="@id/recyler_item_drawing_weather"></TextView>

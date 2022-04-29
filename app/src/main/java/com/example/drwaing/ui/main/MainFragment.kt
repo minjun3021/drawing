@@ -3,7 +3,10 @@ package com.example.drwaing.ui.main
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.drwaing.R
 import com.example.drwaing.databinding.FragmentMainBinding
@@ -21,7 +24,14 @@ import java.util.*
 class MainFragment : Fragment(R.layout.fragment_main) {
     private val binding: FragmentMainBinding by viewBinding(FragmentMainBinding::bind)
     private val drawingListAdapter: DrawingListAdapter by lazy { DrawingListAdapter() }
+
     //사용할때 lazy안에있는거라고 가르켜주는것임
+    private val navController: NavController
+        get() = Navigation.findNavController(
+            requireActivity(),
+            R.id.nav_main_host
+        )
+
 
     var drawingList: ArrayList<DrawingListData> = ArrayList()
 
@@ -29,6 +39,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        Log.e(navController.backQueue.size.toString(),"mainFragment")
+
+        Log.e("onViewCreated","MainFragment")
         drawingList.add(DrawingListData.Header)
         for (i in 1..20) {
             drawingList.add(DrawingListData.DrawingData(i.toString(), "", "",Random().nextInt()))
@@ -43,6 +57,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }
 
         }
+        binding.fragmentMainDrawing.setOnClickListener{
+            navController.navigate(R.id.action_mainFragment_to_makingDiaryFragment)
+        }
+
         binding.fragmentMainPeople.setOnClickListener {
 
             var list: ArrayList<DrawingListData> = ArrayList()
@@ -56,6 +74,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
               drawingListAdapter.submitList(list)
 
         }
+
 
 
     }

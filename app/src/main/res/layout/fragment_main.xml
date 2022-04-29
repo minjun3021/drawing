@@ -9,9 +9,9 @@
         <ImageView
             android:layout_width="match_parent"
             android:id="@+id/fragment_main_didivedline"
-            android:layout_height="4dp"
+            android:layout_height="1dp"
             android:layout_marginTop="44dp"
-            android:src="@drawable/ic_dividedline"
+            android:background="#EBEBEB"
             app:layout_constraintTop_toTopOf="parent"></ImageView>
 
     <ImageView

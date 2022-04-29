@@ -3,6 +3,7 @@ package com.example.drwaing.ui.login
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
@@ -29,7 +30,9 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
             Log.e("TAG", "카카오계정으로 로그인 실패", error)
         } else if (token != null) {
             Log.e("TAG", "카카오계정으로 로그인 성공 ${token.accessToken}")
-            navController.navigate(R.id.action_socialLoginFragment_to_successLottieFragment)
+            navController.navigate(R.id.action_socialLoginFragment_to_successLottieFragment,
+                bundleOf("WhereIFrom" to "Login")
+            )
         }
     }
 
@@ -51,7 +54,8 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
                         )
                     } else if (token != null) {
                         Log.i("TAG", "카카오톡으로 로그인 성공 ${token.accessToken}")
-                        navController.navigate(R.id.action_socialLoginFragment_to_successLottieFragment)
+                        navController.navigate(R.id.action_socialLoginFragment_to_successLottieFragment,
+                            bundleOf("WhereIFrom" to "Login"))
                     }
                 }
             } else {
