@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
 import com.example.drwaing.R
+import com.example.drwaing.SuccessLottieFragment
 import com.example.drwaing.databinding.FragmentSocialLoginBinding
 import com.example.drwaing.extension.viewBinding
 import com.kakao.sdk.auth.model.OAuthToken
@@ -55,7 +56,7 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
                     } else if (token != null) {
                         Log.i("TAG", "카카오톡으로 로그인 성공 ${token.accessToken}")
                         navController.navigate(R.id.action_socialLoginFragment_to_successLottieFragment,
-                            bundleOf("WhereIFrom" to "Login"))
+                            bundleOf(SuccessLottieFragment.from to SuccessLottieFragment.login))
                     }
                 }
             } else {

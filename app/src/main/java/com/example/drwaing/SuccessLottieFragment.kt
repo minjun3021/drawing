@@ -21,6 +21,11 @@ class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
 
     private val binding by viewBinding(FragmentSuccessLottieBinding::bind)
 
+    companion object {
+        val login: String = "Login"
+        val making: String = "Making"
+        val from: String = "WhereIFrom"
+    }
 
 
     private val mainNavController: NavController
@@ -32,23 +37,24 @@ class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(arguments?.getString("WhereIFrom")=="Login"){
-            binding.fragmentSuccessText.setText("회원가입이 완료되었어요")
-        }
 
-        binding.fragmentSuccessLottie.addAnimatorListener(object : Animator.AnimatorListener{
+
+        binding.fragmentSuccessLottie.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(p0: Animator?) {
+                if (arguments?.getString(from) == login) {
+                    binding.fragmentSuccessText.setText("회원가입이 완료되었어요")
+                }
             }
 
             override fun onAnimationEnd(p0: Animator?) {
-                when(arguments?.getString("WhereIFrom")){
-                    "Login" ->{
+                when (arguments?.getString(from)) {
+                    login -> {
                         val intent = Intent(activity, MainActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                         startActivity(intent)
                         activity?.finish()
                     }
-                    "Making"->{ //한번에 mainFragment로 이동
+                    making -> { //한번에 mainFragment로 이동
                         mainNavController.backQueue.removeLastOrNull()
                         mainNavController.popBackStack()
                     }
