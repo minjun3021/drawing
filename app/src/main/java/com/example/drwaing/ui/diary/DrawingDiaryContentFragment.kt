@@ -18,7 +18,7 @@ class DrawingDiaryContentFragment : Fragment(R.layout.fragment_drawing_diary_con
     private val navController : NavController
         get() = Navigation.findNavController(
             requireActivity(),
-            R.id.nav_main_host
+            R.id.nav_diary_host
         )
 
 

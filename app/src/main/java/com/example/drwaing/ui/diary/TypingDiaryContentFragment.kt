@@ -19,7 +19,7 @@ class TypingDiaryContentFragment : Fragment(R.layout.fragment_typing_diary_conte
     private val navController : NavController
         get() = Navigation.findNavController(
             requireActivity(),
-            R.id.nav_main_host
+            R.id.nav_diary_host
         )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

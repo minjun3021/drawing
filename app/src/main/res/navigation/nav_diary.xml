@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_diary"
+    app:startDestination="@id/makingDiaryFragment">
+
+    <fragment
+        android:id="@+id/makingDiaryFragment"
+        android:name="com.example.drwaing.ui.diary.MakingDiaryFragment"
+        android:label="MakingDiaryFragment"
+        tools:layout="@layout/fragment_making_diary">
+        <action
+            android:id="@+id/action_makingDiaryFragment_to_drawingDiaryContentFragment"
+            app:destination="@id/drawingDiaryContentFragment" />
+        <action
+            android:id="@+id/action_makingDiaryFragment_to_successLottieFragment"
+            app:destination="@id/successLottieFragment" />
+        <action
+            android:id="@+id/action_makingDiaryFragment_to_typingDiaryContentFragment"
+            app:destination="@id/typingDiaryContentFragment" />
+    </fragment>
+    <action
+        android:id="@+id/action_makingDiaryFragment_to_drawingDiaryContentFragment"
+        app:destination="@id/drawingDiaryContentFragment" />
+    <fragment
+        android:id="@+id/drawingDiaryContentFragment"
+        android:name="com.example.drwaing.ui.diary.DrawingDiaryContentFragment"
+        android:label="DrawingDiaryContentFragment"
+        tools:layout="@layout/fragment_drawing_diary_content" />
+    <fragment
+        android:id="@+id/typingDiaryContentFragment"
+        android:name="com.example.drwaing.ui.diary.TypingDiaryContentFragment"
+        android:label="TypingDiaryContentFragment"
+        tools:layout="@layout/fragment_typing_diary_content" />
+    <action
+        android:id="@+id/action_makingDiaryFragment_to_successLottieFragment"
+        app:destination="@id/successLottieFragment" />
+    <fragment
+        android:id="@+id/successLottieFragment"
+        android:name="com.example.drwaing.SuccessLottieFragment"
+        android:label="SuccessLottieFragment"
+        tools:layout="@layout/fragment_success_lottie" />
+</navigation>
