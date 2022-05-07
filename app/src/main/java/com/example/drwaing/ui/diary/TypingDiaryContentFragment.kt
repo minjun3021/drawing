@@ -1,13 +1,11 @@
 package com.example.drwaing.ui.diary
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.viewbinding.ViewBinding
 import com.example.drwaing.R
 import com.example.drwaing.databinding.FragmentTypingDiaryContentBinding
 import com.example.drwaing.extension.viewBinding
@@ -15,8 +13,9 @@ import com.example.drwaing.extension.viewBinding
 class TypingDiaryContentFragment : Fragment(R.layout.fragment_typing_diary_content) {
 
     private val binding by viewBinding(FragmentTypingDiaryContentBinding::bind)
+    private val viewModel: DrawingViewModel by activityViewModels()
 
-    private val navController : NavController
+    private val navController: NavController
         get() = Navigation.findNavController(
             requireActivity(),
             R.id.nav_diary_host
@@ -24,7 +23,11 @@ class TypingDiaryContentFragment : Fragment(R.layout.fragment_typing_diary_conte
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
 
+    private fun initView() {
+        binding.etDiaryContent.setText(viewModel.diaryText.value ?: "")
         binding.fragmentContentBack.setOnClickListener {
             //TODO dialog
             navController.popBackStack()
@@ -32,6 +35,7 @@ class TypingDiaryContentFragment : Fragment(R.layout.fragment_typing_diary_conte
         }
 
         binding.fragmentContentOkay.setOnClickListener {
+            viewModel.diaryText.value = binding.etDiaryContent.text?.toString() ?: ""
             //TODO bundle
             navController.popBackStack()
         }

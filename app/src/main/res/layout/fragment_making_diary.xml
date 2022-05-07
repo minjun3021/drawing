@@ -136,7 +136,6 @@
         android:layout_marginBottom="24dp"
         android:letterSpacing="0.15"
         android:lineSpacingExtra="4sp"
-        android:text="나는 지금 개발을 하고있다 Textview밑에자동으로 줄을 생기게 할려면 어떻게 해야할까?"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/fragment_making_bg"

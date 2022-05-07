@@ -10,6 +10,7 @@ import com.example.drwaing.extension.viewBinding
 class DiaryActivity : AppCompatActivity() {
 
     private val binding: ActivityDiaryBinding by viewBinding(ActivityDiaryBinding::inflate)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

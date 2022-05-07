@@ -5,6 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class DrawingViewModel : ViewModel() {
-    private val _diaryText = MutableLiveData<String>()
-    val diaryText: LiveData<String> get() = _diaryText
+    val diaryText = MutableLiveData<String>()
+
+    private val _date = MutableLiveData<Long>()
+    val date: LiveData<Long> get() = _date
+
+
 }

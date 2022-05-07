@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.drwaing.R
@@ -14,6 +15,7 @@ import com.example.drwaing.extension.viewBinding
 class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
     private val binding by viewBinding(FragmentMakingDiaryBinding::bind)
+    private val viewModel: DrawingViewModel by activityViewModels()
 
     private val navController: NavController
         get() = Navigation.findNavController(
@@ -23,6 +25,11 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
+        observe()
+    }
+
+    private fun initView() {
         binding.fragmentMakingBack.setOnClickListener {
             //TODO dialog 뛰우기
             navController.popBackStack()
@@ -39,12 +46,14 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
             navController.navigate(R.id.action_makingDiaryFragment_to_drawingDiaryContentFragment)
         }
 
-        //자동줄바꿈 방지 코드
-        var myString: String = binding.fragmentMakingContent.text.toString().replace(" ", "\u00A0");
-        binding.fragmentMakingContent.text = myString
-
         binding.fragmentMakingContent.setOnClickListener {
             navController.navigate(R.id.action_makingDiaryFragment_to_typingDiaryContentFragment)
+        }
+    }
+
+    private fun observe() {
+        viewModel.diaryText.observe(viewLifecycleOwner) {
+            binding.fragmentMakingContent.text = it.replace(" ", "\u00A0")
         }
     }
 }

@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -15,6 +17,7 @@ import com.example.drwaing.extension.viewBinding
 class DrawingDiaryContentFragment : Fragment(R.layout.fragment_drawing_diary_content) {
 
     private val binding by viewBinding(FragmentDrawingDiaryContentBinding::bind)
+    private val viewModel: DrawingViewModel by activityViewModels()
     private val navController : NavController
         get() = Navigation.findNavController(
             requireActivity(),
