@@ -1,5 +1,12 @@
 package com.example.drwaing.ui.diary
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Shader
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -39,5 +46,22 @@ class TypingDiaryContentFragment : Fragment(R.layout.fragment_typing_diary_conte
             //TODO bundle
             navController.popBackStack()
         }
+
+        binding.etDiaryContent.post {
+            binding.etDiaryContent.background = createBitmap(requireContext(), binding.etDiaryContent.width, binding.etDiaryContent.lineHeight)
+        }
     }
+
+    fun createBitmap(context: Context, width: Int, lineHeight: Int): Drawable {
+        val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.bg_diary_underline_image)
+        val result = Bitmap.createBitmap(width, lineHeight, bitmap.config)
+        val canvas = Canvas(result)
+        canvas.drawBitmap(bitmap, 0f, lineHeight.toFloat() - bitmap.height, null)
+        val drawable = BitmapDrawable(context.resources, result)
+        drawable.tileModeX = Shader.TileMode.REPEAT
+        drawable.tileModeY = Shader.TileMode.REPEAT
+        return drawable
+    }
+
+
 }
