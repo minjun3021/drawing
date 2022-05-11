@@ -3,7 +3,6 @@ package com.example.drwaing.ui.main
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -11,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.drwaing.R
 import com.example.drwaing.databinding.FragmentMainBinding
 import com.example.drwaing.extension.viewBinding
+import com.example.drwaing.ui.diary.DiaryActivity
 import java.util.*
 
 /**
@@ -57,8 +57,12 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }
 
         }
-        binding.fragmentMainDrawing.setOnClickListener{
-            navController.navigate(R.id.action_mainFragment_to_makingDiaryFragment)
+        binding.fragmentMainDrawing.setOnClickListener {
+            val intent = DiaryActivity.createIntent(
+                requireContext(),
+                DiaryActivity.VIEW_TYPE_NEW
+            )
+            startActivity(intent)
         }
 
         binding.fragmentMainPeople.setOnClickListener {
