@@ -8,6 +8,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.drwaing.R
+import com.example.drwaing.SuccessLottieFragment
 import com.example.drwaing.databinding.FragmentMakingDiaryBinding
 import com.example.drwaing.extension.viewBinding
 
@@ -32,13 +33,13 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
     private fun initView() {
         binding.fragmentMakingBack.setOnClickListener {
             //TODO dialog 뛰우기
-            navController.popBackStack()
+            activity?.finish()
         }
 
         binding.fragmentMakingOkay.setOnClickListener {
             navController.navigate(
                 R.id.action_makingDiaryFragment_to_successLottieFragment,
-                bundleOf("WhereIFrom" to "Making")
+                bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_MAKING)
             )
         }
         binding.fragmentMakingContent.post{

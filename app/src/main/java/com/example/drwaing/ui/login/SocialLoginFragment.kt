@@ -32,7 +32,7 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
         } else if (token != null) {
             Log.e("TAG", "카카오계정으로 로그인 성공 ${token.accessToken}")
             navController.navigate(R.id.action_socialLoginFragment_to_successLottieFragment,
-                bundleOf("WhereIFrom" to "Login")
+                bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN)
             )
         }
     }
@@ -56,7 +56,7 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
                     } else if (token != null) {
                         Log.i("TAG", "카카오톡으로 로그인 성공 ${token.accessToken}")
                         navController.navigate(R.id.action_socialLoginFragment_to_successLottieFragment,
-                            bundleOf(SuccessLottieFragment.from to SuccessLottieFragment.login))
+                            bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN))
                     }
                 }
             } else {

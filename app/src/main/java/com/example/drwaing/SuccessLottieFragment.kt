@@ -22,9 +22,9 @@ class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
     private val binding by viewBinding(FragmentSuccessLottieBinding::bind)
 
     companion object {
-        val login: String = "Login"
-        val making: String = "Making"
-        val from: String = "WhereIFrom"
+        const val VIEW_LOGIN = "login"
+        const val VIEW_MAKING = "making"
+        const val WHERE_I_FROM = "from"
     }
 
 
@@ -41,22 +41,21 @@ class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
 
         binding.fragmentSuccessLottie.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(p0: Animator?) {
-                if (arguments?.getString(from) == login) {
+                if (arguments?.getString(WHERE_I_FROM) == VIEW_LOGIN) {
                     binding.fragmentSuccessText.setText("회원가입이 완료되었어요")
                 }
             }
 
             override fun onAnimationEnd(p0: Animator?) {
-                when (arguments?.getString(from)) {
-                    login -> {
+                when (arguments?.getString(WHERE_I_FROM)) {
+                    VIEW_LOGIN -> {
                         val intent = Intent(activity, MainActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                         startActivity(intent)
                         activity?.finish()
                     }
-                    making -> { //한번에 mainFragment로 이동
-                        mainNavController.backQueue.removeLastOrNull()
-                        mainNavController.popBackStack()
+                    VIEW_MAKING -> {
+                        activity?.finish()
                     }
                 }
 
