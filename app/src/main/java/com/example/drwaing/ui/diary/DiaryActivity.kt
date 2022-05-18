@@ -2,8 +2,15 @@ package com.example.drwaing.ui.diary
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Shader
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.drwaing.R
 import com.example.drwaing.databinding.ActivityDiaryBinding
 import com.example.drwaing.extension.viewBinding
 
@@ -32,5 +39,16 @@ class DiaryActivity : AppCompatActivity() {
         ) = Intent(context, DiaryActivity::class.java)
             .putExtra(EXTRA_VIEW_TYPE, viewType)
             .putExtra(EXTRA_DIARY_KEY, diaryKey)
+
+        fun createBitmap(context: Context, width: Int, lineHeight: Int): Drawable {
+            val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.bg_diary_underline_image)
+            val result = Bitmap.createBitmap(width, lineHeight, bitmap.config)
+            val canvas = Canvas(result)
+            canvas.drawBitmap(bitmap, 0f, lineHeight.toFloat() - bitmap.height, null)
+            val drawable = BitmapDrawable(context.resources, result)
+            drawable.tileModeX = Shader.TileMode.REPEAT
+            drawable.tileModeY = Shader.TileMode.REPEAT
+            return drawable
+        }
     }
 }

@@ -41,7 +41,9 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                 bundleOf("WhereIFrom" to "Making")
             )
         }
-
+        binding.fragmentMakingContent.post{
+            binding.fragmentMakingContent.background=DiaryActivity.createBitmap(requireContext(), binding.fragmentMakingContent.width, binding.fragmentMakingContent.lineHeight)
+        }
         binding.fragmentMakingDrawing.setOnClickListener {
             navController.navigate(R.id.action_makingDiaryFragment_to_drawingDiaryContentFragment)
         }

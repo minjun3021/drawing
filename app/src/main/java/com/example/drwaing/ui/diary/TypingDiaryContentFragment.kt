@@ -48,20 +48,11 @@ class TypingDiaryContentFragment : Fragment(R.layout.fragment_typing_diary_conte
         }
 
         binding.etDiaryContent.post {
-            binding.etDiaryContent.background = createBitmap(requireContext(), binding.etDiaryContent.width, binding.etDiaryContent.lineHeight)
+            binding.etDiaryContent.background = DiaryActivity.createBitmap(requireContext(), binding.etDiaryContent.width, binding.etDiaryContent.lineHeight)
         }
     }
 
-    fun createBitmap(context: Context, width: Int, lineHeight: Int): Drawable {
-        val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.bg_diary_underline_image)
-        val result = Bitmap.createBitmap(width, lineHeight, bitmap.config)
-        val canvas = Canvas(result)
-        canvas.drawBitmap(bitmap, 0f, lineHeight.toFloat() - bitmap.height, null)
-        val drawable = BitmapDrawable(context.resources, result)
-        drawable.tileModeX = Shader.TileMode.REPEAT
-        drawable.tileModeY = Shader.TileMode.REPEAT
-        return drawable
-    }
+
 
 
 }
