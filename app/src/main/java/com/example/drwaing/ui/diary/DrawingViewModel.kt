@@ -18,4 +18,11 @@ class DrawingViewModel : ViewModel() {
         _bitmap.value = bitmap
     }
 
+    /**
+     * TODO : 여기서 날씨 / 시간 등 일기에 대한 정보를 모두 라이브데이터로 가지고있다가 save 호출하면 서버와 통신하면서 저장하도록 하면 됨
+     */
+    fun save(){
+
+    }
+
 }
