@@ -48,6 +48,7 @@ class DrawingDiaryContentFragment : Fragment(R.layout.fragment_drawing_diary_con
 
         val adapter = ColorPickerAdapter {
             binding.drawer.currentColor = it
+            binding.radioPencil.isChecked = true
         }
 
         binding.rvColorPicker.apply {
@@ -68,7 +69,6 @@ class DrawingDiaryContentFragment : Fragment(R.layout.fragment_drawing_diary_con
             navController.popBackStack()
         }
         binding.fragmentDrawingOkay.setOnClickListener {
-            //TODO: Bundle
             viewModel.saveBitmap(binding.drawer.getBitmap())
             navController.popBackStack()
         }
