@@ -3,19 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable-v24/bg_making2.xml" value="0.1085" />
+        <entry key="../../../../layout/custom_preview.xml" value="0.1787037037037037" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2265" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/bg_diary_content.xml" value="0.1515" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/bg_drawing.xml" value="0.118" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/bg_login_button.xml" value="0.2265" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/bg_login_googlebutton.xml" value="0.118" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/bg_making.xml" value="0.1085" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/bg_making2.xml" value="0.1085" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_asdfasdfasdf.xml" value="0.1205" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_back.xml" value="0.118" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_dividedline.xml" value="0.1" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_drawing.xml" value="0.1205" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_instagram.xml" value="0.1595" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_kakao.xml" value="0.2265" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2265" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_logo_kakao.xml" value="0.2265" />
@@ -23,21 +16,33 @@
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_setting.xml" value="0.1205" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_suss.xml" value="0.118" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_weather_cloud.xml" value="0.118" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/name_cloudy__state_enabled.xml" value="0.122" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/name_rainy__state_enabled.xml" value="0.1" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/activity_main.xml" value="0.176" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_drawing_diary_content.xml" value="0.16" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_login_success.xml" value="0.136" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_main.xml" value="0.176" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_making_diary.xml" value="0.4" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_share_diary.xml" value="0.1" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_social_login.xml" value="0.2" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_success_lottie.xml" value="0.264" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_typing_diary_content.xml" value="0.19062901155327341" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/item_recycler_drawing.xml" value="0.4" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/item_recycler_first_title.xml" value="0.2" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_main.xml" value="0.15714285714285714" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_social_login.xml" value="0.152" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/item_recycler_drawing.xml" value="0.12" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1205" />
+        <entry key="app/src/main/res/drawable/bg_diary_underline.xml" value="0.2025" />
+        <entry key="app/src/main/res/drawable/bg_making2.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/color_picker.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_eraser.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_eraser_unselected.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_instagram.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_pencil.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_pencil_selected.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_pencil_unselected.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/progress_background_color.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_drawing.xml" value="0.4005208333333333" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.21510416666666668" />
+        <entry key="app/src/main/res/layout/fragment_drawing_diary_content.xml" value="0.21510416666666668" />
+        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.4005208333333333" />
+        <entry key="app/src/main/res/layout/fragment_making_diary.xml" value="0.21510416666666668" />
+        <entry key="app/src/main/res/layout/fragment_social_login.xml" value="0.13796296296296295" />
+        <entry key="app/src/main/res/layout/fragment_typing_diary_content.xml" value="0.21510416666666668" />
+        <entry key="app/src/main/res/layout/item_recycler_drawing.xml" value="0.42291666666666666" />
       </map>
     </option>
   </component>
