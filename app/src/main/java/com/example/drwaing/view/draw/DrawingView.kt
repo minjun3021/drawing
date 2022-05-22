@@ -31,6 +31,7 @@ class DrawingView @JvmOverloads constructor(
     private var lastXY: Pair<Float, Float>? = null
     private val lastX get() = lastXY?.first ?: 0f
     private val lastY get() = lastXY?.second ?: 0f
+    private var bitmap: Bitmap? = null
 
     var currentColor: Int = Palette.black
     var currentSize: Float = 10.dp
@@ -83,8 +84,10 @@ class DrawingView @JvmOverloads constructor(
         isDither = true
     }
 
+    private val paint = Paint()
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        bitmap?.let { canvas.drawBitmap(it, 0f, 0f, paint) }
         points.forEach {
             canvas.drawPath(it.path, it.paint)
         }
@@ -96,5 +99,9 @@ class DrawingView @JvmOverloads constructor(
         layout(left, top, right, bottom)
         draw(c)
         return b
+    }
+
+    fun setCurrentBitmap(bitmap: Bitmap?) {
+        this.bitmap = bitmap
     }
 }
