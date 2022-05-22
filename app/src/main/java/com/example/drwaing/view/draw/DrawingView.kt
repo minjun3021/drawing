@@ -101,7 +101,7 @@ class DrawingView @JvmOverloads constructor(
         return b
     }
 
-    fun setCurrentBitmap(bitmap: Bitmap?) {
+    fun loadBitmap(bitmap: Bitmap?) {
         this.bitmap = bitmap
     }
 }
