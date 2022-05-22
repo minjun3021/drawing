@@ -34,7 +34,7 @@
             android:layout_width="335dp"
             android:layout_height="56dp"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_login_button"
+            android:background="@drawable/bg_login_kakaobutton"
             android:backgroundTint="#FEE500"
             android:gravity="center"
             android:orientation="horizontal">
@@ -46,40 +46,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+                android:lineSpacingExtra="6sp"
+                android:textColor="#111111"
+                android:fontFamily="@font/pretendardsemibold"
                 android:text="카카오 계정으로 로그인"
                 android:textSize="14sp"></TextView>
 
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_apple_login"
-            android:layout_width="335dp"
-            android:layout_height="56dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_login_button"
-            android:backgroundTint="#000"
-            android:gravity="center">
-
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Apple 계정으로 로그인"
-
-                android:textColor="#fff"
-                android:textSize="14sp"></TextView>
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_google_login"
             android:layout_width="335dp"
             android:layout_height="56dp"
-            android:background="@drawable/bg_login_button"
+            android:background="@drawable/bg_login_googlebutton"
             android:gravity="center">
 
             <ImageView
@@ -90,7 +71,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Google 계정으로 로그인"
-
+                android:lineSpacingExtra="6sp"
+                android:fontFamily="@font/pretendardsemibold"
                 android:textColor="#111111"
                 android:textSize="14sp"></TextView>
         </LinearLayout>

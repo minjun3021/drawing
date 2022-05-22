@@ -3,10 +3,12 @@ package com.example.drwaing.ui.login
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
 import com.example.drwaing.R
+import com.example.drwaing.SuccessLottieFragment
 import com.example.drwaing.databinding.FragmentSocialLoginBinding
 import com.example.drwaing.extension.viewBinding
 import com.kakao.sdk.auth.model.OAuthToken
@@ -18,14 +20,20 @@ import com.kakao.sdk.user.UserApiClient
 class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
 
     private val binding: FragmentSocialLoginBinding by viewBinding(FragmentSocialLoginBinding::bind)
-    private val navController: NavController get() = findNavController(requireActivity(), R.id.nav_login_host)
+    private val navController: NavController
+        get() = findNavController(
+            requireActivity(),
+            R.id.nav_login_host
+        )
 
     private val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
             Log.e("TAG", "카카오계정으로 로그인 실패", error)
         } else if (token != null) {
             Log.e("TAG", "카카오계정으로 로그인 성공 ${token.accessToken}")
-            navController.navigate(R.id.action_socialLoginFragment_to_loginSuccessFragment2)
+            navController.navigate(R.id.action_socialLoginFragment_to_successLottieFragment,
+                bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN)
+            )
         }
     }
 
@@ -47,7 +55,8 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
                         )
                     } else if (token != null) {
                         Log.i("TAG", "카카오톡으로 로그인 성공 ${token.accessToken}")
-                        navController.navigate(R.id.action_socialLoginFragment_to_loginSuccessFragment2)
+                        navController.navigate(R.id.action_socialLoginFragment_to_successLottieFragment,
+                            bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN))
                     }
                 }
             } else {
