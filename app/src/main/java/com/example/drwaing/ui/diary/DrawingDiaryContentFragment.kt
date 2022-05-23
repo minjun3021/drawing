@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.drwaing.R
 import com.example.drwaing.databinding.FragmentDrawingDiaryContentBinding
 import com.example.drwaing.extension.dp
+import com.example.drwaing.extension.showDialog
 import com.example.drwaing.extension.viewBinding
 import com.example.drwaing.view.draw.ColorPickerAdapter
 import com.example.drwaing.view.draw.DrawingView
@@ -65,8 +66,17 @@ class DrawingDiaryContentFragment : Fragment(R.layout.fragment_drawing_diary_con
         }
 
         binding.fragmentDrawingBack.setOnClickListener {
-            //TODO: dialog
-            navController.popBackStack()
+            context?.showDialog {
+                title = "변경사항을 저장하지 않으시겠어요?"
+                positiveText = "네"
+                negativeText = "취소"
+                onPositiveClickListener = {
+                    navController.popBackStack()
+                }
+                onNegativeClickListener = {
+                    dismiss()
+                }
+            }
         }
         binding.fragmentDrawingOkay.setOnClickListener {
             viewModel.saveBitmap(binding.drawer.getBitmap())
