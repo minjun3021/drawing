@@ -1,7 +1,6 @@
 package com.example.drwaing.ui.diary
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -73,6 +72,10 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
     private fun observe() {
         viewModel.diaryText.observe(viewLifecycleOwner) {
             binding.fragmentMakingContent.text = it.replace(" ", "\u00A0")
+        }
+
+        viewModel.bitmap.observe(viewLifecycleOwner) {
+            binding.fragmentMakingDrawing.setImageBitmap(it)
         }
     }
 }

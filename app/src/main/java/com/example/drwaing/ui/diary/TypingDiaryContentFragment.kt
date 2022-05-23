@@ -17,6 +17,8 @@ import com.example.drwaing.R
 import com.example.drwaing.databinding.FragmentTypingDiaryContentBinding
 import com.example.drwaing.extension.viewBinding
 
+
+// TODO : 타이핑 줄 그려지는거 작업 되서 그냥 없애고 일기화면에서 해도 될듯?
 class TypingDiaryContentFragment : Fragment(R.layout.fragment_typing_diary_content) {
 
     private val binding by viewBinding(FragmentTypingDiaryContentBinding::bind)
