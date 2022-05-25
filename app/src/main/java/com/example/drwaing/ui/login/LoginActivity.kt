@@ -4,16 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import com.example.drwaing.Network
 import com.example.drwaing.NetworkInterface
-import com.example.drwaing.R
-import com.example.drwaing.SuccessLottieFragment
 import com.example.drwaing.databinding.ActivityLoginBinding
 import com.example.drwaing.extension.viewBinding
 import com.example.drwaing.ui.main.MainActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
@@ -29,7 +26,11 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         kakaoAutoLogin()
+        googleAutoLogin()
+
+
 
     }
 
@@ -82,5 +83,16 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun googleAutoLogin(){
+        var account = GoogleSignIn.getLastSignedInAccount(this)
+        if(account!=null){
+            Log.e("googleAutologin",account.serverAuthCode.toString())
+
+        }
+        else{
+            Log.e("googleAutologin","not yet")
+        }
     }
 }
