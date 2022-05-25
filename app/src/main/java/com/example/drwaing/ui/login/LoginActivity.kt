@@ -1,26 +1,86 @@
 package com.example.drwaing.ui.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import com.example.drwaing.Network
+import com.example.drwaing.NetworkInterface
+import com.example.drwaing.R
+import com.example.drwaing.SuccessLottieFragment
 import com.example.drwaing.databinding.ActivityLoginBinding
 import com.example.drwaing.extension.viewBinding
+import com.example.drwaing.ui.main.MainActivity
+import com.kakao.sdk.auth.AuthApiClient
+import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class LoginActivity : AppCompatActivity() {
 
     private val binding: ActivityLoginBinding by viewBinding(ActivityLoginBinding::inflate)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        kakaoAutoLogin()
 
-//        UserApiClient.instance.unlink { error ->
-//            if (error != null) {
-//                Log.e("E", "연결 끊기 실패", error)
-//            } else {
-//                Log.e("E", "연결 끊기 성공. SDK에서 토큰 삭제 됨")
-//            }
-//        }
+    }
+
+    private fun kakaoAutoLogin() {
+        if (AuthApiClient.instance.hasToken()) {
+            UserApiClient.instance.accessTokenInfo { _, error ->
+                if (error != null) {
+                    if (error is KakaoSdkError && error.isInvalidTokenError() == true) {
+
+                    } else {
+                        //기타 에러
+                    }
+                } else { //토큰이 있는 경우
+                    Log.e("kakaotokenexisted",AuthApiClient.instance.tokenManagerProvider.manager.getToken()!!.accessToken)
+                    val signRequest =
+                        NetworkInterface.SignRequest(AuthApiClient.instance.tokenManagerProvider.manager.getToken()!!.accessToken
+                            ,SocialLoginFragment.SOCIAL_TYPE_KAKAO)
+
+                    Network.api.signin(signRequest).enqueue(object : Callback<NetworkInterface.SignResponse>{
+                        override fun onResponse(
+                            call: Call<NetworkInterface.SignResponse>,
+                            response: Response<NetworkInterface.SignResponse>,
+                        ) {
+                            if (response.code()==200){
+                                Log.e("signin auto kakao",response.body()!!.accessToken)
+
+                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                startActivity(intent)
+                                finish()
+                            }
+                            else{
+                                Log.e("signinautokakao",response.code().toString())
+                            }
+
+                        }
+
+                        override fun onFailure(
+                            call: Call<NetworkInterface.SignResponse>,
+                            t: Throwable,
+                        ) {
+                            Log.e("signin auto error", t.message.toString())
+                        }
+                    })
+
+                }
+            }
+        } else {
+
+        }
+
+
     }
 }
