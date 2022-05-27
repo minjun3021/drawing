@@ -25,10 +25,10 @@ interface NetworkInterface {
 
 
     @POST("/auth/sign-up")
-    fun signup(@Body data : SignRequest): Call<SignResponse>
+    suspend fun signup(@Body data : SignRequest): SignResponse
 
     @POST("/auth/sign-in")
-    fun signin(@Body data: SignRequest): Call<SignResponse>
+    suspend fun signin(@Body data: SignRequest): SignResponse
 
     @Multipart
     @POST("/diary/image")
