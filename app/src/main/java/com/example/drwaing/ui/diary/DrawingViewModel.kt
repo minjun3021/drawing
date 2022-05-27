@@ -1,21 +1,16 @@
 package com.example.drwaing.ui.diary
 
 import android.graphics.Bitmap
-import android.net.Network
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.drwaing.NetworkInterface
-import okhttp3.Callback
-import okhttp3.MediaType
+import androidx.lifecycle.viewModelScope
+import com.example.drwaing.Network
+import com.example.drwaing.data.diary.DiaryRequest
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import retrofit2.Call
-import retrofit2.Response
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 class DrawingViewModel : ViewModel() {
@@ -27,36 +22,41 @@ class DrawingViewModel : ViewModel() {
     private val _bitmap = MutableLiveData<Bitmap>()
     val bitmap: LiveData<Bitmap> get() = _bitmap
 
+
     fun saveBitmap(bitmap: Bitmap) {
         _bitmap.value = bitmap
     }
 
-    /**
-     * TODO : 여기서 날씨 / 시간 등 일기에 대한 정보를 모두 라이브데이터로 가지고있다가 save 호출하면 서버와 통신하면서 저장하도록 하면 됨
-     */
-    fun save(part: MultipartBody.Part) {
-        Log.e("1", "1")
-        com.example.drwaing.Network.api.uploadImage(part).enqueue(object :
-            retrofit2.Callback<NetworkInterface.ImageResponse> {
-            override fun onResponse(
-                call: Call<NetworkInterface.ImageResponse>,
-                response: Response<NetworkInterface.ImageResponse>,
-            ) {
-                if (response.code() == 200) {
-                    Log.e("uploadimage url", response.body()!!.responseMessage)
-                } else {
-                    Log.e("uploadimage anothercode", response.toString())
-                }
-
+    fun save(file: File) {
+        val part = MultipartBody.Part.createFormData(
+            "image",
+            file.name,
+            file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        )
+        viewModelScope.launch {
+            kotlin.runCatching {
+                Network.api.uploadImage(part)
+            }.onSuccess {
+                val imageUrl = it.responseMessage
+                upload(imageUrl)
+            }.onFailure {
+                it.printStackTrace()
             }
-
-            override fun onFailure(call: Call<NetworkInterface.ImageResponse>, t: Throwable) {
-                Log.e("uploadimage error", t.toString())
-            }
-
-        })
-
-
+        }
     }
 
+
+    //TODO : 날씨 선택 기능 추가해서 weather 변수 수정
+    fun upload(imageUrl: String){
+        viewModelScope.launch {
+            val diary = DiaryRequest(imageUrl = imageUrl, content = diaryText.value ?: "", weather = "SNOW")
+            kotlin.runCatching {
+                Network.api.uploadDiary(diary)
+            }.onSuccess {
+                // TODO : 일기 업로드 성공 대응
+            }.onFailure {
+                // TODO : 일기 업로드 실패 대응
+            }
+        }
+    }
 }

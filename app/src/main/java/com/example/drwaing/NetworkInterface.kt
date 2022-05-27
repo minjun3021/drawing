@@ -1,13 +1,8 @@
 package com.example.drwaing
 
-import com.kakao.sdk.auth.model.OAuthToken
+import com.example.drwaing.data.diary.DiaryRequest
 import okhttp3.MultipartBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.http.Body
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
+import retrofit2.http.*
 
 interface NetworkInterface {
     data class SignRequest(
@@ -23,16 +18,21 @@ interface NetworkInterface {
     )
 
 
-
     @POST("/auth/sign-up")
-    suspend fun signup(@Body data : SignRequest): SignResponse
+    suspend fun signup(@Body data: SignRequest): SignResponse
 
     @POST("/auth/sign-in")
     suspend fun signin(@Body data: SignRequest): SignResponse
 
     @Multipart
     @POST("/diary/image")
-    fun uploadImage(
-        @Part file : MultipartBody.Part?
-    ) : Call<ImageResponse>
+    suspend fun uploadImage(
+        @Part file: MultipartBody.Part?
+    ): ImageResponse
+
+    @POST("/diary")
+    @FormUrlEncoded
+    suspend fun uploadDiary(
+        @Field("createDiaryRequest") createDiaryRequest: DiaryRequest
+    ): ImageResponse
 }
