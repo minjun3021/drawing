@@ -34,6 +34,7 @@ class DrawingDiaryContentFragment : Fragment(R.layout.fragment_drawing_diary_con
         initView()
     }
 
+
     private fun initView() {
         binding.drawer.loadBitmap(viewModel.bitmap.value)
         binding.sbSizePicker.apply {
@@ -65,6 +66,7 @@ class DrawingDiaryContentFragment : Fragment(R.layout.fragment_drawing_diary_con
             }
         }
 
+        //TODO: onBackPressed
         binding.fragmentDrawingBack.setOnClickListener {
             context?.showDialog {
                 title = "변경사항을 저장하지 않으시겠어요?"
