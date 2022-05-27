@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.drwaing.Network
 import com.example.drwaing.data.diary.DiaryRequest
+import com.example.drwaing.data.diary.Weather
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -16,6 +17,9 @@ import java.io.File
 class DrawingViewModel : ViewModel() {
     val diaryText = MutableLiveData<String>()
 
+    private val _weather =MutableLiveData<Weather>()
+    val weather:LiveData<Weather> get()=_weather
+
     private val _date = MutableLiveData<Long>()
     val date: LiveData<Long> get() = _date
 
@@ -23,6 +27,9 @@ class DrawingViewModel : ViewModel() {
     val bitmap: LiveData<Bitmap> get() = _bitmap
 
 
+    fun setWeather(weather: Weather){
+        _weather.value=weather
+    }
     fun saveBitmap(bitmap: Bitmap) {
         _bitmap.value = bitmap
     }

@@ -5,6 +5,7 @@ import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -12,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.drwaing.R
 import com.example.drwaing.SuccessLottieFragment
+import com.example.drwaing.data.diary.Weather
 import com.example.drwaing.databinding.FragmentMakingDiaryBinding
 import com.example.drwaing.extension.viewBinding
 import java.io.File
@@ -59,6 +61,19 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 //                        bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_MAKING)
 //                    )
                 }
+                binding.fragmentMakingSun.setOnClickListener {
+                    viewModel.setWeather(Weather.SUN)
+                }
+                binding.fragmentMakingCloud.setOnClickListener {
+                    viewModel.setWeather(Weather.CLOUD)
+                }
+                binding.fragmentMakingRain.setOnClickListener {
+                    viewModel.setWeather(Weather.RAIN)
+                }
+
+                binding.fragmentMakingSnow.setOnClickListener {
+                    viewModel.setWeather(Weather.SNOW)
+                }
             }
             1 -> {//edit 나중에 추가
 
@@ -91,8 +106,24 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
             binding.fragmentMakingDrawing.setImageBitmap(it)
 
         }
+        viewModel.weather.observe(viewLifecycleOwner){
+            changeIcon()
+        }
 
 
+    }
+    private fun changeIcon(){
+        binding.fragmentMakingSun.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_sunny_enabled))
+        binding.fragmentMakingCloud.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_cloudy_enabled))
+        binding.fragmentMakingRain.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_rainy_enabled))
+        binding.fragmentMakingSnow.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_snowy_enabled))
+
+        when(viewModel.weather.value){
+            Weather.SUN-> binding.fragmentMakingSun.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_sunny_selected))
+            Weather.CLOUD-> binding.fragmentMakingCloud.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_cloudy_selected))
+            Weather.RAIN-> binding.fragmentMakingRain.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_rainy_selected))
+            Weather.SNOW-> binding.fragmentMakingSnow.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_snowy_selected))
+        }
     }
 
     private fun bitmapToFile(bitmap: Bitmap?): File? {
