@@ -1,9 +1,17 @@
 package com.example.drwaing.ui.main
 
+import android.content.Context
+import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +19,8 @@ import com.example.drwaing.R
 import com.example.drwaing.databinding.FragmentMainBinding
 import com.example.drwaing.extension.viewBinding
 import com.example.drwaing.ui.diary.DiaryActivity
+import com.example.drwaing.ui.diary.DrawingViewModel
+import com.example.drwaing.ui.setting.SettingActivity
 import java.util.*
 
 /**
@@ -32,17 +42,25 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             R.id.nav_main_host
         )
 
-
+    companion object{
+        lateinit var typeface : Typeface
+    }
     var drawingList: ArrayList<DrawingListData> = ArrayList()
 
+    override fun onResume() {
+        super.onResume()
+        val sharedPref=requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+        val myFont=sharedPref.getInt("font",R.font.uhbeeseulvely2)
+        typeface = ResourcesCompat.getFont(requireContext(),myFont)!!q
+        putData()
+
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
-        Log.e(navController.backQueue.size.toString(),"mainFragment")
 
-        Log.e("onViewCreated","MainFragment")
         drawingList.add(DrawingListData.Header)
         for (i in 1..20) {
             drawingList.add(DrawingListData.DrawingData(i.toString(), "", "",Random().nextInt()))
@@ -67,20 +85,26 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         binding.fragmentMainPeople.setOnClickListener {
 
-            var list: ArrayList<DrawingListData> = ArrayList()
-            list.add(DrawingListData.Header)
-            for (i in  1..20) {
-                var randomNum : Int =Random().nextInt(4)+1
-                list.add(DrawingListData.DrawingData(randomNum.toString(), "", "",randomNum))
-
-            }
-
-              drawingListAdapter.submitList(list)
+            putData()
 
         }
 
+        binding.fragmentMainSetting.setOnClickListener{
+            val intent =Intent(requireContext(), SettingActivity::class.java)
+            startActivity(intent)
+        }
 
+    }
+    fun putData(){
+        var list: ArrayList<DrawingListData> = ArrayList()
+        list.add(DrawingListData.Header)
+        for (i in  1..20) {
+            var randomNum : Int =Random().nextInt(4)+1*100
+            list.add(DrawingListData.DrawingData(randomNum.toString(), "", "",randomNum))
 
+        }
+
+        drawingListAdapter.submitList(list)
     }
 
 

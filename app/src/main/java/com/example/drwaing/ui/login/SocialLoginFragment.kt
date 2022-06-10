@@ -20,6 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.gson.Gson
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -69,6 +70,7 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
             if (error != null) {//실패
 
             } else if (token != null) {
+                Log.e("카카오로그인 성공", token.accessToken)
                 sign(SOCIAL_TYPE_KAKAO)
             }
         }
@@ -138,13 +140,17 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             kotlin.runCatching {
+                val data = Gson().toJson(signRequest)
+                Log.e("signinrequest",data)
                 Network.api.signin(signRequest)
             }.onSuccess {
+                Log.e("check", it.accessToken)
                 navController.navigate(
                     R.id.action_socialLoginFragment_to_successLottieFragment,
                     bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN)
                 )
             }.onFailure {
+
                 if (it is HttpException) {
                     when (it.code()) {
                         401 -> {
@@ -152,13 +158,17 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
                                 Network.api.signup(signRequest)
                             }.onSuccess {
                                 //회원가입성공
+                                Log.e("token",it.accessToken)
                                 navController.navigate(
                                     R.id.action_socialLoginFragment_to_successLottieFragment,
                                     bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN)
                                 )
                             }.onFailure {
-                                Log.e("signup", it.message.toString())
+                                Log.e("signupfail", it.toString())
                             }
+                        }
+                        500->{
+                            Log.e("code",it.code().toString()+it.response().toString())
                         }
                     }
                 }

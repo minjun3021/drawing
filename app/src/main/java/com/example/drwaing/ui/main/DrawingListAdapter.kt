@@ -1,17 +1,21 @@
 package com.example.drwaing.ui.main
 
+import android.app.Activity
+import android.content.Context
+import android.graphics.Typeface
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drwaing.R
 import com.example.drwaing.databinding.ItemRecyclerDrawingBinding
 import com.example.drwaing.databinding.ItemRecyclerFirstTitleBinding
-import com.example.drwaing.extension.viewBinding
-import kotlin.math.log
+import com.example.drwaing.view.draw.UIKit.getResources
 
 
 /**
@@ -42,13 +46,14 @@ class DrawingListAdapter :
         return drawingList.size
     }*/
 
+
     //class DrawingListAdapter가 메모리에 올리갈때 같이 만들어지는 객체를 companion object라함
     companion object {
         val diffutil = object : DiffUtil.ItemCallback<DrawingListData>() {
 
             override fun areItemsTheSame(
                 oldItem: DrawingListData,
-                newItem: DrawingListData
+                newItem: DrawingListData,
             ): Boolean {
 
                 if(oldItem is DrawingListData.Header && newItem is DrawingListData.Header)
@@ -64,7 +69,7 @@ class DrawingListAdapter :
 
             override fun areContentsTheSame(
                 oldItem: DrawingListData,
-                newItem: DrawingListData
+                newItem: DrawingListData,
             ): Boolean =
                 (oldItem is DrawingListData.DrawingData && newItem is DrawingListData.DrawingData
                         && oldItem.date == newItem.date)
@@ -79,7 +84,6 @@ class DrawingListAdapter :
         is DrawingListData.DrawingData -> 0
         is DrawingListData.Header -> 1
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
             // TODO : Header xml 구현
@@ -90,6 +94,7 @@ class DrawingListAdapter :
                     false
                 )
             )
+
             else -> DrawingDataViewHolder(
                 ItemRecyclerDrawingBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -117,7 +122,7 @@ class DrawingListAdapter :
 
     override fun onCurrentListChanged(
         previousList: MutableList<DrawingListData>,
-        currentList: MutableList<DrawingListData>
+        currentList: MutableList<DrawingListData>,
     ) {
         Log.e("onCurrentListChanged", "adapter")
         super.onCurrentListChanged(previousList, currentList)
@@ -126,7 +131,9 @@ class DrawingListAdapter :
     class DrawingDataViewHolder(val binding: ItemRecyclerDrawingBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBindView(item: DrawingListData.DrawingData) {
+            Log.e("asdf","Asdf")
             binding.recylerItemDrawingDate.setText(item.date)
+            binding.recylerItemDrawingDate.setTypeface(MainFragment.typeface)
         }
     }
 
