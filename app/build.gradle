@@ -4,7 +4,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 
 }
-
+apply plugin: 'com.android.application'
 android {
     compileSdk 32
 
@@ -18,10 +18,23 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        debug {
+            storeFile rootProject.file(SIGNED_STORE_FILE)
+            storePassword SIGNED_STORE_PASSWORD
+            keyAlias SIGNED_KEY_ALIAS
+            keyPassword SIGNED_KEY_PASSWORD
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug{
+            signingConfig signingConfigs.debug
         }
     }
     compileOptions {
@@ -68,4 +81,12 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     implementation 'com.airbnb.android:lottie:3.0.7'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    implementation 'com.google.android.gms:play-services-auth:20.2.0'
 }
