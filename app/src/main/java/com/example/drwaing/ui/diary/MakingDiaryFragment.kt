@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
 import com.example.drwaing.R
 import com.example.drwaing.SuccessLottieFragment
 import com.example.drwaing.data.diary.Weather
@@ -35,7 +37,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        observe()
+
 
     }
 
@@ -50,11 +52,15 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                     navController.navigate(R.id.action_makingDiaryFragment_to_typingDiaryContentFragment)
                 }
                 binding.fragmentMakingOkay.setOnClickListener {
-                    //viewModel.save(part)
+
                     val file = bitmapToFile(viewModel.bitmap.value)
+                    Log.e("asdf","asdf")
                     if (file != null) {
+                        Log.e("asasdfsdfdf","asdf")
                         viewModel.save(file)
+
                     }
+                    //viewModel.upload("https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/420px-Golde33443.jpg")
 
 //                    navController.navigate(
 //                        R.id.action_makingDiaryFragment_to_successLottieFragment,
@@ -74,15 +80,19 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                 binding.fragmentMakingSnow.setOnClickListener {
                     viewModel.setWeather(Weather.SNOW)
                 }
+                observeMaking()
             }
             1 -> {//edit 나중에 추가
 
             }
             2 -> {//view
+
                 binding.fragmentMakingOkay.visibility = View.GONE
                 binding.fragmentMakingInstagram.visibility = View.VISIBLE
 
-                activity?.intent?.extras?.getInt(DiaryActivity.EXTRA_DIARY_KEY)
+                Log.e("diaryid",activity?.intent?.extras?.getInt(DiaryActivity.EXTRA_DIARY_KEY).toString())
+                observeViewing()
+                viewModel.getDiary(activity?.intent?.extras?.getInt(DiaryActivity.EXTRA_DIARY_KEY)!!)
 
             }
         }
@@ -97,7 +107,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
     }
 
-    private fun observe() {
+    private fun observeMaking() {
         viewModel.diaryText.observe(viewLifecycleOwner) {
             binding.fragmentMakingContent.text = it.replace(" ", "\u00A0")
         }
@@ -110,6 +120,17 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
             changeIcon()
         }
 
+
+    }
+    private fun observeViewing() {
+        viewModel.diary.observe(viewLifecycleOwner){
+            binding.fragmentMakingDate.text=viewModel.diary.value!!.createdDate
+            Glide.with(this)
+                .load(viewModel.diary.value!!.imageUrl)
+                .into(binding.fragmentMakingDrawing)
+
+            binding.fragmentMakingContent.text="content가 없네"
+        }
 
     }
     private fun changeIcon(){

@@ -4,6 +4,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +13,7 @@ import com.example.drwaing.R
 import com.example.drwaing.databinding.ItemRecyclerDrawingBinding
 import com.example.drwaing.databinding.ItemRecyclerFirstTitleBinding
 import com.example.drwaing.extension.viewBinding
+import com.example.drwaing.ui.diary.DiaryActivity
 import kotlin.math.log
 
 
@@ -54,8 +57,8 @@ class DrawingListAdapter :
                 if(oldItem is DrawingListData.Header && newItem is DrawingListData.Header)
                     return true
 
-                else if(oldItem is DrawingListData.DrawingData && newItem is DrawingListData.DrawingData){
-                    return oldItem.drawingId==newItem.drawingId
+                else if(oldItem is DrawingListData.Diary && newItem is DrawingListData.Diary){
+                    return oldItem.diaryId==newItem.diaryId
                 }
 
                 else return false
@@ -66,8 +69,8 @@ class DrawingListAdapter :
                 oldItem: DrawingListData,
                 newItem: DrawingListData
             ): Boolean =
-                (oldItem is DrawingListData.DrawingData && newItem is DrawingListData.DrawingData
-                        && oldItem.date == newItem.date)
+                (oldItem is DrawingListData.Diary && newItem is DrawingListData.Diary
+                        && oldItem.imageUrl == newItem.imageUrl)
 
 
 
@@ -76,8 +79,9 @@ class DrawingListAdapter :
 
 
     override fun getItemViewType(position: Int): Int = when (getItem(position)) {
-        is DrawingListData.DrawingData -> 0
+        is DrawingListData.Diary -> 0
         is DrawingListData.Header -> 1
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
@@ -90,7 +94,7 @@ class DrawingListAdapter :
                     false
                 )
             )
-            else -> DrawingDataViewHolder(
+            else -> DiaryViewHolder(
                 ItemRecyclerDrawingBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -103,8 +107,8 @@ class DrawingListAdapter :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var item = getItem(position)
         when (holder) {
-            is DrawingDataViewHolder -> {
-                holder.onBindView(item as DrawingListData.DrawingData)
+            is DiaryViewHolder -> {
+                holder.onBindView(item as DrawingListData.Diary)
 
             }
 
@@ -123,10 +127,20 @@ class DrawingListAdapter :
         super.onCurrentListChanged(previousList, currentList)
     }
 
-    class DrawingDataViewHolder(val binding: ItemRecyclerDrawingBinding) :
+    inner class DiaryViewHolder(val binding: ItemRecyclerDrawingBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun onBindView(item: DrawingListData.DrawingData) {
-            binding.recylerItemDrawingDate.setText(item.date)
+        init {
+            binding.root.setOnClickListener {
+
+                val intent = DiaryActivity.createIntent(
+                    binding.root.context,
+                    DiaryActivity.VIEW_TYPE_VIEW,(currentList.get(adapterPosition) as DrawingListData.Diary).diaryId
+                )
+                binding.root.context.startActivity(intent)
+            }
+        }
+        fun onBindView(item: DrawingListData.Diary) {
+            binding.recylerItemDrawingDate.setText(item.createdDate)
         }
     }
 

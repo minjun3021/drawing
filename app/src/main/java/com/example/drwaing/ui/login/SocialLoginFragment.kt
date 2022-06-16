@@ -15,11 +15,13 @@ import com.example.drwaing.R
 import com.example.drwaing.SuccessLottieFragment
 import com.example.drwaing.databinding.FragmentSocialLoginBinding
 import com.example.drwaing.extension.viewBinding
+import com.example.drwaing.ui.main.MainFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.gson.Gson
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -137,21 +139,28 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
+            var a =Gson()
+
+            Log.e("asdf",a.toJson(signRequest))
             kotlin.runCatching {
                 Network.api.signin(signRequest)
             }.onSuccess {
+                MainFragment.token=it.accessToken
+                Log.e("asdf",it.accessToken)
                 navController.navigate(
                     R.id.action_socialLoginFragment_to_successLottieFragment,
                     bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN)
                 )
             }.onFailure {
+                Log.e("fuck",it.toString())
                 if (it is HttpException) {
                     when (it.code()) {
-                        401 -> {
+                        500 -> {
                             kotlin.runCatching {
                                 Network.api.signup(signRequest)
                             }.onSuccess {
                                 //회원가입성공
+                                MainFragment.token=it.accessToken
                                 navController.navigate(
                                     R.id.action_socialLoginFragment_to_successLottieFragment,
                                     bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN)

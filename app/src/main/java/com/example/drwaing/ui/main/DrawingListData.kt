@@ -1,5 +1,7 @@
 package com.example.drwaing.ui.main
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * sealed class 공부하기
  * enum class / interface 등과 어떻게 다른지
@@ -16,11 +18,10 @@ sealed class DrawingListData {
 
     object Header : DrawingListData()
 
-    // TODO : 리스트 스펙 받아서 구현
-    data class DrawingData(
-        val date: String,
-        val weather : String,
-        val imageRes : String,
-        val drawingId : Int
-    ) : DrawingListData()
+    data class Diary(
+        @SerializedName("createdDate") val createdDate: String,
+        @SerializedName("diaryId") val diaryId: Int,
+        @SerializedName("imageUrl") val imageUrl: String,
+        @SerializedName("weather") val weather: String,
+    ): DrawingListData()
 }

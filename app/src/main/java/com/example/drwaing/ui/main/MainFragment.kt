@@ -2,8 +2,11 @@ package com.example.drwaing.ui.main
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +27,7 @@ import java.util.*
 class MainFragment : Fragment(R.layout.fragment_main) {
     private val binding: FragmentMainBinding by viewBinding(FragmentMainBinding::bind)
     private val drawingListAdapter: DrawingListAdapter by lazy { DrawingListAdapter() }
+    private val viewModel :MainViewModel by activityViewModels()
 
     //사용할때 lazy안에있는거라고 가르켜주는것임
     private val navController: NavController
@@ -32,31 +36,35 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             R.id.nav_main_host
         )
 
+    companion object{
+        lateinit var token :String
+    }
 
     var drawingList: ArrayList<DrawingListData> = ArrayList()
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
+        viewModel.getMyDiaryList()
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
-        Log.e(navController.backQueue.size.toString(),"mainFragment")
 
         Log.e("onViewCreated","MainFragment")
-        drawingList.add(DrawingListData.Header)
-        for (i in 1..20) {
-            drawingList.add(DrawingListData.DrawingData(i.toString(), "", "",Random().nextInt()))
-        }
-
-
 
         binding.fragmentMainRecyclerview.apply { //apply 객체 반환함,객체의 속성을 건들일때 씀
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = drawingListAdapter.apply {
-                submitList(drawingList)
-            }
-
+            adapter = drawingListAdapter
         }
+
+
+
         binding.fragmentMainDrawing.setOnClickListener {
             val intent = DiaryActivity.createIntent(
                 requireContext(),
@@ -67,22 +75,13 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         binding.fragmentMainPeople.setOnClickListener {
 
-            var list: ArrayList<DrawingListData> = ArrayList()
-            list.add(DrawingListData.Header)
-            for (i in  1..20) {
-                var randomNum : Int =Random().nextInt(4)+1
-                list.add(DrawingListData.DrawingData(randomNum.toString(), "", "",randomNum))
 
-            }
-
-              drawingListAdapter.submitList(list)
 
         }
-
-
-
+        viewModel.diaryList.observe(viewLifecycleOwner){
+            drawingListAdapter.submitList(viewModel.diaryList.value)
+        }
     }
-
 
 }
 
