@@ -19,9 +19,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 class DrawingViewModel : ViewModel() {
-    init {
-        Log.e("viewmodel", "init")
-    }
+
 
     val diaryText = MutableLiveData<String>()
 
@@ -55,9 +53,8 @@ class DrawingViewModel : ViewModel() {
                 Network.api.uploadImage(MainFragment.token, part)
             }.onSuccess {
 
-//                val imageUrl = it.
-//                Log.e("image",imageUrl)
-                //upload(imageUrl)
+                val imageUrl = it.responseMessage
+                upload(imageUrl)
             }.onFailure {
                 it.printStackTrace()
                 Log.e("image", it.toString())
@@ -71,7 +68,7 @@ class DrawingViewModel : ViewModel() {
         viewModelScope.launch {
             val diary = DiaryRequest(imageUrl = imageUrl,
                 content = diaryText.value ?: "",
-                weather = weather.value.toString())
+                weather = weather.value!!.name)
             kotlin.runCatching {
 
                 Network.api.uploadDiary(MainFragment.token, diary)
@@ -93,8 +90,7 @@ class DrawingViewModel : ViewModel() {
             kotlin.runCatching {
                 Network.api.getDiary(MainFragment.token, diaryId)
             }.onSuccess {
-                // TODO : 일기 업로드 성공 대응
-                    _diary.postValue(it)
+                _diary.postValue(it)
 
             }.onFailure {
 

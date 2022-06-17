@@ -9,6 +9,9 @@ data class DiaryRequest(
 )
 
 
-enum class Weather {
-    SUN, CLOUD, RAIN, SNOW
+enum class Weather (val weather : String){
+    SUN("SUN"),
+    CLOUD("CLOUD"),
+    RAIN("RAIN"),
+    SNOW("SNOW")
 }

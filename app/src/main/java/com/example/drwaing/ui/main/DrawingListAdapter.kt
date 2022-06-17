@@ -1,5 +1,6 @@
 package com.example.drwaing.ui.main
 
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,10 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.example.drwaing.R
+import com.example.drwaing.data.diary.Weather
 import com.example.drwaing.databinding.ItemRecyclerDrawingBinding
 import com.example.drwaing.databinding.ItemRecyclerFirstTitleBinding
 import com.example.drwaing.extension.viewBinding
@@ -51,27 +55,23 @@ class DrawingListAdapter :
 
             override fun areItemsTheSame(
                 oldItem: DrawingListData,
-                newItem: DrawingListData
+                newItem: DrawingListData,
             ): Boolean {
 
-                if(oldItem is DrawingListData.Header && newItem is DrawingListData.Header)
+                if (oldItem is DrawingListData.Header && newItem is DrawingListData.Header)
                     return true
-
-                else if(oldItem is DrawingListData.Diary && newItem is DrawingListData.Diary){
-                    return oldItem.diaryId==newItem.diaryId
-                }
-
-                else return false
+                else if (oldItem is DrawingListData.Diary && newItem is DrawingListData.Diary) {
+                    return oldItem.diaryId == newItem.diaryId
+                } else return false
 
             }
 
             override fun areContentsTheSame(
                 oldItem: DrawingListData,
-                newItem: DrawingListData
+                newItem: DrawingListData,
             ): Boolean =
                 (oldItem is DrawingListData.Diary && newItem is DrawingListData.Diary
                         && oldItem.imageUrl == newItem.imageUrl)
-
 
 
         }
@@ -121,7 +121,7 @@ class DrawingListAdapter :
 
     override fun onCurrentListChanged(
         previousList: MutableList<DrawingListData>,
-        currentList: MutableList<DrawingListData>
+        currentList: MutableList<DrawingListData>,
     ) {
         Log.e("onCurrentListChanged", "adapter")
         super.onCurrentListChanged(previousList, currentList)
@@ -134,13 +134,31 @@ class DrawingListAdapter :
 
                 val intent = DiaryActivity.createIntent(
                     binding.root.context,
-                    DiaryActivity.VIEW_TYPE_VIEW,(currentList.get(adapterPosition) as DrawingListData.Diary).diaryId
+                    DiaryActivity.VIEW_TYPE_VIEW,
+                    (currentList.get(adapterPosition) as DrawingListData.Diary).diaryId
                 )
                 binding.root.context.startActivity(intent)
             }
         }
+
         fun onBindView(item: DrawingListData.Diary) {
-            binding.recylerItemDrawingDate.setText(item.createdDate)
+            Glide.with(binding.root).load(item.imageUrl)
+                .transform(CenterCrop())
+                .into(binding.recylerItemDrawing)
+            binding.recylerItemDrawingDate.setText(MainFragment.makeDirayDate(item.createdDate))
+
+            lateinit var weatherDrawable: Drawable
+            when (item.weather) {
+                Weather.SUN.name -> weatherDrawable =
+                    ContextCompat.getDrawable(binding.root.context, R.drawable.ic_sunny_selected)!!
+                Weather.CLOUD.name -> weatherDrawable =
+                    ContextCompat.getDrawable(binding.root.context, R.drawable.ic_cloudy_selected)!!
+                Weather.RAIN.name -> weatherDrawable =
+                    ContextCompat.getDrawable(binding.root.context, R.drawable.ic_rainy_selected)!!
+                Weather.SNOW.name -> weatherDrawable =
+                    ContextCompat.getDrawable(binding.root.context, R.drawable.ic_snowy_selected)!!
+            }
+            binding.recylerItemDrawingWeather.setImageDrawable(weatherDrawable)
         }
     }
 

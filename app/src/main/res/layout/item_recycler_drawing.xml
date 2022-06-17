@@ -24,14 +24,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/recyler_item_drawing_weather"
-        android:src="@drawable/ic_drawing"
+        android:src="@drawable/ic_sunny_selected"
         app:layout_constraintLeft_toRightOf="@id/recyler_item_drawing_date"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/recyler_item_drawing"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="28dp"
+        app:layout_constraintStart_toStartOf="@id/recyler_item_drawing_border"
+        app:layout_constraintEnd_toEndOf="@id/recyler_item_drawing_border"
+        app:layout_constraintTop_toTopOf="@id/recyler_item_drawing_border"
+        app:layout_constraintBottom_toBottomOf="@id/recyler_item_drawing_border"
+        />
 
     <ImageView
         android:layout_width="wrap_content"
         android:src="@drawable/bg_drawing"
         android:paddingBottom="20dp"
+
+        android:id="@+id/recyler_item_drawing_border"
+
         app:layout_constraintTop_toBottomOf="@id/recyler_item_drawing_weather"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_height="wrap_content"/>

@@ -14,6 +14,8 @@ import com.example.drwaing.R
 import com.example.drwaing.databinding.FragmentMainBinding
 import com.example.drwaing.extension.viewBinding
 import com.example.drwaing.ui.diary.DiaryActivity
+import java.text.SimpleDateFormat
+import java.time.DayOfWeek
 import java.util.*
 
 /**
@@ -27,7 +29,7 @@ import java.util.*
 class MainFragment : Fragment(R.layout.fragment_main) {
     private val binding: FragmentMainBinding by viewBinding(FragmentMainBinding::bind)
     private val drawingListAdapter: DrawingListAdapter by lazy { DrawingListAdapter() }
-    private val viewModel :MainViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     //사용할때 lazy안에있는거라고 가르켜주는것임
     private val navController: NavController
@@ -36,8 +38,30 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             R.id.nav_main_host
         )
 
-    companion object{
-        lateinit var token :String
+    companion object {
+        lateinit var token: String
+
+        fun makeDirayDate(date: String): String {
+            var tmp = date.substring(0, date.indexOf("T"))
+            tmp = tmp.replace("-", ".")
+
+            val dateFormat = SimpleDateFormat("yyyy.MM.dd")
+            var d=dateFormat.parse(tmp)
+            val calendar=Calendar.getInstance()
+            calendar.time=d
+            lateinit var dayOfWeek :String
+            when(calendar.get(Calendar.DAY_OF_WEEK)){
+                0-> dayOfWeek="토"
+                1-> dayOfWeek="일"
+                2-> dayOfWeek="월"
+                3-> dayOfWeek="화"
+                4-> dayOfWeek="수"
+                5-> dayOfWeek="목"
+                6-> dayOfWeek="금"
+            }
+            tmp+=" "+dayOfWeek+"요일"
+            return tmp
+        }
     }
 
     var drawingList: ArrayList<DrawingListData> = ArrayList()
@@ -56,7 +80,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
 
 
-        Log.e("onViewCreated","MainFragment")
+        Log.e("onViewCreated", "MainFragment")
 
         binding.fragmentMainRecyclerview.apply { //apply 객체 반환함,객체의 속성을 건들일때 씀
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -76,9 +100,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         binding.fragmentMainPeople.setOnClickListener {
 
 
-
         }
-        viewModel.diaryList.observe(viewLifecycleOwner){
+        viewModel.diaryList.observe(viewLifecycleOwner) {
             drawingListAdapter.submitList(viewModel.diaryList.value)
         }
     }
