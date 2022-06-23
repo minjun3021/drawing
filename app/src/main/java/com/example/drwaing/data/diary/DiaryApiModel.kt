@@ -4,6 +4,8 @@ package com.example.drwaing.data.diary
 import com.google.gson.annotations.SerializedName
 
 data class DiaryApiModel(
+    @SerializedName("content")
+    val content :String,
     @SerializedName("createdDate")
     val createdDate: String,
     @SerializedName("diaryId")

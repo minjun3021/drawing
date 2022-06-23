@@ -1,5 +1,6 @@
 package com.example.drwaing.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,9 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.drwaing.R
 import com.example.drwaing.databinding.FragmentMainBinding
 import com.example.drwaing.extension.viewBinding
+import com.example.drwaing.ui.stamp.StampActivity
 import com.example.drwaing.ui.diary.DiaryActivity
 import java.text.SimpleDateFormat
-import java.time.DayOfWeek
 import java.util.*
 
 /**
@@ -51,26 +52,32 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             calendar.time=d
             lateinit var dayOfWeek :String
             when(calendar.get(Calendar.DAY_OF_WEEK)){
-                0-> dayOfWeek="토"
                 1-> dayOfWeek="일"
                 2-> dayOfWeek="월"
                 3-> dayOfWeek="화"
                 4-> dayOfWeek="수"
                 5-> dayOfWeek="목"
                 6-> dayOfWeek="금"
+                7-> dayOfWeek="토"
+
             }
             tmp+=" "+dayOfWeek+"요일"
             return tmp
         }
+
     }
 
-    var drawingList: ArrayList<DrawingListData> = ArrayList()
+    override fun onResume() {
+        viewModel.getMyDiaryList()
+        super.onResume()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+        Log.e("asdf","refresh")
         viewModel.getMyDiaryList()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -98,11 +105,13 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
         binding.fragmentMainPeople.setOnClickListener {
-
+            val intent=Intent(context, StampActivity::class.java)
+            startActivity(intent)
 
         }
         viewModel.diaryList.observe(viewLifecycleOwner) {
             drawingListAdapter.submitList(viewModel.diaryList.value)
+
         }
     }
 

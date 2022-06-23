@@ -9,6 +9,7 @@ import android.graphics.Shader
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.drwaing.R
 import com.example.drwaing.databinding.ActivityDiaryBinding

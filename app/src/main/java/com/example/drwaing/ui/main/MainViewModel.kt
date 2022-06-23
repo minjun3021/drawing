@@ -24,10 +24,10 @@ class MainViewModel : ViewModel() {
             kotlin.runCatching {
                 Network.api.getMyDiaryList(MainFragment.token,0,1000)
             }.onSuccess {
+                (it as ArrayList<DrawingListData>).add(0,DrawingListData.Header)
                 _diaryList.postValue(it as ArrayList<DrawingListData>)
             }.onFailure {
                 it.printStackTrace()
-                Log.e("fuck",it.toString())
             }
         }
     }

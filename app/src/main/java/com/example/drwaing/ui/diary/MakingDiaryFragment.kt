@@ -63,7 +63,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                 }
                 binding.fragmentMakingOkay.setOnClickListener {
                         //TODO 파일업로드가 안되서 주석 처놓음 밑에 일기 업로드는 테스트를 위해 이미지 링크를 다른거로 임시로 박아놓음
-//                    val file = bitmapToFile(viewModel.bitmap.value)
+//                    val file = bitmapToFile(viewModel.bitmap.value as Bitmap)
 //                    Log.e("asdf","asdf")
 //                    if (file != null) {
 //                        Log.e("asasdfsdfdf","asdf")
@@ -144,7 +144,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                 .load(viewModel.diary.value!!.imageUrl)
                 .into(binding.fragmentMakingDrawing)
 
-            binding.fragmentMakingContent.text="content가 없네"
+            binding.fragmentMakingContent.text=viewModel.diary.value!!.content
             setIcon()
         }
     }

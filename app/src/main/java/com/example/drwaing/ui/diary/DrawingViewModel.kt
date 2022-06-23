@@ -52,7 +52,6 @@ class DrawingViewModel : ViewModel() {
             kotlin.runCatching {
                 Network.api.uploadImage(MainFragment.token, part)
             }.onSuccess {
-
                 val imageUrl = it.responseMessage
                 upload(imageUrl)
             }.onFailure {
@@ -90,6 +89,7 @@ class DrawingViewModel : ViewModel() {
             kotlin.runCatching {
                 Network.api.getDiary(MainFragment.token, diaryId)
             }.onSuccess {
+
                 _diary.postValue(it)
 
             }.onFailure {

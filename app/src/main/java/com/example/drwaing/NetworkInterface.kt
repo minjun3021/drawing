@@ -18,7 +18,6 @@ interface NetworkInterface {
     )
 
     data class ImageResponse(
-
         @SerializedName("responseMessage") val responseMessage: String,
     )
 
@@ -32,16 +31,12 @@ interface NetworkInterface {
     suspend fun signin(@Body data: SignRequest): SignResponse
 
 
-    @POST("/auth/sign-in")
-    @FormUrlEncoded
-    suspend fun asdf(@Field("signInRequest") data: SignRequest): SignResponse
-
 
     @Multipart
     @POST("/diary/image")
     suspend fun uploadImage(
         @Header("Authorization") token: String,
-        @Part file: MultipartBody.Part?,
+        @Part image: MultipartBody.Part,
     ): ImageResponse
 
     @POST("/diary")
