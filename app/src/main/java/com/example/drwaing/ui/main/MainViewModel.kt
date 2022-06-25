@@ -24,8 +24,26 @@ class MainViewModel : ViewModel() {
             kotlin.runCatching {
                 Network.api.getMyDiaryList(MainFragment.token,0,1000)
             }.onSuccess {
-                (it as ArrayList<DrawingListData>).add(0,DrawingListData.Header)
-                _diaryList.postValue(it as ArrayList<DrawingListData>)
+
+                    (it as ArrayList<DrawingListData>).add(0,DrawingListData.Header)
+                    _diaryList.postValue(it as ArrayList<DrawingListData>)
+
+
+            }.onFailure {
+                it.printStackTrace()
+            }
+        }
+    }
+    fun getDiaryList(){
+        viewModelScope.launch {
+            kotlin.runCatching {
+                Network.api.getDiaryList(MainFragment.token,0,1000)
+            }.onSuccess {
+                Log.e("check",(it as ArrayList<DrawingListData>).size.toString())
+//                (it as ArrayList<DrawingListData>).add(0,DrawingListData.Header)
+//                _diaryList.postValue(it as ArrayList<DrawingListData>)
+
+
             }.onFailure {
                 it.printStackTrace()
             }

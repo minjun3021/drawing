@@ -139,25 +139,22 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            var a =Gson()
 
-            Log.e("asdf",a.toJson(signRequest))
             kotlin.runCatching {
-                Network.api.signin(signRequest)
+                Log.e(signRequest.socialType,signRequest.socialToken)
+                Network.api.signin(signRequest.socialToken,signRequest.socialType)
             }.onSuccess {
                 MainFragment.token=it.accessToken
-                Log.e("asdf",it.accessToken)
                 navController.navigate(
                     R.id.action_socialLoginFragment_to_successLottieFragment,
                     bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN)
                 )
             }.onFailure {
-                Log.e("fuck",it.toString())
                 if (it is HttpException) {
                     when (it.code()) {
                         500 -> {
                             kotlin.runCatching {
-                                Network.api.signup(signRequest)
+                                Network.api.signup(signRequest.socialToken,signRequest.socialType)
                             }.onSuccess {
                                 //회원가입성공
                                 MainFragment.token=it.accessToken

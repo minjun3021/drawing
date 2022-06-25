@@ -178,6 +178,8 @@
     <ImageView
         android:id="@+id/stamp"
         android:layout_width="80dp"
+        android:visibility="invisible"
         android:layout_height="80dp"
+        android:layout_gravity="bottom"
         android:src="@drawable/ic_stamp96_gral" />
 </FrameLayout>

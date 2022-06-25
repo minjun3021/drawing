@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -20,6 +21,7 @@ import com.example.drwaing.data.diary.Weather
 import com.example.drwaing.databinding.FragmentMakingDiaryBinding
 import com.example.drwaing.extension.viewBinding
 import com.example.drwaing.ui.main.MainFragment
+import com.example.drwaing.ui.stamp.StampActivity
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -28,7 +30,7 @@ import java.util.*
 
 
 class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
-
+    private val clicked: Boolean = false
     private val binding by viewBinding(FragmentMakingDiaryBinding::bind)
     private val viewModel: DrawingViewModel by activityViewModels()
 
@@ -50,10 +52,10 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
             0 -> {//new
 
                 val now = System.currentTimeMillis()
-                val date=Date(now)
+                val date = Date(now)
                 val sdf = SimpleDateFormat("yyyy-MM-dd");
-                val getTime: String = sdf.format(date)+"T"
-                binding.fragmentMakingDate.text=MainFragment.makeDirayDate(getTime)
+                val getTime: String = sdf.format(date) + "T"
+                binding.fragmentMakingDate.text = MainFragment.makeDirayDate(getTime)
 
                 binding.fragmentMakingDrawing.setOnClickListener {
                     navController.navigate(R.id.action_makingDiaryFragment_to_drawingDiaryContentFragment)
@@ -61,25 +63,27 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                 binding.fragmentMakingContent.setOnClickListener {
                     navController.navigate(R.id.action_makingDiaryFragment_to_typingDiaryContentFragment)
                 }
+                binding.fragmentMakingFake.setOnClickListener {
+                    navController.navigate(R.id.action_makingDiaryFragment_to_typingDiaryContentFragment)
+                }
                 binding.fragmentMakingOkay.setOnClickListener {
-                        //TODO 파일업로드가 안되서 주석 처놓음 밑에 일기 업로드는 테스트를 위해 이미지 링크를 다른거로 임시로 박아놓음
-//                    val file = bitmapToFile(viewModel.bitmap.value as Bitmap)
-//                    Log.e("asdf","asdf")
-//                    if (file != null) {
-//                        Log.e("asasdfsdfdf","asdf")
-//                        viewModel.save(file)
-//
-//                    }
-                    if(viewModel.weather.value!=null){
-                        viewModel.upload("https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/420px-Golde33443.jpg")
+                    //TODO 파일업로드가 안되서 주석 처놓음 밑에 일기 업로드는 테스트를 위해 이미지 링크를 다른거로 임시로 박아놓음
+                    val file = bitmapToFile(viewModel.bitmap.value)
+                    if (file != null) {
+                        viewModel.save(file)
 
-                        navController.navigate(
-                            R.id.action_makingDiaryFragment_to_successLottieFragment,
-                            bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_MAKING)
-                        )
-                    }else{
-                        Toast.makeText(context,"날씨를 선택하세요", Toast.LENGTH_SHORT).show();
                     }
+//                    if(viewModel.weather.value!=null){
+//
+//                        viewModel.upload("https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/420px-Golde33443.jpg")
+//
+//                        navController.navigate(
+//                            R.id.action_makingDiaryFragment_to_successLottieFragment,
+//                            bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_MAKING)
+//                        )
+//                    }else{
+//                        Toast.makeText(context,"날씨를 선택하세요", Toast.LENGTH_SHORT).show();
+//                    }
 
                 }
                 binding.fragmentMakingSun.setOnClickListener {
@@ -105,9 +109,12 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                 binding.fragmentMakingOkay.visibility = View.GONE
                 binding.fragmentMakingInstagram.visibility = View.VISIBLE
 
-                Log.e("diaryid",activity?.intent?.extras?.getInt(DiaryActivity.EXTRA_DIARY_KEY).toString())
+                Log.e("diaryid",
+                    activity?.intent?.extras?.getInt(DiaryActivity.EXTRA_DIARY_KEY).toString())
                 observeViewing()
                 viewModel.getDiary(activity?.intent?.extras?.getInt(DiaryActivity.EXTRA_DIARY_KEY)!!)
+
+                binding.fragmentMakingContent.ellipsize
 
             }
         }
@@ -115,9 +122,34 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
             //TODO dialog 뛰우기
             activity?.finish()
         }
+        binding.fragmentMakingContent.text =
+            "저는 지금부터 이 테스트를 할겁니다 이거를 왜하고있냐면 텍스트 양에따라 뷰를 컨트롤 해야하는데요. 평상시처럼 글이 많지 않을때는 가만히 내비둬도 되지만 혹여나 글씨가 많아 textview가 넘어가게 된다면 스크롤이 가능해지게 textview를 wrap 콘텐트로 바꿀 예정이다\n" +
+                    "저는 지금부터 이 테스트를 할겁니다 이거를 왜하고있냐면 텍스트 양에따라 뷰를 컨트롤 해야하는데요. 평상시처럼 글이 많지 않을때는 가만히 내비둬도 되지만 혹여나 글씨가 많아 textview가 넘어가게 된다면 스크롤이 가능해지게 textview를 wrap 콘텐트로 바꿀 예정이다\n" +
+                    "저는 지금부터 이 테스트를 할겁니다 이거를 왜하고있냐면 텍스트 양에따라 뷰를 컨트롤 해야하는데요. 평상시처럼 글이 많지 않을때는 가만히 내비둬도 되지만 혹여나 글씨가 많아 textview가 넘어가게 된다면 스크롤이 가능해지게 textview를 wrap 콘텐트로 바꿀 예정이다\n" +
+                    "저는 지금부터 이 테스트를 할겁니다 이거를 왜하고있냐면 텍스트 양에따라 뷰를 컨트롤 해야하는데요. 평상시처럼 글이 많지 않을때는 가만히 내비둬도 되지만 혹여나 글씨가 많아 textview가 넘어가게 된다면 스크롤이 가능해지게 textview를 wrap 콘텐트로 바꿀 예정이다 "
+       // binding.fragmentMakingTest.post { binding.fragmentMakingTest.fullScroll(View.FOCUS_DOWN) }
 
+//        var stamp = View.inflate(context, R.layout.stamp, null)
+//        stamp.setBackgroundResource(R.drawable.ic_stamp96_gral)
+//        binding.asdadsa.addView(stamp)
+
+
+//        binding.fragmentMakingTest.setOnTouchListener { view, motionEvent ->
+//
+//                Log.e(motionEvent.x.toString(),motionEvent.y.toString())
+//
+//            true
+//        }
+
+        binding.fragmentMakingFake.post {
+            binding.fragmentMakingFake.background = DiaryActivity.createBitmap(requireContext(),
+                binding.fragmentMakingContent.width,
+                binding.fragmentMakingContent.lineHeight)
+        }
         binding.fragmentMakingContent.post {
-            binding.fragmentMakingContent.background = DiaryActivity.createBitmap(requireContext(), binding.fragmentMakingContent.width, binding.fragmentMakingContent.lineHeight)
+            binding.fragmentMakingContent.background = DiaryActivity.createBitmap(requireContext(),
+                binding.fragmentMakingContent.width,
+                binding.fragmentMakingContent.lineHeight)
         }
 
     }
@@ -131,50 +163,74 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
             binding.fragmentMakingDrawing.setImageBitmap(it)
 
         }
-        viewModel.weather.observe(viewLifecycleOwner){
+        viewModel.weather.observe(viewLifecycleOwner) {
             changeIcon()
         }
 
 
     }
+
     private fun observeViewing() {
-        viewModel.diary.observe(viewLifecycleOwner){
-            binding.fragmentMakingDate.text=MainFragment.makeDirayDate(viewModel.diary.value!!.createdDate)
+        viewModel.diary.observe(viewLifecycleOwner) {
+            binding.fragmentMakingDate.text =
+                MainFragment.makeDirayDate(viewModel.diary.value!!.createdDate)
             Glide.with(this)
                 .load(viewModel.diary.value!!.imageUrl)
                 .into(binding.fragmentMakingDrawing)
 
-            binding.fragmentMakingContent.text=viewModel.diary.value!!.content
+            binding.fragmentMakingContent.text = viewModel.diary.value!!.content
             setIcon()
         }
     }
-    private fun changeIcon(){
-        binding.fragmentMakingSun.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_sunny_enabled))
-        binding.fragmentMakingCloud.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_cloudy_enabled))
-        binding.fragmentMakingRain.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_rainy_enabled))
-        binding.fragmentMakingSnow.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_snowy_enabled))
 
-        when(viewModel.weather.value!!.name){
-            Weather.SUN.name-> binding.fragmentMakingSun.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_sunny_selected))
-            Weather.CLOUD.name-> binding.fragmentMakingCloud.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_cloudy_selected))
-            Weather.RAIN.name-> binding.fragmentMakingRain.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_rainy_selected))
-            Weather.SNOW.name-> binding.fragmentMakingSnow.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_snowy_selected))
+    private fun changeIcon() {
+        binding.fragmentMakingSun.setImageDrawable(ContextCompat.getDrawable(requireContext(),
+            R.drawable.ic_sunny_enabled))
+        binding.fragmentMakingCloud.setImageDrawable(ContextCompat.getDrawable(requireContext(),
+            R.drawable.ic_cloudy_enabled))
+        binding.fragmentMakingRain.setImageDrawable(ContextCompat.getDrawable(requireContext(),
+            R.drawable.ic_rainy_enabled))
+        binding.fragmentMakingSnow.setImageDrawable(ContextCompat.getDrawable(requireContext(),
+            R.drawable.ic_snowy_enabled))
+
+        when (viewModel.weather.value!!.name) {
+            Weather.SUN.name -> binding.fragmentMakingSun.setImageDrawable(ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_sunny_selected))
+            Weather.CLOUD.name -> binding.fragmentMakingCloud.setImageDrawable(ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_cloudy_selected))
+            Weather.RAIN.name -> binding.fragmentMakingRain.setImageDrawable(ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_rainy_selected))
+            Weather.SNOW.name -> binding.fragmentMakingSnow.setImageDrawable(ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_snowy_selected))
         }
     }
-    private fun setIcon(){
-        when(viewModel.diary.value!!.weather){
-            Weather.SUN.name-> binding.fragmentMakingSun.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_sunny_selected))
-            Weather.CLOUD.name-> binding.fragmentMakingCloud.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_cloudy_selected))
-            Weather.RAIN.name-> binding.fragmentMakingRain.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_rainy_selected))
-            Weather.SNOW.name-> binding.fragmentMakingSnow.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_snowy_selected))
+
+    private fun setIcon() {
+        when (viewModel.diary.value!!.weather) {
+            Weather.SUN.name -> binding.fragmentMakingSun.setImageDrawable(ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_sunny_selected))
+            Weather.CLOUD.name -> binding.fragmentMakingCloud.setImageDrawable(ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_cloudy_selected))
+            Weather.RAIN.name -> binding.fragmentMakingRain.setImageDrawable(ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_rainy_selected))
+            Weather.SNOW.name -> binding.fragmentMakingSnow.setImageDrawable(ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_snowy_selected))
         }
     }
 
     private fun bitmapToFile(bitmap: Bitmap?): File? {
         bitmap ?: return null
         val wrapper = ContextWrapper(context)
-        var file = wrapper.getDir("Images", Context.MODE_PRIVATE)
-        file = File(file, "${System.currentTimeMillis()}.jpeg")
+        var file = wrapper.getDir("image", Context.MODE_PRIVATE)
+        file = File(file, "asdf.jpeg")
 
         try {
             val stream: OutputStream = FileOutputStream(file)

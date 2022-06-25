@@ -46,14 +46,16 @@ class DrawingViewModel : ViewModel() {
         val part = MultipartBody.Part.createFormData(
             "image",
             file.name,
-            file.asRequestBody("image/*".toMediaTypeOrNull())
+            file.asRequestBody("image/jpeg".toMediaTypeOrNull())
         )
         viewModelScope.launch {
             kotlin.runCatching {
                 Network.api.uploadImage(MainFragment.token, part)
             }.onSuccess {
                 val imageUrl = it.responseMessage
-                upload(imageUrl)
+
+                Log.e("imageurl", it.toString())
+                //upload(imageUrl)
             }.onFailure {
                 it.printStackTrace()
                 Log.e("image", it.toString())
@@ -62,15 +64,14 @@ class DrawingViewModel : ViewModel() {
     }
 
 
-    //TODO : 날씨 선택 기능 추가해서 weather 변수 수정
     fun upload(imageUrl: String) {
         viewModelScope.launch {
             val diary = DiaryRequest(imageUrl = imageUrl,
                 content = diaryText.value ?: "",
                 weather = weather.value!!.name)
             kotlin.runCatching {
-
-                Network.api.uploadDiary(MainFragment.token, diary)
+                Log.e("check",MainFragment.token)
+                Network.api.uploadDiary(MainFragment.token, diary.content,diary.imageUrl,diary.weather)
             }.onSuccess {
                 // TODO : 일기 업로드 성공 대응
 

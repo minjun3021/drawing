@@ -47,21 +47,21 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             tmp = tmp.replace("-", ".")
 
             val dateFormat = SimpleDateFormat("yyyy.MM.dd")
-            var d=dateFormat.parse(tmp)
-            val calendar=Calendar.getInstance()
-            calendar.time=d
-            lateinit var dayOfWeek :String
-            when(calendar.get(Calendar.DAY_OF_WEEK)){
-                1-> dayOfWeek="일"
-                2-> dayOfWeek="월"
-                3-> dayOfWeek="화"
-                4-> dayOfWeek="수"
-                5-> dayOfWeek="목"
-                6-> dayOfWeek="금"
-                7-> dayOfWeek="토"
+            var d = dateFormat.parse(tmp)
+            val calendar = Calendar.getInstance()
+            calendar.time = d
+            lateinit var dayOfWeek: String
+            when (calendar.get(Calendar.DAY_OF_WEEK)) {
+                1 -> dayOfWeek = "일"
+                2 -> dayOfWeek = "월"
+                3 -> dayOfWeek = "화"
+                4 -> dayOfWeek = "수"
+                5 -> dayOfWeek = "목"
+                6 -> dayOfWeek = "금"
+                7 -> dayOfWeek = "토"
 
             }
-            tmp+=" "+dayOfWeek+"요일"
+            tmp += " " + dayOfWeek + "요일"
             return tmp
         }
 
@@ -69,6 +69,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onResume() {
         viewModel.getMyDiaryList()
+        viewModel.getDiaryList()
         super.onResume()
     }
 
@@ -77,7 +78,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        Log.e("asdf","refresh")
+        Log.e("asdf", "refresh")
         viewModel.getMyDiaryList()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -95,7 +96,13 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
 
-
+        binding.fragmentMainNothingBtn.setOnClickListener {
+            val intent = DiaryActivity.createIntent(
+                requireContext(),
+                DiaryActivity.VIEW_TYPE_NEW
+            )
+            startActivity(intent)
+        }
         binding.fragmentMainDrawing.setOnClickListener {
             val intent = DiaryActivity.createIntent(
                 requireContext(),
@@ -105,11 +112,15 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
         binding.fragmentMainPeople.setOnClickListener {
-            val intent=Intent(context, StampActivity::class.java)
+            val intent = Intent(context, StampActivity::class.java)
             startActivity(intent)
 
         }
         viewModel.diaryList.observe(viewLifecycleOwner) {
+            if(viewModel.diaryList.value!!.size >=2){
+                binding.fragmentMainNothing.visibility=View.GONE
+            }
+
             drawingListAdapter.submitList(viewModel.diaryList.value)
 
         }

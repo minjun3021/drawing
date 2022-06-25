@@ -25,10 +25,15 @@ interface NetworkInterface {
 
 
     @POST("/auth/sign-up")
-    suspend fun signup(@Body data: SignRequest): SignResponse
+    suspend fun signup( @Query("socialToken") socialToken: String,
+                        @Query("socialType") socialType :String
+    ): SignResponse
 
     @POST("/auth/sign-in")
-    suspend fun signin(@Body data: SignRequest): SignResponse
+    suspend fun signin(
+        @Query("socialToken") socialToken: String,
+        @Query("socialType") socialType :String
+    ): SignResponse
 
 
 
@@ -36,17 +41,26 @@ interface NetworkInterface {
     @POST("/diary/image")
     suspend fun uploadImage(
         @Header("Authorization") token: String,
-        @Part image: MultipartBody.Part,
+        @Part image: MultipartBody.Part?,
     ): ImageResponse
 
     @POST("/diary")
     suspend fun uploadDiary(
         @Header("Authorization") token: String,
-        @Body createDiaryRequest: DiaryRequest,
+        @Query("content") content: String,
+        @Query("imageUrl") imageUrl: String,
+        @Query("weather") weather :String
     ): ImageResponse
 
     @GET("/diary/list/me")
     suspend fun getMyDiaryList(
+        @Header("Authorization") token: String,
+        @Query("lastDiaryId") lastDiaryId: Int,
+        @Query("size") size: Int,
+    ): ArrayList<DrawingListData.Diary>
+
+    @GET("/diary/list")
+    suspend fun getDiaryList(
         @Header("Authorization") token: String,
         @Query("lastDiaryId") lastDiaryId: Int,
         @Query("size") size: Int,

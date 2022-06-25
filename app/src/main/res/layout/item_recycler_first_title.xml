@@ -10,6 +10,7 @@
         android:paddingBottom="20dp"
         android:textColor="#111111"
         android:paddingTop="20dp"
+
         android:fontFamily="@font/pretendardsemibold"
         android:lineSpacingExtra="4sp"
         android:text="내 일기장"

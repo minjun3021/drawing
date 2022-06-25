@@ -9,6 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +22,8 @@ import com.example.drwaing.ui.diary.DiaryActivity
 class StampActivity : AppCompatActivity() {
     private val binding: ActivityStampBinding by viewBinding(ActivityStampBinding::inflate)
     private val stampAdatper: StampAdapter by lazy { StampAdapter() }
+    private val viewModel : StampViewModel by viewModels()
+
     var list: ArrayList<StampData> = ArrayList()
     var stamps : ArrayList<Stamped> = ArrayList(12)
     var isStamped :Boolean=false
@@ -65,6 +68,7 @@ class StampActivity : AppCompatActivity() {
 
                     var stamp = View.inflate(applicationContext, R.layout.stamp, null)
                     stamp.setBackgroundResource(list.get(whichStamp).stamp96ID)
+
                     stamp.x = (event.getX()) - (binding.stamp.getWidth() / 2)
                     stamp.y = (event.getY()) - (binding.stamp.getHeight())
 
