@@ -71,6 +71,7 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
             if (error != null) {//실패
 
             } else if (token != null) {
+                Log.e("카카오로그인 성공", token.accessToken)
                 sign(SOCIAL_TYPE_KAKAO)
             }
         }
@@ -145,11 +146,13 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
                 Network.api.signin(signRequest.socialToken,signRequest.socialType)
             }.onSuccess {
                 MainFragment.token=it.accessToken
+
                 navController.navigate(
                     R.id.action_socialLoginFragment_to_successLottieFragment,
                     bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN)
                 )
             }.onFailure {
+
                 if (it is HttpException) {
                     when (it.code()) {
                         500 -> {
@@ -158,13 +161,17 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
                             }.onSuccess {
                                 //회원가입성공
                                 MainFragment.token=it.accessToken
+
                                 navController.navigate(
                                     R.id.action_socialLoginFragment_to_successLottieFragment,
                                     bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN)
                                 )
                             }.onFailure {
-                                Log.e("signup", it.message.toString())
+                                Log.e("signupfail", it.toString())
                             }
+                        }
+                        500->{
+                            Log.e("code",it.code().toString()+it.response().toString())
                         }
                     }
                 }

@@ -1,8 +1,12 @@
 package com.example.drwaing.ui.login
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.drwaing.Network
 import com.example.drwaing.NetworkInterface
@@ -17,12 +21,14 @@ import com.kakao.sdk.user.UserApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.security.MessageDigest
 
 
 class LoginActivity : AppCompatActivity() {
 
     private val binding: ActivityLoginBinding by viewBinding(ActivityLoginBinding::inflate)
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -31,8 +37,9 @@ class LoginActivity : AppCompatActivity() {
         googleAutoLogin()
 
 
-
     }
+
+
 
 //    private fun kakaoAutoLogin() {
 //        if (AuthApiClient.instance.hasToken()) {
@@ -48,7 +55,6 @@ class LoginActivity : AppCompatActivity() {
 //                    val signRequest =
 //                        NetworkInterface.SignRequest(AuthApiClient.instance.tokenManagerProvider.manager.getToken()!!.accessToken
 //                            ,SocialLoginFragment.SOCIAL_TYPE_KAKAO)
-//
 //                    Network.api.signin(signRequest).enqueue(object : Callback<NetworkInterface.SignResponse>{
 //                        override fun onResponse(
 //                            call: Call<NetworkInterface.SignResponse>,

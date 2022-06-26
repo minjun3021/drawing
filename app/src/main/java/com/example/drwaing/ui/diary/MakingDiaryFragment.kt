@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
@@ -39,6 +40,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
     private val binding by viewBinding(FragmentMakingDiaryBinding::bind)
     private val viewModel: DrawingViewModel by activityViewModels()
 
+
     var list: ArrayList<StampData> = ArrayList()
 
     private val navController: NavController
@@ -55,6 +57,15 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
     }
 
     private fun initView() {
+
+        val sharedPref = requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+        val myFont=sharedPref.getInt("font",R.font.uhbeeseulvely2)
+        val typeface = ResourcesCompat.getFont(requireContext(), myFont)
+        binding.fragmentMakingDate.setTypeface(typeface)
+        binding.fragmentMakingContent.setTypeface(typeface)
+        binding.fragmentMakingDate.setText(makeDate())
+
+
         when (activity?.intent?.extras?.getInt(DiaryActivity.EXTRA_VIEW_TYPE)) {
             0 -> {//new
 
@@ -68,7 +79,8 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                     navController.navigate(R.id.action_makingDiaryFragment_to_drawingDiaryContentFragment)
                 }
                 binding.fragmentMakingContent.setOnClickListener {
-                    navController.navigate(R.id.action_makingDiaryFragment_to_typingDiaryContentFragment)
+                    navController.navigate(R.id.action_makingDiaryFragment_to_typingDiaryContentFragment,
+                        bundleOf("amount" to myFont))
                 }
                 binding.fragmentMakingFake.setOnClickListener {
                     navController.navigate(R.id.action_makingDiaryFragment_to_typingDiaryContentFragment)
@@ -283,6 +295,24 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
         list.add(StampData("INTERESTING", R.drawable.ic_stamp_interesting, R.drawable.ic_stamp96_interesting))
         list.add(StampData("LOL", R.drawable.ic_stamp_lol, R.drawable.ic_stamp96_lol))
         list.add(StampData("ZZANG", R.drawable.ic_stamp_zzang, R.drawable.ic_stamp96_zzang))
+    }
+    private fun makeDate(): String {
+        val date = Date()
+        val mFormat = SimpleDateFormat("yyyy.MM.dd")
+        var time: String = mFormat.format(date)
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        val dayOfWeekNumber = calendar[Calendar.DAY_OF_WEEK]
+        when(dayOfWeekNumber){
+            1-> time += " 일요일"
+            2-> time += " 월요일"
+            3-> time += " 화요일"
+            4-> time += " 수요일"
+            5-> time += " 목요일"
+            6-> time += " 금요일"
+            7-> time += " 토요일"
+        }
+        return time
     }
 
     private fun bitmapToFile(bitmap: Bitmap?): File? {

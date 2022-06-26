@@ -1,12 +1,18 @@
 package com.example.drwaing.ui.main
 
 import android.graphics.drawable.Drawable
+import android.app.Activity
+import android.content.Context
+import android.graphics.Typeface
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.res.ResourcesCompat
+
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +25,7 @@ import com.example.drwaing.databinding.ItemRecyclerFirstTitleBinding
 import com.example.drwaing.extension.viewBinding
 import com.example.drwaing.ui.diary.DiaryActivity
 import kotlin.math.log
+import com.example.drwaing.view.draw.UIKit.getResources
 
 
 /**
@@ -48,6 +55,7 @@ class DrawingListAdapter :
         Log.e(drawingList.size.toString(),"asdf")
         return drawingList.size
     }*/
+
 
     //class DrawingListAdapter가 메모리에 올리갈때 같이 만들어지는 객체를 companion object라함
     companion object {
@@ -83,7 +91,6 @@ class DrawingListAdapter :
         is DrawingListData.Header -> 1
 
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
             // TODO : Header xml 구현
@@ -94,6 +101,7 @@ class DrawingListAdapter :
                     false
                 )
             )
+
             else -> DiaryViewHolder(
                 ItemRecyclerDrawingBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -159,6 +167,7 @@ class DrawingListAdapter :
                     ContextCompat.getDrawable(binding.root.context, R.drawable.ic_snowy_selected)!!
             }
             binding.recylerItemDrawingWeather.setImageDrawable(weatherDrawable)
+
         }
     }
 

@@ -17,7 +17,10 @@
         <activity
             android:name=".ui.stamp.StampActivity"
             android:screenOrientation="portrait"
-
+            android:exported="false" />
+      <activity
+            android:name=".ui.setting.SettingActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.diary.DiaryActivity"
@@ -55,6 +58,8 @@
 
 
         </activity>
+
+
     </application>
 
 </manifest>
