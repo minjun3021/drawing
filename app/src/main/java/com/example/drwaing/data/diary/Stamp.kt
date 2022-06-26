@@ -9,7 +9,7 @@ data class Stamp(
     @SerializedName("stampType")
     val stampType: String,
     @SerializedName("x")
-    val x: Int,
+    val x: Double,
     @SerializedName("y")
-    val y: Int
+    val y: Double
 )

@@ -75,7 +75,7 @@ class DrawingViewModel : ViewModel() {
             }.onSuccess {
                 // TODO : 일기 업로드 성공 대응
 
-                Log.e("success", it.responseMessage)
+                Log.e("success", "good")
 
             }.onFailure {
                 // TODO : 일기 업로드 실패 대응

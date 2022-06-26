@@ -5,23 +5,28 @@ import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.example.drwaing.R
 import com.example.drwaing.SuccessLottieFragment
+import com.example.drwaing.data.diary.Stamped
 import com.example.drwaing.data.diary.Weather
 import com.example.drwaing.databinding.FragmentMakingDiaryBinding
 import com.example.drwaing.extension.viewBinding
 import com.example.drwaing.ui.main.MainFragment
 import com.example.drwaing.ui.stamp.StampActivity
+import com.example.drwaing.ui.stamp.StampData
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -33,6 +38,8 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
     private val clicked: Boolean = false
     private val binding by viewBinding(FragmentMakingDiaryBinding::bind)
     private val viewModel: DrawingViewModel by activityViewModels()
+
+    var list: ArrayList<StampData> = ArrayList()
 
     private val navController: NavController
         get() = Navigation.findNavController(
@@ -68,22 +75,22 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                 }
                 binding.fragmentMakingOkay.setOnClickListener {
                     //TODO 파일업로드가 안되서 주석 처놓음 밑에 일기 업로드는 테스트를 위해 이미지 링크를 다른거로 임시로 박아놓음
-                    val file = bitmapToFile(viewModel.bitmap.value)
-                    if (file != null) {
-                        viewModel.save(file)
-
-                    }
-//                    if(viewModel.weather.value!=null){
+//                    val file = bitmapToFile(viewModel.bitmap.value)
+//                    if (file != null) {
+//                        viewModel.save(file)
 //
-//                        viewModel.upload("https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/420px-Golde33443.jpg")
-//
-//                        navController.navigate(
-//                            R.id.action_makingDiaryFragment_to_successLottieFragment,
-//                            bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_MAKING)
-//                        )
-//                    }else{
-//                        Toast.makeText(context,"날씨를 선택하세요", Toast.LENGTH_SHORT).show();
 //                    }
+                    if(viewModel.weather.value!=null){
+
+                        viewModel.upload("https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/420px-Golde33443.jpg")
+
+                        navController.navigate(
+                            R.id.action_makingDiaryFragment_to_successLottieFragment,
+                            bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_MAKING)
+                        )
+                    }else{
+                        Toast.makeText(context,"날씨를 선택하세요", Toast.LENGTH_SHORT).show();
+                    }
 
                 }
                 binding.fragmentMakingSun.setOnClickListener {
@@ -111,10 +118,11 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
                 Log.e("diaryid",
                     activity?.intent?.extras?.getInt(DiaryActivity.EXTRA_DIARY_KEY).toString())
+                submitStampData()
                 observeViewing()
                 viewModel.getDiary(activity?.intent?.extras?.getInt(DiaryActivity.EXTRA_DIARY_KEY)!!)
 
-                binding.fragmentMakingContent.ellipsize
+
 
             }
         }
@@ -122,13 +130,8 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
             //TODO dialog 뛰우기
             activity?.finish()
         }
-        binding.fragmentMakingContent.text =
-            "저는 지금부터 이 테스트를 할겁니다 이거를 왜하고있냐면 텍스트 양에따라 뷰를 컨트롤 해야하는데요. 평상시처럼 글이 많지 않을때는 가만히 내비둬도 되지만 혹여나 글씨가 많아 textview가 넘어가게 된다면 스크롤이 가능해지게 textview를 wrap 콘텐트로 바꿀 예정이다\n" +
-                    "저는 지금부터 이 테스트를 할겁니다 이거를 왜하고있냐면 텍스트 양에따라 뷰를 컨트롤 해야하는데요. 평상시처럼 글이 많지 않을때는 가만히 내비둬도 되지만 혹여나 글씨가 많아 textview가 넘어가게 된다면 스크롤이 가능해지게 textview를 wrap 콘텐트로 바꿀 예정이다\n" +
-                    "저는 지금부터 이 테스트를 할겁니다 이거를 왜하고있냐면 텍스트 양에따라 뷰를 컨트롤 해야하는데요. 평상시처럼 글이 많지 않을때는 가만히 내비둬도 되지만 혹여나 글씨가 많아 textview가 넘어가게 된다면 스크롤이 가능해지게 textview를 wrap 콘텐트로 바꿀 예정이다\n" +
-                    "저는 지금부터 이 테스트를 할겁니다 이거를 왜하고있냐면 텍스트 양에따라 뷰를 컨트롤 해야하는데요. 평상시처럼 글이 많지 않을때는 가만히 내비둬도 되지만 혹여나 글씨가 많아 textview가 넘어가게 된다면 스크롤이 가능해지게 textview를 wrap 콘텐트로 바꿀 예정이다 "
-       // binding.fragmentMakingTest.post { binding.fragmentMakingTest.fullScroll(View.FOCUS_DOWN) }
 
+//
 //        var stamp = View.inflate(context, R.layout.stamp, null)
 //        stamp.setBackgroundResource(R.drawable.ic_stamp96_gral)
 //        binding.asdadsa.addView(stamp)
@@ -180,7 +183,48 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
             binding.fragmentMakingContent.text = viewModel.diary.value!!.content
             setIcon()
+
+            if (viewModel.diary.value?.stampList?.size != 0) {
+                val pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    96f,
+                    requireContext().resources.displayMetrics)
+
+                for (i in 0..viewModel.diary.value?.stampList!!.size - 1) {
+
+                    val haveToStamp=viewModel.diary.value!!.stampList.get(i)
+                    var stamp = View.inflate(context, R.layout.stamp, null)
+                    for (i in 0..list.size - 1) {
+                        if (list.get(i).stampTag == haveToStamp.stampType) {
+                            stamp.setBackgroundResource(list.get(i).stamp96ID)
+                            break
+                        }
+                    }
+                    stamp.x = (haveToStamp.x*binding.fragmentMainStampController.width).toFloat()
+                    stamp.y = (haveToStamp.y*binding.fragmentMainStampController.height).toFloat()
+                    if(stamp.x>= binding.fragmentMainStampController.width-pixels){
+                        stamp.x=binding.fragmentMainStampController.width-pixels
+                    }
+                    if(stamp.y>= binding.fragmentMainStampController.height-pixels){
+                        stamp.y=binding.fragmentMainStampController.height-pixels
+                    }
+                    Log.e(stamp.x.toString(),stamp.y.toString())
+
+                    binding.fragmentMainStampController.addView(stamp)
+                    stamp.updateLayoutParams {
+
+                        height = pixels.toInt()
+                        width = pixels.toInt()
+
+
+                    }
+
+
+                }
+            }
         }
+
+
+
     }
 
     private fun changeIcon() {
@@ -224,6 +268,21 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                 requireContext(),
                 R.drawable.ic_snowy_selected))
         }
+    }
+    fun submitStampData(){
+        list.add(StampData("GRAL", R.drawable.ic_stamp_gral, R.drawable.ic_stamp96_gral))
+        list.add(StampData("DOTHIS", R.drawable.ic_stamp_dothis, R.drawable.ic_stamp96_dothis))
+        list.add(StampData("GOOD", R.drawable.ic_stamp_good, R.drawable.ic_stamp96_good))
+        list.add(StampData("GREATJOB", R.drawable.ic_stamp_greatjob, R.drawable.ic_stamp96_greatjob))
+        list.add(StampData("PERFECT", R.drawable.ic_stamp_perfect, R.drawable.ic_stamp96_perfect))
+        //TODO 얘네들이 들어가면 오류뜸 왜그런진 모르겟음
+//        list.add(StampData("OH",R.drawable.ic_stamp_oh,R.drawable.ic_stamp96_oh))
+//        list.add(StampData("ZZUGUL",R.drawable.ic_stamp_zzugul,R.drawable.ic_stamp96_zzugul))
+        list.add(StampData("HUNDRED", R.drawable.ic_stamp_hundred, R.drawable.ic_stamp96_hundred))
+        list.add(StampData("HOENG", R.drawable.ic_stamp_hoeng, R.drawable.ic_stamp96_hoeng))
+        list.add(StampData("INTERESTING", R.drawable.ic_stamp_interesting, R.drawable.ic_stamp96_interesting))
+        list.add(StampData("LOL", R.drawable.ic_stamp_lol, R.drawable.ic_stamp96_lol))
+        list.add(StampData("ZZANG", R.drawable.ic_stamp_zzang, R.drawable.ic_stamp96_zzang))
     }
 
     private fun bitmapToFile(bitmap: Bitmap?): File? {

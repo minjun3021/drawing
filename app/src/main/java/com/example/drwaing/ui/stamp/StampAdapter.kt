@@ -26,6 +26,8 @@ import com.example.drwaing.databinding.ItemRecyclerStampBinding
 
 class StampAdapter : ListAdapter<StampData, RecyclerView.ViewHolder>(diffutil) {
 
+
+
     companion object {
 
         val diffutil = object : DiffUtil.ItemCallback<StampData>() {
@@ -38,8 +40,11 @@ class StampAdapter : ListAdapter<StampData, RecyclerView.ViewHolder>(diffutil) {
         }
         lateinit var lastClicked: ImageView
         var lastClickedPosition: Int = -1
-    }
 
+    }
+    init {
+        lastClickedPosition= -1
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         StampViewHolder(ItemRecyclerStampBinding.inflate(LayoutInflater.from(parent.context),
             parent,
@@ -58,11 +63,17 @@ class StampAdapter : ListAdapter<StampData, RecyclerView.ViewHolder>(diffutil) {
                     lastClicked.setPadding(0,8,0,8)
                     lastClicked.setImageResource(getItem(lastClickedPosition).stampID)
                 }
-                lastClickedPosition = adapterPosition
-                lastClicked = binding.recylerItemStampImage
+                if(lastClickedPosition!=adapterPosition){
+                    lastClickedPosition = adapterPosition
+                    lastClicked = binding.recylerItemStampImage
 
-                binding.recylerItemStampImage.setPadding(0,0,0,0)
-                binding.recylerItemStampImage.setImageResource(getItem(adapterPosition).stamp96ID)
+                    binding.recylerItemStampImage.setPadding(0,0,0,0)
+                    binding.recylerItemStampImage.setImageResource(getItem(adapterPosition).stamp96ID)
+                }
+                else{
+                    lastClickedPosition=-1
+                }
+
             }
         }
 

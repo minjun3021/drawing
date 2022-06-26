@@ -1,58 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?attr/selectableItemBackground"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground">
 
 
     <TextView
+        android:id="@+id/recyler_item_drawing_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:lineSpacingExtra="6sp"
-        android:id="@+id/recyler_item_drawing_date"
-        android:letterSpacing="0.15"
-        android:text="2022.00.00 금요일"
         android:fontFamily="@font/uhbeeseulvely2"
-        android:textSize="14sp"
+        android:letterSpacing="0.15"
+        android:lineSpacingExtra="6sp"
+        android:text="2022.00.00 금요일"
         android:textColor="#111111"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@id/recyler_item_drawing_weather"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@id/recyler_item_drawing_weather"></TextView>
 
     <ImageView
+        android:id="@+id/recyler_item_drawing_weather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/recyler_item_drawing_weather"
         android:src="@drawable/ic_sunny_selected"
         app:layout_constraintLeft_toRightOf="@id/recyler_item_drawing_date"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:id="@+id/recyler_item_drawing"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/recyler_item_drawing"
         android:layout_marginHorizontal="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="28dp"
-        app:layout_constraintStart_toStartOf="@id/recyler_item_drawing_border"
-        app:layout_constraintEnd_toEndOf="@id/recyler_item_drawing_border"
-        app:layout_constraintTop_toTopOf="@id/recyler_item_drawing_border"
         app:layout_constraintBottom_toBottomOf="@id/recyler_item_drawing_border"
-        />
+        app:layout_constraintEnd_toEndOf="@id/recyler_item_drawing_border"
+        app:layout_constraintStart_toStartOf="@id/recyler_item_drawing_border"
+        app:layout_constraintTop_toTopOf="@id/recyler_item_drawing_border" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:src="@drawable/bg_drawing"
-        android:paddingBottom="20dp"
-
         android:id="@+id/recyler_item_drawing_border"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@id/recyler_item_drawing_weather"
+        android:adjustViewBounds="true"
+        android:paddingBottom="20dp"
+        android:src="@drawable/bg_drawing"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_height="wrap_content"/>
-
-
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyler_item_drawing_weather" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

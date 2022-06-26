@@ -31,7 +31,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private val binding: FragmentMainBinding by viewBinding(FragmentMainBinding::bind)
     private val drawingListAdapter: DrawingListAdapter by lazy { DrawingListAdapter() }
     private val viewModel: MainViewModel by activityViewModels()
-
+    private  var stampDiaryId =-1
     //사용할때 lazy안에있는거라고 가르켜주는것임
     private val navController: NavController
         get() = Navigation.findNavController(
@@ -112,13 +112,19 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
         binding.fragmentMainPeople.setOnClickListener {
-            val intent = Intent(context, StampActivity::class.java)
-            startActivity(intent)
+            if(stampDiaryId!=-1){
+                val intent = Intent(context, StampActivity::class.java)
+
+                intent.putExtra(DiaryActivity.EXTRA_DIARY_KEY, stampDiaryId)
+                startActivity(intent)
+            }
+
 
         }
         viewModel.diaryList.observe(viewLifecycleOwner) {
             if(viewModel.diaryList.value!!.size >=2){
                 binding.fragmentMainNothing.visibility=View.GONE
+                stampDiaryId=((viewModel.diaryList.value!!.get(viewModel.diaryList.value!!.size-1)) as DrawingListData.Diary).diaryId
             }
 
             drawingListAdapter.submitList(viewModel.diaryList.value)

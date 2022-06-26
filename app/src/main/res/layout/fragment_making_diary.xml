@@ -144,8 +144,10 @@
 
                 <ImageView
                     android:id="@+id/fragment_making_drawing"
-                    android:layout_width="320dp"
-                    android:layout_height="400dp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="10dp"
                     app:layout_constraintBottom_toBottomOf="@id/fragment_making_bg"
                     app:layout_constraintLeft_toLeftOf="@id/fragment_making_bg"
                     app:layout_constraintRight_toRightOf="@id/fragment_making_bg"
@@ -157,7 +159,6 @@
                     android:layout_height="wrap_content"
 
                     android:adjustViewBounds="true"
-                    android:maxWidth="319dp"
                     android:src="@drawable/bg_making"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

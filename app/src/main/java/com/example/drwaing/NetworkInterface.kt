@@ -1,7 +1,6 @@
 package com.example.drwaing
 
 import com.example.drwaing.data.diary.DiaryApiModel
-import com.example.drwaing.data.diary.DiaryRequest
 import com.example.drwaing.ui.main.DrawingListData
 import com.google.gson.annotations.SerializedName
 import okhttp3.MultipartBody
@@ -17,7 +16,7 @@ interface NetworkInterface {
         @SerializedName("accessToken") val accessToken: String,
     )
 
-    data class ImageResponse(
+    data class Response(
         @SerializedName("responseMessage") val responseMessage: String,
     )
 
@@ -42,7 +41,7 @@ interface NetworkInterface {
     suspend fun uploadImage(
         @Header("Authorization") token: String,
         @Part image: MultipartBody.Part?,
-    ): ImageResponse
+    ): Response
 
     @POST("/diary")
     suspend fun uploadDiary(
@@ -50,7 +49,7 @@ interface NetworkInterface {
         @Query("content") content: String,
         @Query("imageUrl") imageUrl: String,
         @Query("weather") weather :String
-    ): ImageResponse
+    ): DrawingListData.Diary
 
     @GET("/diary/list/me")
     suspend fun getMyDiaryList(
@@ -71,4 +70,13 @@ interface NetworkInterface {
         @Header("Authorization") token: String,
         @Path("diaryId") diaryId:Int
     ): DiaryApiModel
+
+    @POST("/stamp")
+    suspend fun addStamp(
+        @Header("Authorization") token: String,
+        @Query("diaryId") diaryId: Int,
+        @Query("stampType") stampType: String,
+        @Query("x") x: Double,
+        @Query("y") y :Double
+    ): Response
 }
