@@ -10,17 +10,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.drwaing.databinding.FragmentSuccessLottieBinding
 import com.example.drwaing.extension.viewBinding
 import com.example.drwaing.ui.main.MainActivity
+import com.example.drwaing.ui.main.MainViewModel
 
 
 class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
 
     private val binding by viewBinding(FragmentSuccessLottieBinding::bind)
-
     companion object {
         const val VIEW_LOGIN = "login"
         const val VIEW_MAKING = "making"
@@ -44,6 +45,7 @@ class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
                 if (arguments?.getString(WHERE_I_FROM) == VIEW_LOGIN) {
                     binding.fragmentSuccessText.setText("회원가입이 완료되었어요")
                 }
+
             }
 
             override fun onAnimationEnd(p0: Animator?) {
@@ -55,6 +57,8 @@ class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
                         activity?.finish()
                     }
                     VIEW_MAKING -> {
+
+
                         activity?.finish()
                     }
                 }

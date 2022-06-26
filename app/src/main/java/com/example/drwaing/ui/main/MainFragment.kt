@@ -1,26 +1,22 @@
 package com.example.drwaing.ui.main
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.drwaing.R
 import com.example.drwaing.databinding.FragmentMainBinding
 import com.example.drwaing.extension.viewBinding
+import com.example.drwaing.ui.stamp.StampActivity
 import com.example.drwaing.ui.diary.DiaryActivity
-import com.example.drwaing.ui.diary.DrawingViewModel
-import com.example.drwaing.ui.setting.SettingActivity
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -34,7 +30,8 @@ import java.util.*
 class MainFragment : Fragment(R.layout.fragment_main) {
     private val binding: FragmentMainBinding by viewBinding(FragmentMainBinding::bind)
     private val drawingListAdapter: DrawingListAdapter by lazy { DrawingListAdapter() }
-
+    private val viewModel: MainViewModel by activityViewModels()
+    private  var stampDiaryId =-1
     //사용할때 lazy안에있는거라고 가르켜주는것임
     private val navController: NavController
         get() = Navigation.findNavController(
@@ -42,18 +39,48 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             R.id.nav_main_host
         )
 
-    companion object{
-        lateinit var typeface : Typeface
+    companion object {
+        lateinit var token: String
+
+        fun makeDirayDate(date: String): String {
+            var tmp = date.substring(0, date.indexOf("T"))
+            tmp = tmp.replace("-", ".")
+
+            val dateFormat = SimpleDateFormat("yyyy.MM.dd")
+            var d = dateFormat.parse(tmp)
+            val calendar = Calendar.getInstance()
+            calendar.time = d
+            lateinit var dayOfWeek: String
+            when (calendar.get(Calendar.DAY_OF_WEEK)) {
+                1 -> dayOfWeek = "일"
+                2 -> dayOfWeek = "월"
+                3 -> dayOfWeek = "화"
+                4 -> dayOfWeek = "수"
+                5 -> dayOfWeek = "목"
+                6 -> dayOfWeek = "금"
+                7 -> dayOfWeek = "토"
+
+            }
+            tmp += " " + dayOfWeek + "요일"
+            return tmp
+        }
+
     }
-    var drawingList: ArrayList<DrawingListData> = ArrayList()
 
     override fun onResume() {
+        viewModel.getMyDiaryList()
+        viewModel.getDiaryList()
         super.onResume()
-        val sharedPref=requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
-        val myFont=sharedPref.getInt("font",R.font.uhbeeseulvely2)
-        typeface = ResourcesCompat.getFont(requireContext(),myFont)!!q
-        putData()
+    }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
+        Log.e("asdf", "refresh")
+        viewModel.getMyDiaryList()
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,19 +88,20 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
 
 
-        drawingList.add(DrawingListData.Header)
-        for (i in 1..20) {
-            drawingList.add(DrawingListData.DrawingData(i.toString(), "", "",Random().nextInt()))
-        }
-
-
+        Log.e("onViewCreated", "MainFragment")
 
         binding.fragmentMainRecyclerview.apply { //apply 객체 반환함,객체의 속성을 건들일때 씀
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = drawingListAdapter.apply {
-                submitList(drawingList)
-            }
+            adapter = drawingListAdapter
+        }
 
+
+        binding.fragmentMainNothingBtn.setOnClickListener {
+            val intent = DiaryActivity.createIntent(
+                requireContext(),
+                DiaryActivity.VIEW_TYPE_NEW
+            )
+            startActivity(intent)
         }
         binding.fragmentMainDrawing.setOnClickListener {
             val intent = DiaryActivity.createIntent(
@@ -84,29 +112,24 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
         binding.fragmentMainPeople.setOnClickListener {
+            if(stampDiaryId!=-1){
+                val intent = Intent(context, StampActivity::class.java)
 
-            putData()
+                intent.putExtra(DiaryActivity.EXTRA_DIARY_KEY, stampDiaryId)
+                startActivity(intent)
+            }
+
 
         }
+        viewModel.diaryList.observe(viewLifecycleOwner) {
+            if(viewModel.diaryList.value!!.size >=2){
+                binding.fragmentMainNothing.visibility=View.GONE
+                stampDiaryId=((viewModel.diaryList.value!!.get(viewModel.diaryList.value!!.size-1)) as DrawingListData.Diary).diaryId
+            }
 
-        binding.fragmentMainSetting.setOnClickListener{
-            val intent =Intent(requireContext(), SettingActivity::class.java)
-            startActivity(intent)
+            drawingListAdapter.submitList(viewModel.diaryList.value)
+
         }
-
     }
-    fun putData(){
-        var list: ArrayList<DrawingListData> = ArrayList()
-        list.add(DrawingListData.Header)
-        for (i in  1..20) {
-            var randomNum : Int =Random().nextInt(4)+1*100
-            list.add(DrawingListData.DrawingData(randomNum.toString(), "", "",randomNum))
-
-        }
-
-        drawingListAdapter.submitList(list)
-    }
-
 
 }
-

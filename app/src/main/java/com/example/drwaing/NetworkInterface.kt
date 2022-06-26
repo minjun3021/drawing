@@ -1,38 +1,82 @@
 package com.example.drwaing
 
-import com.example.drwaing.data.diary.DiaryRequest
+import com.example.drwaing.data.diary.DiaryApiModel
+import com.example.drwaing.ui.main.DrawingListData
+import com.google.gson.annotations.SerializedName
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
 interface NetworkInterface {
     data class SignRequest(
-        val socialToken: String,
-        val socialType: String
-    )
-    data class SignResponse(
-        val accessToken : String
+        @SerializedName("socialToken") val socialToken: String,
+        @SerializedName("socialType") val socialType: String,
     )
 
-    data class ImageResponse(
-        val responseMessage :String
+    data class SignResponse(
+        @SerializedName("accessToken") val accessToken: String,
     )
+
+    data class Response(
+        @SerializedName("responseMessage") val responseMessage: String,
+    )
+
+
 
 
     @POST("/auth/sign-up")
-    suspend fun signup(@Body data: SignRequest): SignResponse
+    suspend fun signup( @Query("socialToken") socialToken: String,
+                        @Query("socialType") socialType :String
+    ): SignResponse
 
     @POST("/auth/sign-in")
-    suspend fun signin(@Body data: SignRequest): SignResponse
+    suspend fun signin(
+        @Query("socialToken") socialToken: String,
+        @Query("socialType") socialType :String
+    ): SignResponse
+
+
 
     @Multipart
     @POST("/diary/image")
     suspend fun uploadImage(
-        @Part file: MultipartBody.Part?
-    ): ImageResponse
+        @Header("Authorization") token: String,
+        @Part image: MultipartBody.Part?,
+    ): Response
 
     @POST("/diary")
-    @FormUrlEncoded
     suspend fun uploadDiary(
-        @Field("createDiaryRequest") createDiaryRequest: DiaryRequest
-    ): ImageResponse
+        @Header("Authorization") token: String,
+        @Query("content") content: String,
+        @Query("imageUrl") imageUrl: String,
+        @Query("weather") weather :String
+    ): DrawingListData.Diary
+
+    @GET("/diary/list/me")
+    suspend fun getMyDiaryList(
+        @Header("Authorization") token: String,
+        @Query("lastDiaryId") lastDiaryId: Int,
+        @Query("size") size: Int,
+    ): ArrayList<DrawingListData.Diary>
+
+    @GET("/diary/list")
+    suspend fun getDiaryList(
+        @Header("Authorization") token: String,
+        @Query("lastDiaryId") lastDiaryId: Int,
+        @Query("size") size: Int,
+    ): ArrayList<DrawingListData.Diary>
+
+    @GET("/diary/{diaryId}")
+    suspend fun getDiary(
+        @Header("Authorization") token: String,
+        @Path("diaryId") diaryId:Int
+    ): DiaryApiModel
+
+    @POST("/stamp")
+    suspend fun addStamp(
+        @Header("Authorization") token: String,
+        @Query("diaryId") diaryId: Int,
+        @Query("stampType") stampType: String,
+        @Query("x") x: Double,
+        @Query("y") y :Double
+    ): Response
 }

@@ -4,17 +4,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <TextView
+    <ImageView
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:id="@+id/recyler_item_stamp_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="20dp"
-        android:textColor="#111111"
-        android:paddingTop="20dp"
-
-        android:fontFamily="@font/pretendardsemibold"
-        android:lineSpacingExtra="4sp"
-        android:text="내 일기장"
-        android:textSize="24sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:src="@drawable/ic_stamp_gral"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></ImageView>
 </androidx.constraintlayout.widget.ConstraintLayout>

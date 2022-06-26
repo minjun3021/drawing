@@ -15,6 +15,7 @@ import com.example.drwaing.R
 import com.example.drwaing.SuccessLottieFragment
 import com.example.drwaing.databinding.FragmentSocialLoginBinding
 import com.example.drwaing.extension.viewBinding
+import com.example.drwaing.ui.main.MainFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -139,12 +140,13 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
+
             kotlin.runCatching {
-                val data = Gson().toJson(signRequest)
-                Log.e("signinrequest",data)
-                Network.api.signin(signRequest)
+                Log.e(signRequest.socialType,signRequest.socialToken)
+                Network.api.signin(signRequest.socialToken,signRequest.socialType)
             }.onSuccess {
-                Log.e("check", it.accessToken)
+                MainFragment.token=it.accessToken
+
                 navController.navigate(
                     R.id.action_socialLoginFragment_to_successLottieFragment,
                     bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN)
@@ -153,12 +155,13 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
 
                 if (it is HttpException) {
                     when (it.code()) {
-                        401 -> {
+                        500 -> {
                             kotlin.runCatching {
-                                Network.api.signup(signRequest)
+                                Network.api.signup(signRequest.socialToken,signRequest.socialType)
                             }.onSuccess {
                                 //회원가입성공
-                                Log.e("token",it.accessToken)
+                                MainFragment.token=it.accessToken
+
                                 navController.navigate(
                                     R.id.action_socialLoginFragment_to_successLottieFragment,
                                     bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN)

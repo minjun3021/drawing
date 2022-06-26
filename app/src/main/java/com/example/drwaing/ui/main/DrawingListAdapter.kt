@@ -1,5 +1,6 @@
 package com.example.drwaing.ui.main
 
+import android.graphics.drawable.Drawable
 import android.app.Activity
 import android.content.Context
 import android.graphics.Typeface
@@ -7,14 +8,23 @@ import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.res.ResourcesCompat
+
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.example.drwaing.R
+import com.example.drwaing.data.diary.Weather
 import com.example.drwaing.databinding.ItemRecyclerDrawingBinding
 import com.example.drwaing.databinding.ItemRecyclerFirstTitleBinding
+import com.example.drwaing.extension.viewBinding
+import com.example.drwaing.ui.diary.DiaryActivity
+import kotlin.math.log
 import com.example.drwaing.view.draw.UIKit.getResources
 
 
@@ -56,14 +66,11 @@ class DrawingListAdapter :
                 newItem: DrawingListData,
             ): Boolean {
 
-                if(oldItem is DrawingListData.Header && newItem is DrawingListData.Header)
+                if (oldItem is DrawingListData.Header && newItem is DrawingListData.Header)
                     return true
-
-                else if(oldItem is DrawingListData.DrawingData && newItem is DrawingListData.DrawingData){
-                    return oldItem.drawingId==newItem.drawingId
-                }
-
-                else return false
+                else if (oldItem is DrawingListData.Diary && newItem is DrawingListData.Diary) {
+                    return oldItem.diaryId == newItem.diaryId
+                } else return false
 
             }
 
@@ -71,9 +78,8 @@ class DrawingListAdapter :
                 oldItem: DrawingListData,
                 newItem: DrawingListData,
             ): Boolean =
-                (oldItem is DrawingListData.DrawingData && newItem is DrawingListData.DrawingData
-                        && oldItem.date == newItem.date)
-
+                (oldItem is DrawingListData.Diary && newItem is DrawingListData.Diary
+                        && oldItem.imageUrl == newItem.imageUrl)
 
 
         }
@@ -81,8 +87,9 @@ class DrawingListAdapter :
 
 
     override fun getItemViewType(position: Int): Int = when (getItem(position)) {
-        is DrawingListData.DrawingData -> 0
+        is DrawingListData.Diary -> 0
         is DrawingListData.Header -> 1
+
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
@@ -95,7 +102,7 @@ class DrawingListAdapter :
                 )
             )
 
-            else -> DrawingDataViewHolder(
+            else -> DiaryViewHolder(
                 ItemRecyclerDrawingBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -108,8 +115,8 @@ class DrawingListAdapter :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var item = getItem(position)
         when (holder) {
-            is DrawingDataViewHolder -> {
-                holder.onBindView(item as DrawingListData.DrawingData)
+            is DiaryViewHolder -> {
+                holder.onBindView(item as DrawingListData.Diary)
 
             }
 
@@ -128,12 +135,39 @@ class DrawingListAdapter :
         super.onCurrentListChanged(previousList, currentList)
     }
 
-    class DrawingDataViewHolder(val binding: ItemRecyclerDrawingBinding) :
+    inner class DiaryViewHolder(val binding: ItemRecyclerDrawingBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun onBindView(item: DrawingListData.DrawingData) {
-            Log.e("asdf","Asdf")
-            binding.recylerItemDrawingDate.setText(item.date)
-            binding.recylerItemDrawingDate.setTypeface(MainFragment.typeface)
+        init {
+            binding.root.setOnClickListener {
+
+                val intent = DiaryActivity.createIntent(
+                    binding.root.context,
+                    DiaryActivity.VIEW_TYPE_VIEW,
+                    (currentList.get(adapterPosition) as DrawingListData.Diary).diaryId
+                )
+                binding.root.context.startActivity(intent)
+            }
+        }
+
+        fun onBindView(item: DrawingListData.Diary) {
+            Glide.with(binding.root).load(item.imageUrl)
+                .transform(CenterCrop())
+                .into(binding.recylerItemDrawing)
+            binding.recylerItemDrawingDate.setText(MainFragment.makeDirayDate(item.createdDate))
+
+            lateinit var weatherDrawable: Drawable
+            when (item.weather) {
+                Weather.SUN.name -> weatherDrawable =
+                    ContextCompat.getDrawable(binding.root.context, R.drawable.ic_sunny_selected)!!
+                Weather.CLOUD.name -> weatherDrawable =
+                    ContextCompat.getDrawable(binding.root.context, R.drawable.ic_cloudy_selected)!!
+                Weather.RAIN.name -> weatherDrawable =
+                    ContextCompat.getDrawable(binding.root.context, R.drawable.ic_rainy_selected)!!
+                Weather.SNOW.name -> weatherDrawable =
+                    ContextCompat.getDrawable(binding.root.context, R.drawable.ic_snowy_selected)!!
+            }
+            binding.recylerItemDrawingWeather.setImageDrawable(weatherDrawable)
+
         }
     }
 
