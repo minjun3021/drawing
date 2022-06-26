@@ -3,6 +3,7 @@ package com.example.drwaing.ui.diary
 import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -39,7 +40,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
     private val clicked: Boolean = false
     private val binding by viewBinding(FragmentMakingDiaryBinding::bind)
     private val viewModel: DrawingViewModel by activityViewModels()
-
+    private var readyToUploadDiary =false
 
     var list: ArrayList<StampData> = ArrayList()
 
@@ -89,7 +90,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 //                        viewModel.save(file)
 //
 //                    }
-                    if(viewModel.weather.value!=null){
+                    if(readyToUploadDiary){
 
                         viewModel.upload("https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/420px-Golde33443.jpg")
 
@@ -97,10 +98,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                             R.id.action_makingDiaryFragment_to_successLottieFragment,
                             bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_MAKING)
                         )
-                    }else{
-                        Toast.makeText(context,"날씨를 선택하세요", Toast.LENGTH_SHORT).show();
                     }
-
                 }
                 binding.fragmentMakingSun.setOnClickListener {
                     viewModel.setWeather(Weather.SUN)
@@ -169,6 +167,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
     private fun observeMaking() {
         viewModel.diaryText.observe(viewLifecycleOwner) {
             binding.fragmentMakingContent.text = it.replace(" ", "\u00A0")
+            checkDoEveryThing()
         }
 
         viewModel.bitmap.observe(viewLifecycleOwner) {
@@ -177,6 +176,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
         }
         viewModel.weather.observe(viewLifecycleOwner) {
             changeIcon()
+
         }
 
 
@@ -235,8 +235,14 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
 
     }
-
+    private fun checkDoEveryThing(){
+        if(binding.fragmentMakingContent.text.isNotEmpty().and(viewModel.weather.value!=null)){
+            binding.fragmentMakingOkay.setTextColor(Color.parseColor("#111111"))
+            readyToUploadDiary=true
+        }
+    }
     private fun changeIcon() {
+        checkDoEveryThing()
         binding.fragmentMakingSun.setImageDrawable(ContextCompat.getDrawable(requireContext(),
             R.drawable.ic_sunny_enabled))
         binding.fragmentMakingCloud.setImageDrawable(ContextCompat.getDrawable(requireContext(),

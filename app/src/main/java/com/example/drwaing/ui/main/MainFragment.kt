@@ -14,14 +14,17 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.example.drwaing.R
 import com.example.drwaing.databinding.FragmentMainBinding
 import com.example.drwaing.extension.viewBinding
-import com.example.drwaing.ui.stamp.StampActivity
 import com.example.drwaing.ui.diary.DiaryActivity
 import com.example.drwaing.ui.setting.SettingActivity
+import com.example.drwaing.ui.stamp.StampActivity
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 /**
  * Fragment의 onViewCreated 와 onCreateView의 차이는 뭐일지 공부하기
@@ -46,6 +49,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     companion object {
         lateinit var token: String
         lateinit var typeface : Typeface
+        var afterMakingDiary =false
 
         fun makeDirayDate(date: String): String {
             var tmp = date.substring(0, date.indexOf("T"))
@@ -87,6 +91,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }
         }
 
+
+
+
         super.onResume()
     }
 
@@ -114,6 +121,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
 
         Log.e("onViewCreated", "MainFragment")
+
+
 
         binding.fragmentMainRecyclerview.apply { //apply 객체 반환함,객체의 속성을 건들일때 씀
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -157,6 +166,17 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }
 
             drawingListAdapter.submitList(viewModel.diaryList.value)
+
+            if(afterMakingDiary){
+                val smoothScroller: SmoothScroller = object : LinearSmoothScroller(context) {
+                    override fun getVerticalSnapPreference(): Int {
+                        return SNAP_TO_START
+                    }
+                }
+                smoothScroller.setTargetPosition(0);
+                binding.fragmentMainRecyclerview.layoutManager!!.startSmoothScroll(smoothScroller);
+                afterMakingDiary=false
+            }
 
         }
     }

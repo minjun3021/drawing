@@ -16,12 +16,14 @@ import androidx.navigation.Navigation
 import com.example.drwaing.databinding.FragmentSuccessLottieBinding
 import com.example.drwaing.extension.viewBinding
 import com.example.drwaing.ui.main.MainActivity
+import com.example.drwaing.ui.main.MainFragment
 import com.example.drwaing.ui.main.MainViewModel
 
 
 class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
 
     private val binding by viewBinding(FragmentSuccessLottieBinding::bind)
+
     companion object {
         const val VIEW_LOGIN = "login"
         const val VIEW_MAKING = "making"
@@ -58,7 +60,7 @@ class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
                     }
                     VIEW_MAKING -> {
 
-
+                        MainFragment.afterMakingDiary = true
                         activity?.finish()
                     }
                 }

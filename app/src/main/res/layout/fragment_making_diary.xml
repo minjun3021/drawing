@@ -35,7 +35,7 @@
             android:lineSpacingExtra="2sp"
             android:padding="4dp"
             android:text="완료"
-            android:textColor="#111111"
+            android:textColor="#8B8B8B"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
