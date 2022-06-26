@@ -35,7 +35,7 @@ class SetFontFragment : Fragment(R.layout.fragment_set_font), View.OnClickListen
     private fun initView(){
         sharedPref=requireActivity().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
         editor=sharedPref.edit()
-
+        lastChecked = binding.setFontSelectedUhbeeseulvely2
         when(sharedPref.getInt("font",R.font.uhbeeseulvely2)){
             R.font.uhbeeseulvely2->{
                 lastChecked = binding.setFontSelectedUhbeeseulvely2

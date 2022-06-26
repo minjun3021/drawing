@@ -55,6 +55,8 @@ class StampActivity : AppCompatActivity() {
 
         submitStampData()
 
+        binding.activityStampDate.setTypeface(MainFragment.typeface)
+        binding.activityStampContent.setTypeface(MainFragment.typeface)
 
         binding.activityStampContent.post {
 

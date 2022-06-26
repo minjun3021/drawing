@@ -58,11 +58,9 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
     private fun initView() {
 
-        val sharedPref = requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
-        val myFont=sharedPref.getInt("font",R.font.uhbeeseulvely2)
-        val typeface = ResourcesCompat.getFont(requireContext(), myFont)
-        binding.fragmentMakingDate.setTypeface(typeface)
-        binding.fragmentMakingContent.setTypeface(typeface)
+
+        binding.fragmentMakingDate.setTypeface(MainFragment.typeface)
+        binding.fragmentMakingContent.setTypeface(MainFragment.typeface)
         binding.fragmentMakingDate.setText(makeDate())
 
 
@@ -79,8 +77,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                     navController.navigate(R.id.action_makingDiaryFragment_to_drawingDiaryContentFragment)
                 }
                 binding.fragmentMakingContent.setOnClickListener {
-                    navController.navigate(R.id.action_makingDiaryFragment_to_typingDiaryContentFragment,
-                        bundleOf("amount" to myFont))
+                    navController.navigate(R.id.action_makingDiaryFragment_to_typingDiaryContentFragment)
                 }
                 binding.fragmentMakingFake.setOnClickListener {
                     navController.navigate(R.id.action_makingDiaryFragment_to_typingDiaryContentFragment)

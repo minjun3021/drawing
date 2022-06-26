@@ -1,11 +1,14 @@
 package com.example.drwaing.ui.main
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -16,6 +19,7 @@ import com.example.drwaing.databinding.FragmentMainBinding
 import com.example.drwaing.extension.viewBinding
 import com.example.drwaing.ui.stamp.StampActivity
 import com.example.drwaing.ui.diary.DiaryActivity
+import com.example.drwaing.ui.setting.SettingActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,6 +45,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     companion object {
         lateinit var token: String
+        lateinit var typeface : Typeface
 
         fun makeDirayDate(date: String): String {
             var tmp = date.substring(0, date.indexOf("T"))
@@ -70,6 +75,18 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onResume() {
         viewModel.getMyDiaryList()
         viewModel.getDiaryList()
+
+        val sharedPref=requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+        val myFont=sharedPref.getInt("font",R.font.uhbeeseulvely2)
+        val previousTypeface= typeface
+        typeface = ResourcesCompat.getFont(requireContext(),myFont)!!
+        if(previousTypeface!= typeface){
+            binding.fragmentMainRecyclerview.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                //글꼴이 바뀌면 리사이클러 onbind가 다호출되게 layoutmanager를 다시 넣어준다.
+            }
+        }
+
         super.onResume()
     }
 
@@ -81,6 +98,14 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         Log.e("asdf", "refresh")
         viewModel.getMyDiaryList()
         return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val sharedPref=requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+        val myFont=sharedPref.getInt("font",R.font.uhbeeseulvely2)
+        typeface = ResourcesCompat.getFont(requireContext(),myFont)!!
+
+        super.onCreate(savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -120,6 +145,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }
 
 
+        }
+        binding.fragmentMainSetting.setOnClickListener {
+            val intent =Intent(requireContext(), SettingActivity::class.java)
+            startActivity(intent)
         }
         viewModel.diaryList.observe(viewLifecycleOwner) {
             if(viewModel.diaryList.value!!.size >=2){

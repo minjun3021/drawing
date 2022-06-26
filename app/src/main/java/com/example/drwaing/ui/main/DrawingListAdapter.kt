@@ -166,6 +166,7 @@ class DrawingListAdapter :
                 Weather.SNOW.name -> weatherDrawable =
                     ContextCompat.getDrawable(binding.root.context, R.drawable.ic_snowy_selected)!!
             }
+            binding.recylerItemDrawingDate.setTypeface(MainFragment.typeface)
             binding.recylerItemDrawingWeather.setImageDrawable(weatherDrawable)
 
         }

@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -16,6 +17,7 @@ import androidx.navigation.Navigation
 import com.example.drwaing.R
 import com.example.drwaing.databinding.FragmentTypingDiaryContentBinding
 import com.example.drwaing.extension.viewBinding
+import com.example.drwaing.ui.main.MainFragment
 
 
 // TODO : 타이핑 줄 그려지는거 작업 되서 그냥 없애고 일기화면에서 해도 될듯?
@@ -36,6 +38,10 @@ class TypingDiaryContentFragment : Fragment(R.layout.fragment_typing_diary_conte
     }
 
     private fun initView() {
+
+        binding.etDiaryContent.setTypeface(MainFragment.typeface)
+
+
         binding.etDiaryContent.setText(viewModel.diaryText.value ?: "")
         binding.fragmentContentBack.setOnClickListener {
             //TODO dialog
