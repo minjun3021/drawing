@@ -26,6 +26,7 @@ class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
 
     companion object {
         const val VIEW_LOGIN = "login"
+        const val VIEW_REGISTER = "register"
         const val VIEW_MAKING = "making"
         const val WHERE_I_FROM = "from"
     }
@@ -39,14 +40,15 @@ class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        when(arguments?.getString(WHERE_I_FROM)){
+            VIEW_LOGIN -> binding.fragmentSuccessText.setText("로그인이 완료되었어요")
+            VIEW_REGISTER -> binding.fragmentSuccessText.setText("회원가입이 완료되었어요")
+            VIEW_MAKING -> binding.fragmentSuccessText.setText("오늘의 일기가 저장되었어요!")
+        }
 
 
         binding.fragmentSuccessLottie.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(p0: Animator?) {
-                if (arguments?.getString(WHERE_I_FROM) == VIEW_LOGIN) {
-                    binding.fragmentSuccessText.setText("회원가입이 완료되었어요")
-                }
 
             }
 

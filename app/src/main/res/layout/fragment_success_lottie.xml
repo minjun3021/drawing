@@ -26,7 +26,7 @@
         android:gravity="center"
         android:fontFamily="@font/pretendardmedium"
         android:textColor="#111111"
-        android:text="오늘의 일기가 저장되었어요!"
+
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

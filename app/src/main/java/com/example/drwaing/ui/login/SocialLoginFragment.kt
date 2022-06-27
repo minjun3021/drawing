@@ -1,6 +1,8 @@
 package com.example.drwaing.ui.login
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -119,6 +121,7 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
             val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             val account = task.getResult(ApiException::class.java)
             Log.e("이름", account.idToken.toString())
+            //sign(SOCIAL_TYPE_GOOGLE)
         }
     }
 
@@ -136,6 +139,7 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
 
             SOCIAL_TYPE_GOOGLE -> {
 
+
             }
         }
 
@@ -146,6 +150,11 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
                 Network.api.signin(signRequest.socialToken,signRequest.socialType)
             }.onSuccess {
                 MainFragment.token=it.accessToken
+
+                var sharedPref : SharedPreferences=requireActivity().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+                var editor : SharedPreferences.Editor=sharedPref.edit()
+                editor.putString("token",it.accessToken)
+                editor.commit()
 
                 navController.navigate(
                     R.id.action_socialLoginFragment_to_successLottieFragment,
@@ -164,7 +173,7 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
 
                                 navController.navigate(
                                     R.id.action_socialLoginFragment_to_successLottieFragment,
-                                    bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN)
+                                    bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_REGISTER)
                                 )
                             }.onFailure {
                                 Log.e("signupfail", it.toString())

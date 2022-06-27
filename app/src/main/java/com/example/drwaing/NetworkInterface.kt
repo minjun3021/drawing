@@ -21,7 +21,10 @@ interface NetworkInterface {
     )
 
 
-
+    @POST("/auth/leave")
+    suspend fun leave(
+        @Header("Authorization") token: String
+    )
 
     @POST("/auth/sign-up")
     suspend fun signup( @Query("socialToken") socialToken: String,

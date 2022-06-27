@@ -3,6 +3,7 @@
     android:layout_width="96dp"
     android:maxWidth="96dp"
     android:maxHeight="96dp"
+
     android:layout_height="96dp">
 
 </ImageView>

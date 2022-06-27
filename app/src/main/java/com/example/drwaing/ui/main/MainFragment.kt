@@ -2,6 +2,7 @@ package com.example.drwaing.ui.main
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +21,7 @@ import com.example.drwaing.R
 import com.example.drwaing.databinding.FragmentMainBinding
 import com.example.drwaing.extension.viewBinding
 import com.example.drwaing.ui.diary.DiaryActivity
+import com.example.drwaing.ui.login.LoginActivity
 import com.example.drwaing.ui.setting.SettingActivity
 import com.example.drwaing.ui.stamp.StampActivity
 import java.text.SimpleDateFormat
@@ -50,6 +52,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         lateinit var token: String
         lateinit var typeface : Typeface
         var afterMakingDiary =false
+        var needToLogout=false
 
         fun makeDirayDate(date: String): String {
             var tmp = date.substring(0, date.indexOf("T"))
@@ -108,9 +111,12 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         val sharedPref=requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+        token= sharedPref.getString("token","")!!
         val myFont=sharedPref.getInt("font",R.font.uhbeeseulvely2)
         typeface = ResourcesCompat.getFont(requireContext(),myFont)!!
+
 
         super.onCreate(savedInstanceState)
     }
@@ -157,7 +163,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
         binding.fragmentMainSetting.setOnClickListener {
             val intent =Intent(requireContext(), SettingActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent,123)
         }
         viewModel.diaryList.observe(viewLifecycleOwner) {
             if(viewModel.diaryList.value!!.size >=2){
@@ -166,6 +172,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }
 
             drawingListAdapter.submitList(viewModel.diaryList.value)
+
 
             if(afterMakingDiary){
                 val smoothScroller: SmoothScroller = object : LinearSmoothScroller(context) {
@@ -179,6 +186,17 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }
 
         }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 123 && MainFragment.needToLogout) {
+            val intent =Intent(context, LoginActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
+            needToLogout=false
+        }
+
+
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
 }

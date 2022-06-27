@@ -33,72 +33,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        //kakaoAutoLogin()
-        googleAutoLogin()
+
 
 
     }
 
-
-
-//    private fun kakaoAutoLogin() {
-//        if (AuthApiClient.instance.hasToken()) {
-//            UserApiClient.instance.accessTokenInfo { _, error ->
-//                if (error != null) {
-//                    if (error is KakaoSdkError && error.isInvalidTokenError() == true) {
-//
-//                    } else {
-//                        //기타 에러
-//                    }
-//                } else { //토큰이 있는 경우
-//                    Log.e("kakaotokenexisted",AuthApiClient.instance.tokenManagerProvider.manager.getToken()!!.accessToken)
-//                    val signRequest =
-//                        NetworkInterface.SignRequest(AuthApiClient.instance.tokenManagerProvider.manager.getToken()!!.accessToken
-//                            ,SocialLoginFragment.SOCIAL_TYPE_KAKAO)
-//                    Network.api.signin(signRequest).enqueue(object : Callback<NetworkInterface.SignResponse>{
-//                        override fun onResponse(
-//                            call: Call<NetworkInterface.SignResponse>,
-//                            response: Response<NetworkInterface.SignResponse>,
-//                        ) {
-//                            if (response.code()==200){
-//                                Log.e("signin auto kakao",response.body()!!.accessToken)
-//
-//                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-//                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-//                                startActivity(intent)
-//                                finish()
-//                            }
-//                            else{
-//                                Log.e("signinautokakao",response.code().toString())
-//                            }
-//
-//                        }
-//
-//                        override fun onFailure(
-//                            call: Call<NetworkInterface.SignResponse>,
-//                            t: Throwable,
-//                        ) {
-//                            Log.e("signin auto error", t.message.toString())
-//                        }
-//                    })
-//
-//                }
-//            }
-//        } else {
-//
-//        }
-//
-//
-//    }
-
-    private fun googleAutoLogin(){
-        var account = GoogleSignIn.getLastSignedInAccount(this)
-        if(account!=null){
-            Log.e("googleAutologin",account.serverAuthCode.toString())
-
-        }
-        else{
-            Log.e("googleAutologin","not yet")
-        }
-    }
 }

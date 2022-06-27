@@ -3,6 +3,7 @@ package com.example.drwaing.ui.stamp
 import android.content.ClipData
 import android.content.ClipDescription
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -80,9 +81,11 @@ class StampAdapter : ListAdapter<StampData, RecyclerView.ViewHolder>(diffutil) {
         fun onBindView(item: StampData) {
             if(adapterPosition!= lastClickedPosition){
                 binding.recylerItemStampImage.setImageResource(item.stampID)
+                binding.recylerItemStampImage.backgroundTintList= ColorStateList.valueOf(Color.parseColor("#999999"))
             }
             else{
                 binding.recylerItemStampImage.setImageResource(item.stamp96ID)
+                binding.recylerItemStampImage.clearColorFilter()
             }
 
         }
