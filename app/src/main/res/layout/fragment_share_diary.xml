@@ -11,6 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginHorizontal="56dp"
+        android:id="@+id/share_view"
         android:layout_marginVertical="146dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,16 +48,18 @@
             android:layout_marginTop="12dp"
             android:background="@drawable/bg_share"
             android:backgroundTint="#F4F4F4"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@id/fragment_share_toinstagram"
             app:layout_constraintTop_toBottomOf="@id/fragment_share_date">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/fragment_share_stamp_controller"
                 android:layout_width="0dp"
+                android:id="@+id/fragment_share_stamps_controller"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -82,7 +85,50 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/fragment_share_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/uhbeeseulvely2"
+                android:letterSpacing="0.15"
+                android:lineSpacingExtra="4sp"
+                android:maxLines="4"
+                android:ellipsize="end"
+                android:textColor="#111111"
+                android:textSize="16sp"
+
+                app:layout_constraintEnd_toEndOf="@id/fragment_share_stamps_controller"
+                app:layout_constraintStart_toStartOf="@id/fragment_share_stamps_controller"
+                app:layout_constraintTop_toBottomOf="@id/fragment_share_stamps_controller" />
+            <TextView
+                android:id="@+id/fragment_share_fake"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="@font/uhbeeseulvely2"
+                android:letterSpacing="0.15"
+                android:lineSpacingExtra="4sp"
+                android:textColor="#111111"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/fragment_share_stamps_controller"
+                app:layout_constraintStart_toStartOf="@id/fragment_share_stamps_controller"
+                app:layout_constraintTop_toBottomOf="@id/fragment_share_stamps_controller" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <ImageView
+            android:layout_width="43dp"
+            android:adjustViewBounds="true"
+            android:id="@+id/fragment_share_toinstagram"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            ></ImageView>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
