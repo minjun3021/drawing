@@ -23,6 +23,7 @@ import com.example.drwaing.ui.main.MainFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.user.UserApiClient
+import com.shashank.sony.fancytoastlib.FancyToast
 import kotlinx.coroutines.launch
 import okhttp3.internal.notify
 
@@ -52,10 +53,18 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
 
         }
         binding.fragmentSettingNotice.setOnClickListener {
-            navController.navigate(R.id.action_settingFragment_to_noticeFragment)
+
+                FancyToast.makeText(requireContext(),
+                    "서비스 준비중입니다"
+                    , FancyToast.LENGTH_SHORT, FancyToast.INFO,false).show()
+
+            //navController.navigate(R.id.action_settingFragment_to_noticeFragment)
         }
         binding.fragmentSettingAsk.setOnClickListener {
-            Toast.makeText(requireContext(), "서비스 준비중입니다.", Toast.LENGTH_SHORT).show()
+            FancyToast.makeText(requireContext(),
+                "서비스 준비중입니다"
+                , FancyToast.LENGTH_SHORT, FancyToast.INFO,false).show()
+
         }
 
         binding.fragmentSettingLogout.setOnClickListener {

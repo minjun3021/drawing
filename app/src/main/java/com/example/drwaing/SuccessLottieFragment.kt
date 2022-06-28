@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.drwaing.databinding.FragmentSuccessLottieBinding
 import com.example.drwaing.extension.viewBinding
+import com.example.drwaing.ui.diary.DiaryActivity
 import com.example.drwaing.ui.main.MainActivity
 import com.example.drwaing.ui.main.MainFragment
 import com.example.drwaing.ui.main.MainViewModel
@@ -56,6 +57,7 @@ class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
                 when (arguments?.getString(WHERE_I_FROM)) {
                     VIEW_LOGIN -> {
                         val intent = Intent(activity, MainActivity::class.java)
+                            .putExtra("isFirstLogined", true)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                         startActivity(intent)
                         activity?.finish()

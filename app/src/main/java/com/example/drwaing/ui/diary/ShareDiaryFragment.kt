@@ -1,14 +1,19 @@
 package com.example.drwaing.ui.diary
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -21,6 +26,7 @@ import com.example.drwaing.databinding.FragmentShareDiaryBinding
 import com.example.drwaing.extension.viewBinding
 import com.example.drwaing.ui.main.MainFragment
 import com.example.drwaing.ui.stamp.StampData
+import java.io.ByteArrayOutputStream
 import java.util.ArrayList
 
 
@@ -29,6 +35,12 @@ class ShareDiaryFragment : Fragment(R.layout.fragment_share_diary) {
     private val viewModel: DrawingViewModel by activityViewModels()
     var list: ArrayList<StampData> = ArrayList()
 
+
+
+    companion object{
+        var isUploaded=false
+        var path :String =""
+    }
     private val navController: NavController
         get() = Navigation.findNavController(
             requireActivity(),
@@ -52,35 +64,15 @@ class ShareDiaryFragment : Fragment(R.layout.fragment_share_diary) {
         Log.e("check", "cehck")
         Log.e(binding.fragmentShareStampsController.width.toString(),
             binding.fragmentShareStampsController.height.toString())
-//
-//        val stickerAssetUri: Uri = Uri.parse(R.drawable.ic_rainy_enabled.toString())
-//        val sourceApplication = "com.example.drwaing"
-//
-//// Instantiate implicit intent with ADD_TO_STORY action,
-//// sticker asset, and background colors
-//
-//// Instantiate implicit intent with ADD_TO_STORY action,
-//// sticker asset, and background colors
-//        val intent = Intent("com.instagram.share.ADD_TO_STORY")
-//        intent.putExtra("source_application", sourceApplication)
-//
-//        intent.setType("image/*")
-//        intent.putExtra("interactive_asset_uri", stickerAssetUri)
-//        intent.putExtra("top_background_color", "#EDEDED")
-//        intent.putExtra("bottom_background_color", "#EDEDED")
-//
-//        val activity: Activity? = activity
-//        activity!!.grantUriPermission("com.instagram.android", stickerAssetUri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//        if (activity!!.packageManager.resolveActivity(intent, 0) != null) {
-//            activity!!.startActivityForResult(intent, 0)
+
     }
 
     fun initView() {
-        binding.fragmentShareFake.post {
-            binding.fragmentShareFake.background = DiaryActivity.createBitmap(requireContext(),
-                binding.fragmentShareFake.width,
-                binding.fragmentShareFake.lineHeight)
-        }
+
+        binding.fragmentShareDate.setTypeface(MainFragment.typeface)
+        binding.fragmentShareContent.setTypeface(MainFragment.typeface)
+
+
         binding.fragmentShareContent.post {
             binding.fragmentShareContent.background = DiaryActivity.createBitmap(requireContext(),
                 binding.fragmentShareContent.width,
@@ -92,6 +84,10 @@ class ShareDiaryFragment : Fragment(R.layout.fragment_share_diary) {
             window?.setStatusBarColor(Color.parseColor("#EDEDED"))
 
         }
+
+        binding.fragmentShareLottie.playAnimation()
+
+
     }
 
     private fun observe() {
@@ -105,11 +101,16 @@ class ShareDiaryFragment : Fragment(R.layout.fragment_share_diary) {
 
             binding.fragmentShareContent.text = viewModel.diary.value!!.content
             setIcon()
-            binding.fragmentShareStampsController.post{doStamp() }
+            binding.fragmentShareStampsController.post { doStamp() }
         }
+        binding.fragmentShareToinstagram.setOnClickListener {
+            binding.fragmentShareLottie.visibility = View.GONE
 
+            viewToBitmap(binding.shareView)
 
+        }
     }
+
 
     fun submitStampData() {
         list.add(StampData("GRAL", R.drawable.ic_stamp_gral, R.drawable.ic_stamp96_gral))
@@ -118,11 +119,15 @@ class ShareDiaryFragment : Fragment(R.layout.fragment_share_diary) {
         list.add(StampData("GREATJOB",
             R.drawable.ic_stamp_greatjob,
             R.drawable.ic_stamp96_greatjob))
-        list.add(StampData("PERFECT", R.drawable.ic_stamp_perfect, R.drawable.ic_stamp96_perfect))
+        list.add(StampData("PERFECT",
+            R.drawable.ic_stamp_perfect,
+            R.drawable.ic_stamp96_perfect))
         //TODO 얘네들이 들어가면 오류뜸 왜그런진 모르겟음
 //        list.add(StampData("OH",R.drawable.ic_stamp_oh,R.drawable.ic_stamp96_oh))
 //        list.add(StampData("ZZUGUL",R.drawable.ic_stamp_zzugul,R.drawable.ic_stamp96_zzugul))
-        list.add(StampData("HUNDRED", R.drawable.ic_stamp_hundred, R.drawable.ic_stamp96_hundred))
+        list.add(StampData("HUNDRED",
+            R.drawable.ic_stamp_hundred,
+            R.drawable.ic_stamp96_hundred))
         list.add(StampData("HOENG", R.drawable.ic_stamp_hoeng, R.drawable.ic_stamp96_hoeng))
         list.add(StampData("INTERESTING",
             R.drawable.ic_stamp_interesting,
@@ -135,7 +140,7 @@ class ShareDiaryFragment : Fragment(R.layout.fragment_share_diary) {
         var resource: Int = 0
         when (viewModel.diary.value!!.weather) {
             Weather.SUN.name -> resource = R.drawable.ic_sunny_selected
-            Weather.CLOUD.name -> resource = R.drawable.ic_sunny_selected
+            Weather.CLOUD.name -> resource = R.drawable.ic_cloudy_selected
             Weather.RAIN.name -> resource = R.drawable.ic_rainy_selected
             Weather.SNOW.name -> resource = R.drawable.ic_snowy_selected
         }
@@ -166,15 +171,17 @@ class ShareDiaryFragment : Fragment(R.layout.fragment_share_diary) {
                     }
                 }
 
-                stamp.x = (haveToStamp.x * binding.fragmentShareStampsController.width).toFloat()
-                stamp.y = (haveToStamp.y * binding.fragmentShareStampsController.height).toFloat()
+                stamp.x =
+                    (haveToStamp.x * binding.fragmentShareStampsController.width).toFloat()
+                stamp.y =
+                    (haveToStamp.y * binding.fragmentShareStampsController.height).toFloat()
 
-                    if(stamp.x>= binding.fragmentShareStampsController.width-pixels){
-                        stamp.x=binding.fragmentShareStampsController.width-pixels
-                    }
-                    if(stamp.y>= binding.fragmentShareStampsController.height-pixels){
-                        stamp.y=binding.fragmentShareStampsController.height-pixels
-                    }
+                if (stamp.x >= binding.fragmentShareStampsController.width - pixels) {
+                    stamp.x = binding.fragmentShareStampsController.width - pixels
+                }
+                if (stamp.y >= binding.fragmentShareStampsController.height - pixels) {
+                    stamp.y = binding.fragmentShareStampsController.height - pixels
+                }
 
                 binding.fragmentShareStampsController.addView(stamp)
                 stamp.updateLayoutParams {
@@ -188,5 +195,71 @@ class ShareDiaryFragment : Fragment(R.layout.fragment_share_diary) {
 
             }
         }
+
+
+
+
+
+
+
+
     }
+
+    override fun onResume() {
+        if(isUploaded){
+            requireContext().getContentResolver().delete(Uri.parse(path),null, null)
+            isUploaded=false
+
+        }
+        super.onResume()
+    }
+
+    fun viewToBitmap(view: View) {
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        view.draw(canvas)
+
+        getImageUri(requireContext(),bitmap)
+    }
+    fun shareToInsta(uri: Uri){
+        val stickerAssetUri: Uri = uri
+        val sourceApplication = "com.example.drwaing"
+
+        val intent = Intent("com.instagram.share.ADD_TO_STORY")
+        intent.putExtra("source_application", sourceApplication)
+        intent.setType("image/jpeg")
+        intent.putExtra("interactive_asset_uri", stickerAssetUri)
+        intent.putExtra("top_background_color", "#EDEDED")
+        intent.putExtra("bottom_background_color", "#EDEDED")
+
+        val activity: Activity? = activity
+        activity!!.grantUriPermission("com.instagram.android",
+            stickerAssetUri,
+            Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        isUploaded=true
+        if (activity!!.packageManager.resolveActivity(intent, 0) != null) {
+            activity!!.startActivityForResult(intent, 0)
+
+        }
+        else{
+            val sharingIntent = Intent(Intent.ACTION_SEND);
+            val screenshotUri = Uri.parse(path);
+            sharingIntent.setType("image/jpeg");
+            sharingIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+            startActivity(Intent.createChooser(sharingIntent, "쓱쓱 일기 공유"))
+        }
+    }
+    fun getImageUri(context: Context, inImage: Bitmap) {
+        val bytes = ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        path = MediaStore.Images.Media.insertImage(context.getContentResolver(),
+            inImage,
+            "Title",
+            null)
+
+        shareToInsta(Uri.parse(path))
+    }
+
+
+
 }

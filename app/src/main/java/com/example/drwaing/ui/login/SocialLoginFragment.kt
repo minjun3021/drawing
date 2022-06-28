@@ -17,6 +17,7 @@ import com.example.drwaing.R
 import com.example.drwaing.SuccessLottieFragment
 import com.example.drwaing.databinding.FragmentSocialLoginBinding
 import com.example.drwaing.extension.viewBinding
+import com.example.drwaing.ui.main.MainActivity
 import com.example.drwaing.ui.main.MainFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -126,7 +127,6 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
     }
 
     fun sign(type: String) {
-
         lateinit var signRequest: NetworkInterface.SignRequest
         when (type) {
             SOCIAL_TYPE_KAKAO -> {

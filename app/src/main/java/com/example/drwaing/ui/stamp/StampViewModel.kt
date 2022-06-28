@@ -10,6 +10,7 @@ import com.example.drwaing.data.diary.DiaryApiModel
 import com.example.drwaing.data.diary.Stamp
 import com.example.drwaing.ui.main.DrawingListData
 import com.example.drwaing.ui.main.MainFragment
+import com.shashank.sony.fancytoastlib.FancyToast
 import kotlinx.coroutines.launch
 
 class StampViewModel : ViewModel() {
@@ -41,6 +42,7 @@ class StampViewModel : ViewModel() {
                 Network.api.addStamp(MainFragment.token, diaryId,stampType,x,y)
             }.onSuccess {
                 Log.e("도장","찍힘")
+
             }.onFailure {
 
                 Log.e("실패", it.toString())
