@@ -85,15 +85,14 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                 }
                 binding.fragmentMakingOkay.setOnClickListener {
                     //TODO 파일업로드가 안되서 주석 처놓음 밑에 일기 업로드는 테스트를 위해 이미지 링크를 다른거로 임시로 박아놓음
-//                    val file = bitmapToFile(viewModel.bitmap.value)
-//                    if (file != null) {
-//                        viewModel.save(file)
-//
-//                    }
+
                     if(readyToUploadDiary){
 
-                        viewModel.upload("https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/420px-Golde33443.jpg")
+                        val file = bitmapToFile(viewModel.bitmap.value)
+                        if (file != null) {
+                            viewModel.save(file)
 
+                        }
                         navController.navigate(
                             R.id.action_makingDiaryFragment_to_successLottieFragment,
                             bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_MAKING)
@@ -314,7 +313,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
         bitmap ?: return null
         val wrapper = ContextWrapper(context)
         var file = wrapper.getDir("image", Context.MODE_PRIVATE)
-        file = File(file, "asdf.jpeg")
+        file = File(file, "${System.currentTimeMillis()}.jpg")
 
         try {
             val stream: OutputStream = FileOutputStream(file)

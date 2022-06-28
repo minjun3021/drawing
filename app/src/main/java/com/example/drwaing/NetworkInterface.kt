@@ -1,5 +1,6 @@
 package com.example.drwaing
 
+import android.media.Image
 import com.example.drwaing.data.diary.DiaryApiModel
 import com.example.drwaing.ui.main.DrawingListData
 import com.google.gson.annotations.SerializedName
@@ -18,6 +19,9 @@ interface NetworkInterface {
 
     data class Response(
         @SerializedName("responseMessage") val responseMessage: String,
+    )
+    data class ImageResponse(
+        @SerializedName("imageUrl") val imageUrl: String,
     )
 
 
@@ -44,7 +48,8 @@ interface NetworkInterface {
     suspend fun uploadImage(
         @Header("Authorization") token: String,
         @Part image: MultipartBody.Part?,
-    ): Response
+    ): ImageResponse
+
 
     @POST("/diary")
     suspend fun uploadDiary(

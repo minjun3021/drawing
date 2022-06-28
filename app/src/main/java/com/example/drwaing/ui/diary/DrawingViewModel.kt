@@ -52,10 +52,10 @@ class DrawingViewModel : ViewModel() {
             kotlin.runCatching {
                 Network.api.uploadImage(MainFragment.token, part)
             }.onSuccess {
-                val imageUrl = it.responseMessage
+                val imageUrl = it.imageUrl
 
-                Log.e("imageurl", it.toString())
-                //upload(imageUrl)
+                Log.e("imageurl", it.imageUrl)
+                upload(imageUrl)
             }.onFailure {
                 it.printStackTrace()
                 Log.e("image", it.toString())
