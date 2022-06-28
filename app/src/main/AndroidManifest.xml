@@ -62,4 +62,10 @@
 
     </application>
 
+    <queries>
+        <intent>
+            <action android:name='com.instagram.share.ADD_TO_STORY' />
+            <data android:mimeType='image/*' />
+        </intent>
+    </queries>
 </manifest>

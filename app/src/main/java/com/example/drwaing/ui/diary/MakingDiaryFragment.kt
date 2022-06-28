@@ -122,6 +122,9 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
                 binding.fragmentMakingOkay.visibility = View.GONE
                 binding.fragmentMakingInstagram.visibility = View.VISIBLE
+                binding.fragmentMakingInstagram.setOnClickListener {
+                    navController.navigate(R.id.action_makingDiaryFragment_to_shareDiaryFragment)
+                }
 
                 Log.e("diaryid",
                     activity?.intent?.extras?.getInt(DiaryActivity.EXTRA_DIARY_KEY).toString())
@@ -138,18 +141,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
             activity?.finish()
         }
 
-//
-//        var stamp = View.inflate(context, R.layout.stamp, null)
-//        stamp.setBackgroundResource(R.drawable.ic_stamp96_gral)
-//        binding.asdadsa.addView(stamp)
 
-
-//        binding.fragmentMakingTest.setOnTouchListener { view, motionEvent ->
-//
-//                Log.e(motionEvent.x.toString(),motionEvent.y.toString())
-//
-//            true
-//        }
 
         binding.fragmentMakingFake.post {
             binding.fragmentMakingFake.background = DiaryActivity.createBitmap(requireContext(),

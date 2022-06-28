@@ -3,14 +3,15 @@ package com.example.drwaing.ui.diary
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Shader
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
+import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.graphics.drawable.toBitmap
 import com.example.drwaing.R
 import com.example.drwaing.databinding.ActivityDiaryBinding
 import com.example.drwaing.extension.viewBinding
@@ -42,7 +43,10 @@ class DiaryActivity : AppCompatActivity() {
             .putExtra(EXTRA_DIARY_KEY, diaryKey)
 
         fun createBitmap(context: Context, width: Int, lineHeight: Int): Drawable {
-            val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.bg_diary_underline_image)
+//            val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.bg_diary_underline_image)
+            val tmp = context.getDrawable(R.drawable.bg_line)!!.toBitmap()
+            val height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4f, context.resources.displayMetrics).toInt()
+            val bitmap = Bitmap.createScaledBitmap(tmp, width,height, true);
             val result = Bitmap.createBitmap(width, lineHeight, bitmap.config)
             val canvas = Canvas(result)
             canvas.drawBitmap(bitmap, 0f, lineHeight.toFloat() - bitmap.height, null)
