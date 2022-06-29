@@ -56,6 +56,14 @@ class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
             override fun onAnimationEnd(p0: Animator?) {
                 when (arguments?.getString(WHERE_I_FROM)) {
                     VIEW_LOGIN -> {
+
+                        val intent = Intent(activity, MainActivity::class.java)
+                            .putExtra("isFirstLogined", true)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        startActivity(intent)
+                        activity?.finish()
+                    }
+                    VIEW_REGISTER -> {
                         val intent = Intent(activity, MainActivity::class.java)
                             .putExtra("isFirstLogined", true)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)

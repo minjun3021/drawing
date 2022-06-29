@@ -1,8 +1,10 @@
 package com.example.drwaing.ui.diary
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.SeekBar
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -17,7 +19,7 @@ import com.example.drwaing.view.draw.ColorPickerAdapter
 import com.example.drwaing.view.draw.DrawingView
 
 class DrawingDiaryContentFragment : Fragment(R.layout.fragment_drawing_diary_content) {
-
+    private lateinit var callback: OnBackPressedCallback
     private val binding by viewBinding(FragmentDrawingDiaryContentBinding::bind)
 
     private val viewModel: DrawingViewModel by activityViewModels()
@@ -67,6 +69,7 @@ class DrawingDiaryContentFragment : Fragment(R.layout.fragment_drawing_diary_con
         }
 
         //TODO: onBackPressed
+
         binding.fragmentDrawingBack.setOnClickListener {
             context?.showDialog {
                 title = "변경사항을 저장하지 않으시겠어요?"
@@ -84,6 +87,31 @@ class DrawingDiaryContentFragment : Fragment(R.layout.fragment_drawing_diary_con
             viewModel.saveBitmap(binding.drawer.getBitmap())
             navController.popBackStack()
         }
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                context?.showDialog {
+                    title = "변경사항을 저장하지 않으시겠어요?"
+                    positiveText = "네"
+                    negativeText = "취소"
+                    onPositiveClickListener = {
+                        navController.popBackStack()
+                    }
+                    onNegativeClickListener = {
+                        dismiss()
+                    }
+
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
     }
 
 }

@@ -77,6 +77,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             return tmp
         }
 
+
     }
 
     override fun onResume() {

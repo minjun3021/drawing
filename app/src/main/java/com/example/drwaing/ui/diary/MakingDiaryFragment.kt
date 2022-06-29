@@ -10,6 +10,7 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
@@ -25,6 +26,7 @@ import com.example.drwaing.SuccessLottieFragment
 import com.example.drwaing.data.diary.Stamped
 import com.example.drwaing.data.diary.Weather
 import com.example.drwaing.databinding.FragmentMakingDiaryBinding
+import com.example.drwaing.extension.showDialog
 import com.example.drwaing.extension.viewBinding
 import com.example.drwaing.ui.main.MainFragment
 import com.example.drwaing.ui.stamp.StampActivity
@@ -38,6 +40,7 @@ import java.util.*
 
 class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
     private val clicked: Boolean = false
+    private lateinit var callback: OnBackPressedCallback
     private val binding by viewBinding(FragmentMakingDiaryBinding::bind)
     private val viewModel: DrawingViewModel by activityViewModels()
     private var readyToUploadDiary =false
@@ -84,7 +87,6 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                     navController.navigate(R.id.action_makingDiaryFragment_to_typingDiaryContentFragment)
                 }
                 binding.fragmentMakingOkay.setOnClickListener {
-                    //TODO 파일업로드가 안되서 주석 처놓음 밑에 일기 업로드는 테스트를 위해 이미지 링크를 다른거로 임시로 박아놓음
 
                     if(readyToUploadDiary){
 
@@ -112,6 +114,23 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                 binding.fragmentMakingSnow.setOnClickListener {
                     viewModel.setWeather(Weather.SNOW)
                 }
+                callback = object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        context?.showDialog {
+                            title = "열심히 적은 일기장을 찢으시겠어요?"
+                            positiveText = "네"
+                            negativeText = "아니오"
+                            onPositiveClickListener = {
+                                activity?.finish()
+                            }
+                            onNegativeClickListener = {
+                                dismiss()
+                            }
+
+                        }
+                    }
+                }
+                requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
                 observeMaking()
             }
             1 -> {//edit 나중에 추가
@@ -136,8 +155,18 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
             }
         }
         binding.fragmentMakingBack.setOnClickListener {
-            //TODO dialog 뛰우기
-            activity?.finish()
+            context?.showDialog {
+                title = "열심히 적은 일기장을 찢으시겠어요?"
+                positiveText = "네"
+                negativeText = "아니오"
+                onPositiveClickListener = {
+                    activity?.finish()
+                }
+                onNegativeClickListener = {
+                    dismiss()
+                }
+
+            }
         }
 
 
@@ -324,5 +353,12 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
             e.printStackTrace()
         }
         return file
+    }
+
+
+    override fun onDetach() {
+        super.onDetach()
+        if(::callback.isInitialized)
+            callback.remove()
     }
 }

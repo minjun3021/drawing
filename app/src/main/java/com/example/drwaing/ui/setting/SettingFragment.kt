@@ -74,35 +74,38 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
                 negativeText = "아니오"
                 onPositiveClickListener = {
                     logout()
-                    onNegativeClickListener = {
-                        dismiss()
-                    }
+
+                }
+                onNegativeClickListener = {
+                    dismiss()
                 }
 
             }
-            binding.fragmentSettingDeleteaccount.setOnClickListener {
-                context?.showDialog {
-                    title = "정말 탈퇴 하시겠어요?"
-                    positiveText = "네"
-                    negativeText = "아니오"
-                    onPositiveClickListener = {
-                        viewLifecycleOwner.lifecycleScope.launch {
-                            kotlin.runCatching {
-                                Network.api.leave(MainFragment.token)
-                            }.onSuccess {
 
-                            }.onFailure {
+        }
+        binding.fragmentSettingDeleteaccount.setOnClickListener {
+            context?.showDialog {
+                title = "정말 탈퇴 하시겠어요?"
+                positiveText = "네"
+                negativeText = "아니오"
+                onPositiveClickListener = {
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        kotlin.runCatching {
+                            Network.api.leave(MainFragment.token)
+                        }.onSuccess {
+                            Log.e("good","leave")
 
-                            }
+                        }.onFailure {
+                            Log.e("why",it.toString())
                         }
+                    }
 
 
-                        logout()
-                        //TODO retrofit
-                    }
-                    onNegativeClickListener = {
-                        dismiss()
-                    }
+                    logout()
+                    //TODO retrofit
+                }
+                onNegativeClickListener = {
+                    dismiss()
                 }
             }
         }

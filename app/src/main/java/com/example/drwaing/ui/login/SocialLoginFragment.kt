@@ -138,7 +138,11 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
             }
 
             SOCIAL_TYPE_GOOGLE -> {
-
+//                signRequest =
+//                    NetworkInterface.SignRequest(
+//
+//                        SOCIAL_TYPE_GOOGLE
+//                    )
 
             }
         }
@@ -170,6 +174,11 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
                             }.onSuccess {
                                 //회원가입성공
                                 MainFragment.token=it.accessToken
+
+                                var sharedPref : SharedPreferences=requireActivity().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+                                var editor : SharedPreferences.Editor=sharedPref.edit()
+                                editor.putString("token",it.accessToken)
+                                editor.commit()
 
                                 navController.navigate(
                                     R.id.action_socialLoginFragment_to_successLottieFragment,
