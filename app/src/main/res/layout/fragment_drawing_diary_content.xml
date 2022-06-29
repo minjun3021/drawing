@@ -41,10 +41,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <com.example.drwaing.view.draw.DrawingView
+    <com.kmj.ssgssg.view.draw.DrawingView
         android:id="@+id/drawer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="#ffffff"
         app:layout_constraintBottom_toTopOf="@id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

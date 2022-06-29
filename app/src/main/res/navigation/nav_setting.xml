@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.drwaing.ui.setting.SettingFragment"
+        android:name="com.kmj.ssgssg.ui.setting.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" >
         <action
@@ -19,12 +19,12 @@
     </fragment>
     <fragment
         android:id="@+id/setFontFragment"
-        android:name="com.example.drwaing.ui.setting.SetFontFragment"
+        android:name="com.kmj.ssgssg.ui.setting.SetFontFragment"
         android:label="fragment_set_font"
         tools:layout="@layout/fragment_set_font" />
     <fragment
         android:id="@+id/noticeFragment"
-        android:name="com.example.drwaing.ui.setting.NoticeFragment"
+        android:name="com.kmj.ssgssg.ui.setting.NoticeFragment"
         android:label="fragment_notice"
         tools:layout="@layout/fragment_notice" />
 </navigation>

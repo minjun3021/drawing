@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.drwaing">
+    package="com.kmj.ssgssg">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".GlobalApplication"
+        android:name="com.kmj.ssgssg.GlobalApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_playstore_logo"
         android:resizeableActivity="false"
@@ -15,15 +15,15 @@
         android:theme="@style/Theme.Drwaing"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.stamp.StampActivity"
+            android:name="com.kmj.ssgssg.ui.stamp.StampActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
       <activity
-            android:name=".ui.setting.SettingActivity"
+            android:name="com.kmj.ssgssg.ui.setting.SettingActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".ui.diary.DiaryActivity"
+            android:name="com.kmj.ssgssg.ui.diary.DiaryActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
@@ -42,13 +42,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name="com.kmj.ssgssg.ui.login.LoginActivity"
             android:screenOrientation="portrait"
             android:exported="true">
 
         </activity>
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name="com.kmj.ssgssg.ui.main.MainActivity"
             android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>

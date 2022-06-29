@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/makingDiaryFragment"
-        android:name="com.example.drwaing.ui.diary.MakingDiaryFragment"
+        android:name="com.kmj.ssgssg.ui.diary.MakingDiaryFragment"
         android:label="MakingDiaryFragment"
         tools:layout="@layout/fragment_making_diary">
         <action
@@ -28,12 +28,12 @@
         app:destination="@id/drawingDiaryContentFragment" />
     <fragment
         android:id="@+id/drawingDiaryContentFragment"
-        android:name="com.example.drwaing.ui.diary.DrawingDiaryContentFragment"
+        android:name="com.kmj.ssgssg.ui.diary.DrawingDiaryContentFragment"
         android:label="DrawingDiaryContentFragment"
         tools:layout="@layout/fragment_drawing_diary_content" />
     <fragment
         android:id="@+id/typingDiaryContentFragment"
-        android:name="com.example.drwaing.ui.diary.TypingDiaryContentFragment"
+        android:name="com.kmj.ssgssg.ui.diary.TypingDiaryContentFragment"
         android:label="TypingDiaryContentFragment"
         tools:layout="@layout/fragment_typing_diary_content" />
     <action
@@ -41,12 +41,12 @@
         app:destination="@id/successLottieFragment" />
     <fragment
         android:id="@+id/successLottieFragment"
-        android:name="com.example.drwaing.SuccessLottieFragment"
+        android:name="com.kmj.ssgssg.SuccessLottieFragment"
         android:label="SuccessLottieFragment"
         tools:layout="@layout/fragment_success_lottie" />
     <fragment
         android:id="@+id/shareDiaryFragment"
-        android:name="com.example.drwaing.ui.diary.ShareDiaryFragment"
+        android:name="com.kmj.ssgssg.ui.diary.ShareDiaryFragment"
         android:label="fragment_share_diary"
         tools:layout="@layout/fragment_share_diary" />
 </navigation>
