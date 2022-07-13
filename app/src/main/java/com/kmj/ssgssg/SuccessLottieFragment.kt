@@ -1,13 +1,16 @@
 package com.kmj.ssgssg
 
 import android.animation.Animator
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.kmj.ssgssg.databinding.FragmentSuccessLottieBinding
+import com.kmj.ssgssg.extension.showDialog
 import com.kmj.ssgssg.extension.viewBinding
 import com.kmj.ssgssg.ui.main.MainActivity
 import com.kmj.ssgssg.ui.main.MainFragment
@@ -16,7 +19,7 @@ import com.kmj.ssgssg.ui.main.MainFragment
 class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
 
     private val binding by viewBinding(FragmentSuccessLottieBinding::bind)
-
+    private lateinit var callback: OnBackPressedCallback
     companion object {
         const val VIEW_LOGIN = "login"
         const val VIEW_REGISTER = "register"
@@ -81,5 +84,19 @@ class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
         })
 
 
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
     }
 }

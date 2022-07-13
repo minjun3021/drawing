@@ -18,11 +18,13 @@ class StampViewModel : ViewModel() {
     private val _stamps = MutableLiveData<ArrayList<Stamp>>()
     val stamps: LiveData<ArrayList<Stamp>> get() = _stamps
 
-    fun getDiary(diaryId: Int) {
+
+
+    fun getRandomDiary() {
         viewModelScope.launch {
 
             kotlin.runCatching {
-                Network.api.getDiary(MainFragment.token, diaryId)
+                Network.api.getRandomDiary(MainFragment.token)
             }.onSuccess {
 
                 _diary.postValue(it)

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.kmj.ssgssg.databinding.ActivityMainBinding
 import com.kmj.ssgssg.extension.viewBinding
@@ -73,6 +74,7 @@ class MainActivity : AppCompatActivity() {
 
         var sharedPref : SharedPreferences =applicationContext.getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
         MainFragment.token= sharedPref.getString("token","")!!
+        Log.e("ohoh",MainFragment.token)
 
     }
     fun haveTologin(){

@@ -106,6 +106,7 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
 
     private fun logingoogle() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
            .requestIdToken("450506962971-4sr7qe7j36kihvmenkjgop1gnvhac405.apps.googleusercontent.com")
           // .requestIdToken("476109625656-38td29igomdvtahgfuqr3ccbpn6vcqrl.apps.googleusercontent.com")
             //.requestIdToken() 서버의 클라이언트 아이디가 필요함 https://developers.google.com/identity/sign-in/android/backend-aut
@@ -139,7 +140,7 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
                                 SOCIAL_TYPE_GOOGLE)
                         }.onSuccess {
                             MainFragment.token=it.accessToken
-
+                            Log.e("구글토큰서버",it.accessToken)
                             var sharedPref : SharedPreferences=requireActivity().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
                             var editor : SharedPreferences.Editor=sharedPref.edit()
                             editor.putString("token",it.accessToken)

@@ -39,7 +39,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private val binding: FragmentMainBinding by viewBinding(FragmentMainBinding::bind)
     private val drawingListAdapter: DrawingListAdapter by lazy { DrawingListAdapter() }
     private val viewModel: MainViewModel by activityViewModels()
-    private  var stampDiaryId =-1
+    private var stampDiaryId = -1
+
     //사용할때 lazy안에있는거라고 가르켜주는것임
     private val navController: NavController
         get() = Navigation.findNavController(
@@ -49,9 +50,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     companion object {
         lateinit var token: String
-        lateinit var typeface : Typeface
-        var afterMakingDiary =false
-        var needToLogout=false
+        lateinit var typeface: Typeface
+        var afterMakingDiary = false
+        var needToLogout = false
 
         fun makeDirayDate(date: String): String {
             var tmp = date.substring(0, date.indexOf("T"))
@@ -83,11 +84,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         viewModel.getMyDiaryList()
         viewModel.getDiaryList()
 
-        val sharedPref=requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
-        val myFont=sharedPref.getInt("font",R.font.uhbeeseulvely2)
-        val previousTypeface= typeface
-        typeface = ResourcesCompat.getFont(requireContext(),myFont)!!
-        if(previousTypeface!= typeface){
+        val sharedPref = requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+        val myFont = sharedPref.getInt("font", R.font.uhbeeseulvely2)
+        val previousTypeface = typeface
+        typeface = ResourcesCompat.getFont(requireContext(), myFont)!!
+        if (previousTypeface != typeface) {
             binding.fragmentMainRecyclerview.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 //글꼴이 바뀌면 리사이클러 onbind가 다호출되게 layoutmanager를 다시 넣어준다.
@@ -112,10 +113,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        val sharedPref=requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
-        token= sharedPref.getString("token","")!!
-        val myFont=sharedPref.getInt("font",R.font.uhbeeseulvely2)
-        typeface = ResourcesCompat.getFont(requireContext(),myFont)!!
+        val sharedPref = requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+        token = sharedPref.getString("token", "")!!
+        val myFont = sharedPref.getInt("font", R.font.uhbeeseulvely2)
+        typeface = ResourcesCompat.getFont(requireContext(), myFont)!!
 
 
         super.onCreate(savedInstanceState)
@@ -152,29 +153,26 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
         binding.fragmentMainPeople.setOnClickListener {
-            if(stampDiaryId!=-1){
-                val intent = Intent(context, StampActivity::class.java)
-
-                intent.putExtra(DiaryActivity.EXTRA_DIARY_KEY, stampDiaryId)
-                startActivity(intent)
-            }
+            val intent = Intent(context, StampActivity::class.java)
+            startActivity(intent)
 
 
         }
         binding.fragmentMainSetting.setOnClickListener {
-            val intent =Intent(requireContext(), SettingActivity::class.java)
-            startActivityForResult(intent,123)
+            val intent = Intent(requireContext(), SettingActivity::class.java)
+            startActivityForResult(intent, 123)
         }
         viewModel.diaryList.observe(viewLifecycleOwner) {
-            if(viewModel.diaryList.value!!.size >=2){
-                binding.fragmentMainNothing.visibility=View.GONE
-                stampDiaryId=((viewModel.diaryList.value!!.get(viewModel.diaryList.value!!.size-1)) as DrawingListData.Diary).diaryId
+            if (viewModel.diaryList.value!!.size >= 2) {
+                binding.fragmentMainNothing.visibility = View.GONE
+                stampDiaryId =
+                    ((viewModel.diaryList.value!!.get(viewModel.diaryList.value!!.size - 1)) as DrawingListData.Diary).diaryId
             }
 
             drawingListAdapter.submitList(viewModel.diaryList.value)
 
 
-            if(afterMakingDiary){
+            if (afterMakingDiary) {
                 val smoothScroller: SmoothScroller = object : LinearSmoothScroller(context) {
                     override fun getVerticalSnapPreference(): Int {
                         return SNAP_TO_START
@@ -182,17 +180,18 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 }
                 smoothScroller.setTargetPosition(0);
                 binding.fragmentMainRecyclerview.layoutManager!!.startSmoothScroll(smoothScroller);
-                afterMakingDiary=false
+                afterMakingDiary = false
             }
 
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 123 && MainFragment.needToLogout) {
-            val intent =Intent(context, LoginActivity::class.java)
+            val intent = Intent(context, LoginActivity::class.java)
             startActivity(intent)
             activity?.finish()
-            needToLogout=false
+            needToLogout = false
         }
 
 

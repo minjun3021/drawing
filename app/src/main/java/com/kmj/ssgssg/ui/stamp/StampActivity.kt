@@ -27,7 +27,8 @@ class StampActivity : AppCompatActivity() {
     private val binding: ActivityStampBinding by viewBinding(ActivityStampBinding::inflate)
     private val stampAdatper: StampAdapter by lazy { StampAdapter() }
     private val viewModel: StampViewModel by viewModels()
-    private var stampDiaryId =-1
+    
+    
 
     var list: ArrayList<StampData> = ArrayList()
     var stamps: ArrayList<Stamped> = ArrayList(12)
@@ -35,16 +36,12 @@ class StampActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        viewModel.getRandomDiary()
         initView()
         observeViewing()
     }
 
-    override fun onResume() {
 
-        stampDiaryId=intent?.extras?.getInt(DiaryActivity.EXTRA_DIARY_KEY)!!
-        viewModel.getDiary(stampDiaryId)
-        super.onResume()
-    }
 
     fun initView() {
         binding.activityStampRecycler.apply {
@@ -137,7 +134,7 @@ class StampActivity : AppCompatActivity() {
                 val y : Double = (stamps.get(i).view.y/binding.activityStampController.height).toDouble()
                 val formatX= String.format(Locale.KOREAN,"%.3f",x).toDouble()
                 val formatY=String.format(Locale.KOREAN,"%.3f",y).toDouble()
-                viewModel.sendStamp(stampDiaryId,list.get(stamps.get(i).which).stampTag,formatX,formatY)
+                viewModel.sendStamp(viewModel.diary.value!!.diaryId,list.get(stamps.get(i).which).stampTag,formatX,formatY)
             }
             FancyToast.makeText(applicationContext,
                 "도장을 찍었습니다"

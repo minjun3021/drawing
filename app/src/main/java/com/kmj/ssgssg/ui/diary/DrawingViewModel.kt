@@ -68,11 +68,12 @@ class DrawingViewModel : ViewModel() {
 
     fun upload(imageUrl: String) {
         viewModelScope.launch {
+            Log.e("a","x")
             val diary = DiaryRequest(imageUrl = imageUrl,
                 content = diaryText.value ?: "",
                 weather = weather.value!!.name)
             kotlin.runCatching {
-                Log.e("check",MainFragment.token)
+                Log.e("check",MainFragment.token+","+diary.toString())
                 Network.api.uploadDiary(MainFragment.token, diary.content,diary.imageUrl,diary.weather)
             }.onSuccess {
                 // TODO : 일기 업로드 성공 대응
@@ -82,6 +83,7 @@ class DrawingViewModel : ViewModel() {
             }.onFailure {
                 // TODO : 일기 업로드 실패 대응
                 Log.e("실패", it.toString())
+                Log.e("실패",it.cause.toString())
             }
         }
     }

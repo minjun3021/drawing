@@ -86,12 +86,13 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
                 onPositiveClickListener = {
                     viewLifecycleOwner.lifecycleScope.launch {
                         kotlin.runCatching {
+                            Log.e("test",MainFragment.token)
                             Network.api.leave(MainFragment.token)
                         }.onSuccess {
                             Log.e("good","leave")
 
                         }.onFailure {
-                            Log.e("why",it.toString())
+                            Log.e("whynnnnn",it.toString())
                         }
                     }
 

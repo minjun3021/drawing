@@ -41,16 +41,6 @@ interface NetworkInterface {
     ): SignResponse
 
 
-    @POST("/auth/sign-up")
-    suspend fun signupwithgoogle( @Query("idToken") idToken: String,
-                        @Query("socialType") socialType :String
-
-    ): SignResponse
-    @POST("/auth/sign-in")
-    suspend fun signinwithgoogle(
-        @Query("idToken") idToken: String,
-        @Query("socialType") socialType :String
-    ): SignResponse
 
 
 
@@ -88,6 +78,12 @@ interface NetworkInterface {
     suspend fun getDiary(
         @Header("Authorization") token: String,
         @Path("diaryId") diaryId:Int
+    ): DiaryApiModel
+
+
+    @GET("/diary/random")
+    suspend fun getRandomDiary(
+        @Header("Authorization") token: String,
     ): DiaryApiModel
 
     @POST("/stamp")
