@@ -94,4 +94,16 @@ interface NetworkInterface {
         @Query("x") x: Double,
         @Query("y") y :Double
     ): Response
+
+    @POST("/diary/update/last-access-time")
+    suspend fun updateAccessTime(
+        @Header("Authorization") token: String
+    ): Response
+
+    @GET("/diary/list/new-stamp")
+    suspend fun getNewStampedDiary(
+        @Header("Authorization") token: String
+
+    ): ArrayList<DiaryApiModel>
+
 }

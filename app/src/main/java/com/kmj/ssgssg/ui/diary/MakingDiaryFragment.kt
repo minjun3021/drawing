@@ -149,6 +149,9 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                 binding.fragmentMakingInstagram.setOnClickListener {
                     navController.navigate(R.id.action_makingDiaryFragment_to_shareDiaryFragment)
                 }
+                binding.fragmentMakingBack.setOnClickListener {
+                    requireActivity().finish()
+                }
 
                 Log.e("diaryid",
                     activity?.intent?.extras?.getInt(DiaryActivity.EXTRA_DIARY_KEY).toString())

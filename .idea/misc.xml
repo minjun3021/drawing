@@ -15,6 +15,7 @@
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/bg_making2.xml" value="0.114" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/bg_radius_square.xml" value="0.114" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/bg_share.xml" value="0.114" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/bg_stamp_diary.xml" value="0.121" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/color_picker.xml" value="0.139" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/gradient.xml" value="0.1" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/ic_asdfasdfasdf.xml" value="0.1205" />
@@ -58,9 +59,10 @@
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/activity_diary.xml" value="0.264" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/activity_main.xml" value="0.176" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/activity_stamp.xml" value="0.16799999999999998" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/dialog_confirm.xml" value="0.1" />
-        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/dialog_loading.xml" value="0.264" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/activity_stamp.xml" value="0.2" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/dialog_confirm.xml" value="0.2" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/dialog_loading.xml" value="0.152" />
+        <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/dialog_stamp.xml" value="0.4" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_drawing_diary_content.xml" value="0.12635869565217392" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_login_success.xml" value="0.136" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/layout/fragment_main.xml" value="0.2" />

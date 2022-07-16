@@ -6,11 +6,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kmj.ssgssg.Network
+import com.kmj.ssgssg.data.diary.DiaryApiModel
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
     private val _diaryList = MutableLiveData<ArrayList<DrawingListData>>()
     val diaryList: LiveData<ArrayList<DrawingListData>> get() = _diaryList
+
+    private val _newStampedDiary = MutableLiveData<ArrayList<DiaryApiModel>>()
+    val newStampedDiary: LiveData<ArrayList<DiaryApiModel>> get() = _newStampedDiary
 
     fun getMyDiaryList() {
 
@@ -28,6 +32,31 @@ class MainViewModel : ViewModel() {
             }
         }
     }
+    fun getNewStampedDiary(){
+
+        viewModelScope.launch {
+            kotlin.runCatching {
+                Network.api.getNewStampedDiary(MainFragment.token)
+            }.onSuccess {
+
+                _newStampedDiary.postValue(it)
+
+                viewModelScope.launch {
+                    kotlin.runCatching {
+                        Network.api.updateAccessTime(MainFragment.token)
+                    }.onSuccess {
+
+                    }.onFailure {
+
+                    }
+                }
+
+            }.onFailure {
+                it.printStackTrace()
+            }
+        }
+    }
+
     fun getDiaryList(){
         viewModelScope.launch {
             kotlin.runCatching {

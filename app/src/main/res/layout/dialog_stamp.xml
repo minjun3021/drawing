@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/bg_radius_square"
+        android:backgroundTint="#fff"
+        android:clipChildren="true"
+
+        android:orientation="vertical"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/dialog_stamp_notice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginEnd="34dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/pretendardsemibold"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:lineSpacingExtra="4sp"
+            android:text="나의 일기에 찍힌 도장을 확인해보세요!"
+            android:textColor="#111111"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dialog_stamp_main"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="#F4F4F4"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dialog_stamp_notice">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/dialog_stamp_controller"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:background="#fff"
+                android:layout_marginTop="24dp"
+                android:layout_marginHorizontal="66dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/dialog_stamp_drawing"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="10dp"
+                    app:layout_constraintBottom_toBottomOf="@id/dialog_stamp_bg"
+                    app:layout_constraintLeft_toLeftOf="@id/dialog_stamp_bg"
+                    app:layout_constraintRight_toRightOf="@id/dialog_stamp_bg"
+                    app:layout_constraintTop_toTopOf="@id/dialog_stamp_bg" />
+
+                <ImageView
+                    android:id="@+id/dialog_stamp_bg"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/bg_making"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/dialog_stamp_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginRight="6dp"
+                android:fontFamily="@font/uhbeeseulvely2"
+                android:letterSpacing="0.10"
+                android:lineSpacingExtra="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="16dp"
+                android:text="2022.00.00 금요일"
+                android:textColor="#111111"
+                android:textSize="12sp"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintLeft_toLeftOf="@id/dialog_stamp_controller"
+                app:layout_constraintRight_toLeftOf="@id/dialog_stamp_weather"
+                app:layout_constraintTop_toBottomOf="@id/dialog_stamp_controller" />
+
+            <ImageView
+                android:id="@+id/dialog_stamp_weather"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_sunny_selected"
+                app:layout_constraintLeft_toRightOf="@id/dialog_stamp_date"
+                app:layout_constraintRight_toRightOf="@id/dialog_stamp_controller"
+                app:layout_constraintTop_toTopOf="@id/dialog_stamp_date" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@id/dialog_stamp_main">
+
+            <TextView
+                android:id="@+id/tv_negative"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/pretendardsemibold"
+                android:gravity="center"
+                android:letterSpacing="0.05"
+                android:lineSpacingExtra="2sp"
+                android:text="스킵하기"
+                android:textColor="@color/color_grey_600"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/color_grey_300" />
+
+            <TextView
+                android:id="@+id/tv_positive"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/pretendardsemibold"
+                android:gravity="center"
+                android:letterSpacing="0.05"
+                android:lineSpacingExtra="2sp"
+                android:text="보러가기"
+                android:textColor="@color/color_grey_900" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

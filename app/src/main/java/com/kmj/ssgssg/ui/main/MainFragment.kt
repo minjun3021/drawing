@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.kmj.ssgssg.R
+import com.kmj.ssgssg.base.LoadingDialog
+import com.kmj.ssgssg.base.StampDialog
 import com.kmj.ssgssg.databinding.FragmentMainBinding
 import com.kmj.ssgssg.extension.viewBinding
 import com.kmj.ssgssg.ui.diary.DiaryActivity
@@ -106,8 +108,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        Log.e("asdf", "refresh")
+
         viewModel.getMyDiaryList()
+        viewModel.getNewStampedDiary()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -183,6 +186,23 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 afterMakingDiary = false
             }
 
+        }
+        viewModel.newStampedDiary.observe(viewLifecycleOwner){
+            if(it!!.size >0){
+                StampDialog(requireContext(),
+                    it!![it.size-1],
+                    {
+                        val intent = DiaryActivity.createIntent(
+                        requireContext(),
+                        DiaryActivity.VIEW_TYPE_VIEW,
+                        it!![it.size-1].diaryId)
+                        startActivity(intent)
+
+
+                    },
+                    {}).apply { show() }
+
+            }
         }
     }
 

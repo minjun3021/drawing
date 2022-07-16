@@ -38,6 +38,9 @@
                 android:id="@+id/tv_negative"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:fontFamily="@font/pretendardsemibold"
+                android:letterSpacing="0.05"
+                android:lineSpacingExtra="2sp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/color_grey_600" />
@@ -52,6 +55,9 @@
             <TextView
                 android:id="@+id/tv_positive"
                 android:layout_width="0dp"
+                android:fontFamily="@font/pretendardsemibold"
+                android:letterSpacing="0.05"
+                android:lineSpacingExtra="2sp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
