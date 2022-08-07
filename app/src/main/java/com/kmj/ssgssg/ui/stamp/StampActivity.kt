@@ -18,7 +18,6 @@ import com.kmj.ssgssg.databinding.ActivityStampBinding
 import com.kmj.ssgssg.extension.viewBinding
 import com.kmj.ssgssg.ui.diary.DiaryActivity
 import com.kmj.ssgssg.ui.main.MainFragment
-import com.shashank.sony.fancytoastlib.FancyToast
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -136,9 +135,7 @@ class StampActivity : AppCompatActivity() {
                 val formatY=String.format(Locale.KOREAN,"%.3f",y).toDouble()
                 viewModel.sendStamp(viewModel.diary.value!!.diaryId,list.get(stamps.get(i).which).stampTag,formatX,formatY)
             }
-            FancyToast.makeText(applicationContext,
-                "도장을 찍었습니다"
-                , FancyToast.LENGTH_SHORT, FancyToast.SUCCESS,false).show()
+
         }
     }
     private fun observeViewing() {

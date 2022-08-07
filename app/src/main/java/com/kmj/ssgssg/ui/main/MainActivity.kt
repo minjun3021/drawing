@@ -13,7 +13,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
-import com.shashank.sony.fancytoastlib.FancyToast
 
 class MainActivity : AppCompatActivity() {
 
@@ -66,11 +65,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun whenHaveToken(){
-
-        FancyToast.makeText(this,
-            if(intent.getBooleanExtra("isFirstLogined",false) ) "로그인 되었습니다" else "자동 로그인 되었습니다"
-            ,FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show()
-
 
         var sharedPref : SharedPreferences =applicationContext.getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
         MainFragment.token= sharedPref.getString("token","")!!

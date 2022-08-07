@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.4"
         app:lottie_autoPlay="true"
-        app:lottie_rawRes="@raw/checklottie" />
+        app:lottie_rawRes="@raw/complete" />
 
     <TextView
         android:id="@+id/fragment_success_text"

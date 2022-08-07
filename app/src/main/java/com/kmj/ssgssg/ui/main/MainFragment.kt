@@ -167,6 +167,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
         viewModel.diaryList.observe(viewLifecycleOwner) {
             if (viewModel.diaryList.value!!.size >= 2) {
+                binding.fragmentMainDidivedline.visibility=View.VISIBLE
                 binding.fragmentMainNothing.visibility = View.GONE
                 stampDiaryId =
                     ((viewModel.diaryList.value!!.get(viewModel.diaryList.value!!.size - 1)) as DrawingListData.Diary).diaryId

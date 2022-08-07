@@ -19,7 +19,6 @@ import com.kmj.ssgssg.ui.main.MainFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.user.UserApiClient
-import com.shashank.sony.fancytoastlib.FancyToast
 import kotlinx.coroutines.launch
 
 
@@ -49,16 +48,11 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
         }
         binding.fragmentSettingNotice.setOnClickListener {
 
-                FancyToast.makeText(requireContext(),
-                    "서비스 준비중입니다"
-                    , FancyToast.LENGTH_SHORT, FancyToast.INFO,false).show()
 
             //navController.navigate(R.id.action_settingFragment_to_noticeFragment)
         }
         binding.fragmentSettingAsk.setOnClickListener {
-            FancyToast.makeText(requireContext(),
-                "서비스 준비중입니다"
-                , FancyToast.LENGTH_SHORT, FancyToast.INFO,false).show()
+
 
         }
 

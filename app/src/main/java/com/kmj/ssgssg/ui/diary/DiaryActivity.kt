@@ -42,7 +42,6 @@ class DiaryActivity : AppCompatActivity() {
             .putExtra(EXTRA_DIARY_KEY, diaryKey)
 
         fun createBitmap(context: Context, width: Int, lineHeight: Int): Drawable {
-//            val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.bg_diary_underline_image)
             val tmp = context.getDrawable(R.drawable.bg_line)!!.toBitmap()
             val height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4f, context.resources.displayMetrics).toInt()
             val bitmap = Bitmap.createScaledBitmap(tmp, width,height, true);
