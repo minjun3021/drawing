@@ -19,6 +19,7 @@ import java.io.File
 
 class DrawingViewModel : ViewModel() {
 
+    val timeToNavigate=MutableLiveData(false)
 
     val diaryText = MutableLiveData<String>()
 
@@ -29,8 +30,6 @@ class DrawingViewModel : ViewModel() {
     private val _bitmap = MutableLiveData<Bitmap>()
     val bitmap: LiveData<Bitmap> get() = _bitmap
 
-    private val _url = MutableLiveData<String>()
-    val url: LiveData<String> get() = _url
 
     private val _diary = MutableLiveData<DiaryApiModel>()
     val diary: LiveData<DiaryApiModel> get() = _diary
@@ -54,10 +53,7 @@ class DrawingViewModel : ViewModel() {
             kotlin.runCatching {
                 Network.api.uploadImage(MainFragment.token, part)
             }.onSuccess {
-                val imageUrl = it.imageUrl
-                _url.value=it.imageUrl
-                Log.e("imageurl", it.imageUrl)
-                upload(imageUrl)
+                upload(it.imageUrl)
             }.onFailure {
                 it.printStackTrace()
                 Log.e("image", it.toString())
@@ -77,7 +73,7 @@ class DrawingViewModel : ViewModel() {
                 Network.api.uploadDiary(MainFragment.token, diary.content,diary.imageUrl,diary.weather)
             }.onSuccess {
                 // TODO : 일기 업로드 성공 대응
-
+                timeToNavigate.value=true
                 Log.e("success", "good")
 
             }.onFailure {

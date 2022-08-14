@@ -34,7 +34,7 @@ import java.util.*
 
 
 class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
-    lateinit  var loadingDialog : LoadingDialog
+    lateinit var loadingDialog: LoadingDialog
     private lateinit var callback: OnBackPressedCallback
     private val binding by viewBinding(FragmentMakingDiaryBinding::bind)
     private val viewModel: DrawingViewModel by activityViewModels()
@@ -87,7 +87,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                         val file = bitmapToFile(viewModel.bitmap.value)
                         if (file != null) {
                             viewModel.save(file)
-                            loadingDialog=LoadingDialog(requireContext()).apply { show() }
+                            loadingDialog = LoadingDialog(requireContext()).apply { show() }
 
                         }
 
@@ -194,12 +194,14 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
             changeIcon()
 
         }
-        viewModel.url.observe(viewLifecycleOwner){
-            loadingDialog.cancel()
-            navController.navigate(
-                R.id.action_makingDiaryFragment_to_successLottieFragment,
-                bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_MAKING)
-            )
+        viewModel.timeToNavigate.observe(viewLifecycleOwner) {
+            if (viewModel.timeToNavigate.value == true) {
+                loadingDialog.cancel()
+                navController.navigate(
+                    R.id.action_makingDiaryFragment_to_successLottieFragment,
+                    bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_MAKING)
+                )
+            }
         }
 
 
