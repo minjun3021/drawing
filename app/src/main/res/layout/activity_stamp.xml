@@ -46,7 +46,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
-        android:id="@+id/activity_stamp_test"
+        android:id="@+id/activity_stamp_scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
@@ -203,11 +203,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
-android:layout_marginTop="4dp"
+
         android:clipToPadding="false"
         android:elevation="2dp"
         android:orientation="horizontal"
         android:paddingLeft="24dp"
+        android:layout_marginTop="4dp"
         android:paddingBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
