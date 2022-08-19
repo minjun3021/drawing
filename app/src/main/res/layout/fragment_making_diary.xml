@@ -5,7 +5,11 @@
     android:id="@+id/asdadsa"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <include
+        android:id="@+id/share_controller"
+        layout="@layout/fragment_share_diary"
+        android:visibility="invisible"
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_making_layout1"

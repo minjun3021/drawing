@@ -18,6 +18,7 @@ class LoadingDialog(context: Context) : Dialog(context,R.style.Day_CustomDialog)
 
         binding = DialogLoadingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setCanceledOnTouchOutside(false)
         window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
 

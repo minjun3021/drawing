@@ -19,9 +19,7 @@
         <action
             android:id="@+id/action_makingDiaryFragment_to_typingDiaryContentFragment"
             app:destination="@id/typingDiaryContentFragment" />
-        <action
-            android:id="@+id/action_makingDiaryFragment_to_shareDiaryFragment"
-            app:destination="@id/shareDiaryFragment" />
+
     </fragment>
     <action
         android:id="@+id/action_makingDiaryFragment_to_drawingDiaryContentFragment"
@@ -44,9 +42,5 @@
         android:name="com.kmj.ssgssg.SuccessLottieFragment"
         android:label="SuccessLottieFragment"
         tools:layout="@layout/fragment_success_lottie" />
-    <fragment
-        android:id="@+id/shareDiaryFragment"
-        android:name="com.kmj.ssgssg.ui.diary.ShareDiaryFragment"
-        android:label="fragment_share_diary"
-        tools:layout="@layout/fragment_share_diary" />
+
 </navigation>

@@ -22,10 +22,10 @@ class StampAdapter(
 
         val diffutil = object : DiffUtil.ItemCallback<StampData>() {
             override fun areItemsTheSame(oldItem: StampData, newItem: StampData) =
-                oldItem == newItem
+                oldItem.stampTag == newItem.stampTag
 
             override fun areContentsTheSame(oldItem: StampData, newItem: StampData) =
-                oldItem.stampID == newItem.stampID
+                oldItem == newItem
 
         }
 

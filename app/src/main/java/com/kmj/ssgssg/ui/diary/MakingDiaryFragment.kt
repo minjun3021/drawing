@@ -1,10 +1,16 @@
 package com.kmj.ssgssg.ui.diary
 
+import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
@@ -17,15 +23,21 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.kmj.ssgssg.R
 import com.kmj.ssgssg.SuccessLottieFragment
 import com.kmj.ssgssg.base.LoadingDialog
 import com.kmj.ssgssg.data.diary.Weather
 import com.kmj.ssgssg.databinding.FragmentMakingDiaryBinding
+import com.kmj.ssgssg.databinding.FragmentShareDiaryBinding
 import com.kmj.ssgssg.extension.showDialog
 import com.kmj.ssgssg.extension.viewBinding
 import com.kmj.ssgssg.ui.main.MainFragment
 import com.kmj.ssgssg.ui.stamp.StampData
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -36,7 +48,10 @@ import java.util.*
 class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
     lateinit var loadingDialog: LoadingDialog
     private lateinit var callback: OnBackPressedCallback
+
     private val binding by viewBinding(FragmentMakingDiaryBinding::bind)
+
+    var path :String =""
     private val viewModel: DrawingViewModel by activityViewModels()
     private var readyToUploadDiary = false
 
@@ -58,9 +73,9 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
     private fun initView() {
 
 
-        binding.fragmentMakingDate.setTypeface(MainFragment.typeface)
-        binding.fragmentMakingContent.setTypeface(MainFragment.typeface)
-        binding.fragmentMakingDate.setText(makeDate())
+        binding.fragmentMakingDate.typeface = MainFragment.typeface
+        binding.fragmentMakingContent.typeface = MainFragment.typeface
+        binding.fragmentMakingDate.text = makeDate()
 
 
         when (activity?.intent?.extras?.getInt(DiaryActivity.EXTRA_VIEW_TYPE)) {
@@ -68,7 +83,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
                 val now = System.currentTimeMillis()
                 val date = Date(now)
-                val sdf = SimpleDateFormat("yyyy-MM-dd");
+                val sdf = SimpleDateFormat("yyyy-MM-dd")
                 val getTime: String = sdf.format(date) + "T"
                 binding.fragmentMakingDate.text = MainFragment.makeDirayDate(getTime)
 
@@ -146,15 +161,12 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
                 binding.fragmentMakingOkay.visibility = View.GONE
                 binding.fragmentMakingInstagram.visibility = View.VISIBLE
-                binding.fragmentMakingInstagram.setOnClickListener {
-                    navController.navigate(R.id.action_makingDiaryFragment_to_shareDiaryFragment)
-                }
+
                 binding.fragmentMakingBack.setOnClickListener {
                     requireActivity().finish()
                 }
 
-                Log.e("diaryid",
-                    activity?.intent?.extras?.getInt(DiaryActivity.EXTRA_DIARY_KEY).toString())
+
                 submitStampData()
                 observeViewing()
                 viewModel.getDiary(activity?.intent?.extras?.getInt(DiaryActivity.EXTRA_DIARY_KEY)!!)
@@ -255,9 +267,120 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
                 }
             }
+
+            binding.shareController.apply {
+
+                fragmentShareDate.typeface = MainFragment.typeface
+                fragmentShareContent.typeface = MainFragment.typeface
+                var resource= when (viewModel.diary.value!!.weather) {
+                    Weather.SUN.name -> R.drawable.ic_sunny_selected
+                    Weather.CLOUD.name ->R.drawable.ic_cloudy_selected
+                    Weather.RAIN.name -> R.drawable.ic_rainy_selected
+                    Weather.SNOW.name ->R.drawable.ic_snowy_selected
+                    else ->  R.drawable.ic_sunny_selected
+                }
+
+                fragmentShareWeather.setImageDrawable(ContextCompat.getDrawable(
+                    requireContext(),
+                    resource))
+
+
+                fragmentShareContent.background =
+                    DiaryActivity.createBitmap(requireContext(),
+                        fragmentShareContent.width,
+                        fragmentShareContent.lineHeight)
+
+
+                fragmentShareDate.text =
+                    MainFragment.makeDirayDate(viewModel.diary.value!!.createdDate)
+
+
+                Glide.with(requireContext())
+                    .load(viewModel.diary.value!!.imageUrl)
+                    .listener(object : RequestListener<Drawable>{
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean,
+                        ): Boolean {
+                            return false
+                        }
+
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean,
+                        ): Boolean {
+                            binding.fragmentMakingInstagram.setOnClickListener {
+                                viewToBitmap(binding.shareController.shareView)
+
+                            }
+                            return false
+                        }
+                    })
+                    .into(fragmentShareDrawing)
+
+                fragmentShareContent.text = viewModel.diary.value!!.content
+
+            }
+
+
+
         }
 
 
+    }
+
+    fun viewToBitmap(view: View) {
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        view.draw(canvas)
+
+        getImageUri(requireContext(), bitmap)
+    }
+
+    fun getImageUri(context: Context, inImage: Bitmap) {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        path = MediaStore.Images.Media.insertImage(context.contentResolver, //왜 널이 뜨지?
+            inImage,
+            "Title",
+            null)
+
+        shareToInsta(Uri.parse(path))
+
+    }
+
+    fun shareToInsta(uri: Uri) {
+        val stickerAssetUri: Uri = uri
+        val sourceApplication = "com.example.drwaing"
+
+        val intent = Intent("com.instagram.share.ADD_TO_STORY")
+        intent.putExtra("source_application", sourceApplication)
+        intent.type = "image/jpeg"
+        intent.putExtra("interactive_asset_uri", stickerAssetUri)
+        intent.putExtra("top_background_color", "#EDEDED")
+        intent.putExtra("bottom_background_color", "#EDEDED")
+
+        val activity: Activity? = activity
+        activity!!.grantUriPermission("com.instagram.android",
+            stickerAssetUri,
+            Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+        if (activity.packageManager.resolveActivity(intent, 0) != null) {
+            activity.startActivityForResult(intent, 0)
+
+
+        } else {
+            val sharingIntent = Intent(Intent.ACTION_SEND)
+            val screenshotUri = Uri.parse(path)
+            sharingIntent.type = "image/jpeg"
+            sharingIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri)
+            startActivity(Intent.createChooser(sharingIntent, "쓱쓱 일기 공유"))
+        }
     }
 
     private fun checkDoEveryThing() {
