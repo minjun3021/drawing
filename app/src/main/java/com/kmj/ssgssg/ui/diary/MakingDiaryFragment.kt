@@ -109,18 +109,27 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                     }
                 }
                 binding.fragmentMakingBack.setOnClickListener {
-                    context?.showDialog {
-                        title = "작성중인 일기가 사라집니다"
-                        positiveText = "네"
-                        negativeText = "취소"
-                        onPositiveClickListener = {
-                            activity?.finish()
-                        }
-                        onNegativeClickListener = {
-                            dismiss()
-                        }
-
+                    if(viewModel.bitmap.value==null && viewModel.diaryText.value.isNullOrEmpty())
+                    {
+                        activity?.finish()
                     }
+                    else{
+                        context?.showDialog {
+                            title = "작성중인 일기가 사라집니다"
+                            positiveText = "네"
+                            negativeText = "취소"
+                            onPositiveClickListener = {
+                                activity?.finish()
+                            }
+                            onNegativeClickListener = {
+                                dismiss()
+                            }
+
+                        }
+                    }
+
+
+
                 }
                 binding.fragmentMakingSun.setOnClickListener {
                     viewModel.setWeather(Weather.SUN)
@@ -137,17 +146,23 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                 }
                 callback = object : OnBackPressedCallback(true) {
                     override fun handleOnBackPressed() {
-                        context?.showDialog {
-                            title = "작성중인 일기가 사라집니다"
-                            positiveText = "네"
-                            negativeText = "취소"
-                            onPositiveClickListener = {
-                                activity?.finish()
-                            }
-                            onNegativeClickListener = {
-                                dismiss()
-                            }
+                        if(viewModel.bitmap.value==null && viewModel.diaryText.value.isNullOrEmpty())
+                        {
+                            activity?.finish()
+                        }
+                        else{
+                            context?.showDialog {
+                                title = "작성중인 일기가 사라집니다"
+                                positiveText = "네"
+                                negativeText = "취소"
+                                onPositiveClickListener = {
+                                    activity?.finish()
+                                }
+                                onNegativeClickListener = {
+                                    dismiss()
+                                }
 
+                            }
                         }
                     }
                 }
@@ -195,10 +210,12 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
     private fun observeMaking() {
         viewModel.diaryText.observe(viewLifecycleOwner) {
             binding.fragmentMakingContent.text = it.replace(" ", "\u00A0")
-            checkDoEveryThing()
+
         }
 
         viewModel.bitmap.observe(viewLifecycleOwner) {
+
+            checkDoEveryThing()
             binding.fragmentMakingDrawing.setImageBitmap(it)
 
         }
@@ -389,7 +406,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
     }
 
     private fun checkDoEveryThing() {
-        if (binding.fragmentMakingContent.text.isNotEmpty().and(viewModel.weather.value != null)) {
+        if (viewModel.weather.value != null && viewModel.bitmap.value!=null) {
             binding.fragmentMakingOkay.setTextColor(Color.parseColor("#111111"))
             readyToUploadDiary = true
         }
