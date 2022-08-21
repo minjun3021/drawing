@@ -6,10 +6,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kmj.ssgssg.Network
+import com.kmj.ssgssg.NetworkInterface
 import com.kmj.ssgssg.data.diary.DiaryApiModel
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class MainViewModel : ViewModel() {
+
+    val check = MutableLiveData(0)
+
     private val _diaryList = MutableLiveData<ArrayList<DrawingListData>>()
     val diaryList: LiveData<ArrayList<DrawingListData>> get() = _diaryList
 
@@ -20,19 +25,36 @@ class MainViewModel : ViewModel() {
 
         viewModelScope.launch {
             kotlin.runCatching {
-                Network.api.getMyDiaryList(MainFragment.token,0,1000)
+                Network.api.getMyDiaryList(MainFragment.token, 0, 1000)
             }.onSuccess {
 
-                    (it as ArrayList<DrawingListData>).add(0,DrawingListData.Header)
-                    _diaryList.postValue(it as ArrayList<DrawingListData>)
+                (it as ArrayList<DrawingListData>).add(0, DrawingListData.Header)
+                _diaryList.postValue(it as ArrayList<DrawingListData>)
 
 
             }.onFailure {
-                it.printStackTrace()
+                check.value=3
+                if (it is HttpException) {
+                    when (it.code()) {
+                        500 -> {
+                            kotlin.runCatching {
+                                Network.api.refreshToken(NetworkInterface.RefreshRequest(MainFragment.refreshToken))
+                            }.onSuccess { it ->
+                                MainFragment.token=it.accessToken
+                                check.value=1
+
+                            }.onFailure {
+
+                                check.value=2
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-    fun getNewStampedDiary(){
+
+    fun getNewStampedDiary() {
 
         viewModelScope.launch {
             kotlin.runCatching {
@@ -57,20 +79,5 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun getDiaryList(){
-        viewModelScope.launch {
-            kotlin.runCatching {
-                Network.api.getDiaryList(MainFragment.token,0,1000)
-            }.onSuccess {
 
-                Log.e("check",(it as ArrayList<DrawingListData>).size.toString())
-//                (it as ArrayList<DrawingListData>).add(0,DrawingListData.Header)
-//                _diaryList.postValue(it as ArrayList<DrawingListData>)
-
-
-            }.onFailure {
-                it.printStackTrace()
-            }
-        }
-    }
 }

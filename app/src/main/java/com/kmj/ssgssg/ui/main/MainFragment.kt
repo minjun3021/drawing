@@ -2,12 +2,14 @@ package com.kmj.ssgssg.ui.main
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,6 +18,9 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.kakao.sdk.user.UserApiClient
 import com.kmj.ssgssg.R
 import com.kmj.ssgssg.base.LoadingDialog
 import com.kmj.ssgssg.base.StampDialog
@@ -41,7 +46,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private val binding: FragmentMainBinding by viewBinding(FragmentMainBinding::bind)
     private val drawingListAdapter: DrawingListAdapter by lazy { DrawingListAdapter() }
     private val viewModel: MainViewModel by activityViewModels()
-    private var stampDiaryId = -1
+    var loadingDialog: LoadingDialog? = null
 
     //사용할때 lazy안에있는거라고 가르켜주는것임
     private val navController: NavController
@@ -52,6 +57,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     companion object {
         lateinit var token: String
+        lateinit var refreshToken: String
         lateinit var typeface: Typeface
         var afterMakingDiary = false
         var needToLogout = false
@@ -84,7 +90,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onResume() {
         viewModel.getMyDiaryList()
-        viewModel.getDiaryList()
 
         val sharedPref = requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
         val myFont = sharedPref.getInt("font", R.font.uhbeeseulvely2)
@@ -118,6 +123,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         val sharedPref = requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
         token = sharedPref.getString("token", "")!!
+        refreshToken = sharedPref.getString("refreshToken", "")!!
+
         val myFont = sharedPref.getInt("font", R.font.uhbeeseulvely2)
         typeface = ResourcesCompat.getFont(requireContext(), myFont)!!
 
@@ -165,12 +172,59 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             val intent = Intent(requireContext(), SettingActivity::class.java)
             startActivityForResult(intent, 123)
         }
+
+        viewModel.check.observe(viewLifecycleOwner){
+            when(viewModel.check.value){
+                1->{
+                    loadingDialog?.cancel()
+                    viewModel.getMyDiaryList()
+
+                    var sharedPref: SharedPreferences =
+                        requireActivity().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+                    var editor: SharedPreferences.Editor = sharedPref.edit()
+                    editor.putString("token", token)
+                    editor.commit()
+                }
+                2->{
+                    loadingDialog?.cancel()
+                    Toast.makeText(context, "로그인 세션이 만료 되었습니다.", Toast.LENGTH_LONG).show()
+
+                    token=""
+                    refreshToken=""
+
+                    var sharedPref: SharedPreferences =
+                        requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+                    sharedPref.edit().clear().commit()
+
+                    UserApiClient.instance.unlink { error ->
+                        if (error != null) {
+                            Log.e("E", "연결 끊기 실패", error)
+                        } else {
+                            Log.e("E", "연결 끊기 성공. SDK에서 토큰 삭제 됨")
+                        }
+                    }
+
+                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build()
+                    var mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+                    mGoogleSignInClient.signOut()
+
+                    val intent =Intent(context,LoginActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+
+                }
+                3->{
+                    loadingDialog = LoadingDialog(requireContext()).apply { show() }
+                }
+            }
+        }
         viewModel.diaryList.observe(viewLifecycleOwner) {
             if (viewModel.diaryList.value!!.size >= 2) {
                 binding.fragmentMainDidivedline.visibility=View.VISIBLE
                 binding.fragmentMainNothing.visibility = View.GONE
-                stampDiaryId =
-                    ((viewModel.diaryList.value!!.get(viewModel.diaryList.value!!.size - 1)) as DrawingListData.Diary).diaryId
+
             }
 
             drawingListAdapter.submitList(viewModel.diaryList.value)

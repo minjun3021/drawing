@@ -12,8 +12,17 @@ interface NetworkInterface {
         @SerializedName("socialType") val socialType: String,
     )
 
+    data class RefreshRequest(
+        @SerializedName("refreshToken") val refreshToken : String
+    )
+
     data class SignResponse(
         @SerializedName("accessToken") val accessToken: String,
+        @SerializedName("refreshToken") val refreshToken:String
+    )
+
+    data class RefreshResponse(
+        @SerializedName("accessToken") val accessToken: String
     )
 
     data class Response(
@@ -39,6 +48,13 @@ interface NetworkInterface {
         @Query("socialToken") socialToken: String,
         @Query("socialType") socialType :String
     ): SignResponse
+
+    @POST("/auth/reissue/access-token")
+    suspend fun refreshToken(
+        @Body data: RefreshRequest
+    ): RefreshResponse
+
+
 
 
 
@@ -67,12 +83,6 @@ interface NetworkInterface {
         @Query("size") size: Int,
     ): ArrayList<DrawingListData.Diary>
 
-    @GET("/diary/list")
-    suspend fun getDiaryList(
-        @Header("Authorization") token: String,
-        @Query("lastDiaryId") lastDiaryId: Int,
-        @Query("size") size: Int,
-    ): ArrayList<DrawingListData.Diary>
 
     @GET("/diary/{diaryId}")
     suspend fun getDiary(

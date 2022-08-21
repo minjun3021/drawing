@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.annotation.NonNull
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -30,12 +31,14 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.kmj.ssgssg.base.LoadingDialog
 import com.kmj.ssgssg.databinding.FragmentSocialLoginBinding
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
 
 class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
+    var loadingDialog: LoadingDialog? = null
 
     companion object {
         const val SOCIAL_TYPE_KAKAO = "KAKAO"
@@ -73,19 +76,19 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
         //카카오게정로그인 콜백
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {//실패
-
+                loadingDialog?.cancel()
             } else if (token != null) {
-                Log.e("카카오로그인 성공", token.accessToken)
-                sign(SOCIAL_TYPE_KAKAO,"")
+                sign(SOCIAL_TYPE_KAKAO, token.accessToken)
             }
         }
 
+        loadingDialog = LoadingDialog(requireContext()).apply { show() }
 
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {//카카오톡으로 로그인
             UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
                 if (error != null) { //로그인 실패
-
                     if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                        loadingDialog?.cancel()
                         return@loginWithKakaoTalk
                     }
 
@@ -95,7 +98,7 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
                     )
                 } else if (token != null) {
                     Log.e("카카오로그인 성공", token.accessToken)
-                    sign(SOCIAL_TYPE_KAKAO,"")
+                    sign(SOCIAL_TYPE_KAKAO, token.accessToken)
                 }
             }
         } else {//카카오 계정으로 로그인
@@ -107,15 +110,14 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
     private fun logingoogle() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
-           .requestIdToken("450506962971-4sr7qe7j36kihvmenkjgop1gnvhac405.apps.googleusercontent.com")
-          // .requestIdToken("476109625656-38td29igomdvtahgfuqr3ccbpn6vcqrl.apps.googleusercontent.com")
-            //.requestIdToken() 서버의 클라이언트 아이디가 필요함 https://developers.google.com/identity/sign-in/android/backend-aut
+            .requestIdToken("450506962971-4sr7qe7j36kihvmenkjgop1gnvhac405.apps.googleusercontent.com")
             .build()
 
 
         var mGoogleSignInClient =
             GoogleSignIn.getClient(requireContext(), gso)
         var signInIntent: Intent = mGoogleSignInClient.getSignInIntent();
+        loadingDialog = LoadingDialog(requireContext()).apply { show() }
         startActivityForResult(signInIntent, 333)
 
     }
@@ -123,139 +125,103 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 333) {
-            if(resultCode==RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 val task: Task<GoogleSignInAccount> =
                     GoogleSignIn.getSignedInAccountFromIntent(data)
 
                 if (task != null) {
                     val account = task.getResult(ApiException::class.java)
+                    var idToken = account.idToken
+                    sign(SOCIAL_TYPE_GOOGLE, idToken!!)
 
-                    Log.e("구글토큰", account.idToken.toString())
-                   //sign(SOCIAL_TYPE_GOOGLE,account.idToken.toString())
-                    viewLifecycleOwner.lifecycleScope.launch {
+                } else {
+                    loadingDialog?.cancel()
 
-                        kotlin.runCatching {
-                            Log.e("서버통신전",account.idToken.toString())
-                            Network.api.signin(account.idToken.toString(),
-                                SOCIAL_TYPE_GOOGLE)
-                        }.onSuccess {
-                            MainFragment.token=it.accessToken
-                            Log.e("구글토큰서버",it.accessToken)
-                            var sharedPref : SharedPreferences=requireActivity().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
-                            var editor : SharedPreferences.Editor=sharedPref.edit()
-                            editor.putString("token",it.accessToken)
-                            editor.commit()
-
-                            navController.navigate(
-                                R.id.action_socialLoginFragment_to_successLottieFragment,
-                                bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN)
-                            )
-                        }.onFailure {
-                            Log.e("회원가입","시도")
-                            if (it is HttpException) {
-                                when (it.code()) {
-                                    500 -> {
-                                        kotlin.runCatching {
-                                            Network.api.signup(account.idToken.toString(),SOCIAL_TYPE_GOOGLE)
-                                        }.onSuccess {
-                                            //회원가입성공
-                                            MainFragment.token=it.accessToken
-
-                                            var sharedPref : SharedPreferences=requireActivity().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
-                                            var editor : SharedPreferences.Editor=sharedPref.edit()
-                                            editor.putString("token",it.accessToken)
-                                            editor.commit()
-
-                                            navController.navigate(
-                                                R.id.action_socialLoginFragment_to_successLottieFragment,
-                                                bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_REGISTER)
-                                            )
-                                        }.onFailure {
-                                            Log.e("signupfail", it.toString())
-                                        }
-                                    }
-                                    500->{
-                                        Log.e("code",it.code().toString()+it.response().toString())
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
+            } else {
+                loadingDialog?.cancel()
             }
 
 
         }
     }
+    fun saveToken(signResponse : NetworkInterface.SignResponse){
 
-    fun sign(type: String,token :String) {
-        lateinit var signRequest: NetworkInterface.SignRequest
-        when (type) {
-            SOCIAL_TYPE_KAKAO -> {
-                signRequest =
+        MainFragment.token=signResponse.accessToken
+        MainFragment.refreshToken=signResponse.refreshToken
+        var sharedPref: SharedPreferences =
+            requireActivity().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+        var editor: SharedPreferences.Editor = sharedPref.edit()
+        editor.putString("token", signResponse.accessToken)
+        editor.putString("refreshToken", signResponse.refreshToken)
+        editor.commit()
+    }
+
+
+    fun sign(type: String, token: String) {
+        var signRequest: NetworkInterface.SignRequest =
+            when (type) {
+                SOCIAL_TYPE_KAKAO -> {
+
                     NetworkInterface.SignRequest(
-                        AuthApiClient.instance.tokenManagerProvider.manager.getToken()!!.accessToken,
+                        token,
                         SOCIAL_TYPE_KAKAO
                     )
-                viewLifecycleOwner.lifecycleScope.launch {
-
-                    kotlin.runCatching {
-                        Log.e(signRequest.socialType,signRequest.socialToken)
-                        Network.api.signin(signRequest.socialToken,signRequest.socialType)
-                    }.onSuccess {
-                        MainFragment.token=it.accessToken
-
-                        var sharedPref : SharedPreferences=requireActivity().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
-                        var editor : SharedPreferences.Editor=sharedPref.edit()
-                        editor.putString("token",it.accessToken)
-                        editor.commit()
-
-                        navController.navigate(
-                            R.id.action_socialLoginFragment_to_successLottieFragment,
-                            bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN)
-                        )
-                    }.onFailure {
-
-                        if (it is HttpException) {
-                            when (it.code()) {
-                                500 -> {
-                                    kotlin.runCatching {
-                                        Network.api.signup(signRequest.socialToken,signRequest.socialType)
-                                    }.onSuccess {
-                                        //회원가입성공
-                                        MainFragment.token=it.accessToken
-
-                                        var sharedPref : SharedPreferences=requireActivity().getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
-                                        var editor : SharedPreferences.Editor=sharedPref.edit()
-                                        editor.putString("token",it.accessToken)
-                                        editor.commit()
-
-                                        navController.navigate(
-                                            R.id.action_socialLoginFragment_to_successLottieFragment,
-                                            bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_REGISTER)
-                                        )
-                                    }.onFailure {
-                                        Log.e("signupfail", it.toString())
-                                    }
-                                }
-                                500->{
-                                    Log.e("code",it.code().toString()+it.response().toString())
-                                }
-                            }
-                        }
-                    }
                 }
-            }
 
-            SOCIAL_TYPE_GOOGLE -> {
-                signRequest =
+                SOCIAL_TYPE_GOOGLE -> {
+
                     NetworkInterface.SignRequest(
 
-                        SOCIAL_TYPE_GOOGLE,token
+                        token, SOCIAL_TYPE_GOOGLE
                     )
 
 
+                }
 
+                else -> NetworkInterface.SignRequest("", "")
+            }
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            kotlin.runCatching {
+                Network.api.signin(signRequest.socialToken,
+                    signRequest.socialType)
+            }.onSuccess {
+
+                saveToken(it)
+
+                loadingDialog?.cancel()
+
+                navController.navigate(
+                    R.id.action_socialLoginFragment_to_successLottieFragment,
+                    bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_LOGIN)
+                )
+            }.onFailure {
+                if (it is HttpException) {
+                    when (it.code()) {
+                        500 -> {
+                            kotlin.runCatching {
+                                Network.api.signup(signRequest.socialToken,
+                                    signRequest.socialType)
+                            }.onSuccess { it ->
+                                //회원가입성공
+
+                                saveToken(it)
+
+                                loadingDialog?.cancel()
+
+                                navController.navigate(
+                                    R.id.action_socialLoginFragment_to_successLottieFragment,
+                                    bundleOf(SuccessLottieFragment.WHERE_I_FROM to SuccessLottieFragment.VIEW_REGISTER)
+                                )
+                            }.onFailure {
+
+                                loadingDialog?.cancel()
+                            }
+                        }
+
+                    }
+                }
             }
         }
 
