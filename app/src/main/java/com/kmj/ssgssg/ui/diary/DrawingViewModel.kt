@@ -21,6 +21,8 @@ class DrawingViewModel : ViewModel() {
 
     val timeToNavigate=MutableLiveData(false)
 
+    val url = MutableLiveData<String>()
+
     val diaryText = MutableLiveData<String>()
 
     private val _weather = MutableLiveData<Weather>()
@@ -53,6 +55,7 @@ class DrawingViewModel : ViewModel() {
             kotlin.runCatching {
                 Network.api.uploadImage(MainFragment.token, part)
             }.onSuccess {
+                url.value=it.imageUrl
                 upload(it.imageUrl)
             }.onFailure {
                 it.printStackTrace()

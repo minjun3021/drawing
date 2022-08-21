@@ -12,6 +12,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.kmj.ssgssg.R
 import com.kmj.ssgssg.base.LoadingDialog
 import com.kmj.ssgssg.data.diary.Weather

@@ -206,6 +206,12 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
             changeIcon()
 
         }
+
+        viewModel.url.observe(viewLifecycleOwner){
+            Glide.with(requireContext())
+                .load(viewModel.url.value)
+                .preload()
+        }
         viewModel.timeToNavigate.observe(viewLifecycleOwner) {
             if (viewModel.timeToNavigate.value == true) {
                 loadingDialog.cancel()
