@@ -3,7 +3,6 @@ package com.kmj.ssgssg.ui.stamp
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ImageView

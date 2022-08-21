@@ -85,7 +85,6 @@ class StampDialog(
             for (i in 0..list.size - 1) {
                 if (list.get(i).stampTag == haveToStamp.stampType) {
                     stamp.setBackgroundResource(list.get(i).stamp96ID)
-                    Log.e("check", list.get(i).stampTag)
                     break
                 }
             }

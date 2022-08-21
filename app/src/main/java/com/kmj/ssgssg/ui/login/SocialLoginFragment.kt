@@ -97,7 +97,6 @@ class SocialLoginFragment : Fragment(R.layout.fragment_social_login) {
                         callback = callback
                     )
                 } else if (token != null) {
-                    Log.e("카카오로그인 성공", token.accessToken)
                     sign(SOCIAL_TYPE_KAKAO, token.accessToken)
                 }
             }

@@ -4,7 +4,6 @@ import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.lifecycle.lifecycleScope
@@ -80,13 +79,10 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
                 onPositiveClickListener = {
                     viewLifecycleOwner.lifecycleScope.launch {
                         kotlin.runCatching {
-                            Log.e("test",MainFragment.token)
                             Network.api.leave(MainFragment.token)
                         }.onSuccess {
-                            Log.e("good","leave")
 
                         }.onFailure {
-                            Log.e("whynnnnn",it.toString())
                         }
                     }
 
@@ -110,9 +106,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
 
         UserApiClient.instance.unlink { error ->
             if (error != null) {
-                Log.e("E", "연결 끊기 실패", error)
             } else {
-                Log.e("E", "연결 끊기 성공. SDK에서 토큰 삭제 됨")
             }
         }
 

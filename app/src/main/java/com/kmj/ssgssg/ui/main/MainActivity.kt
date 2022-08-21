@@ -68,7 +68,6 @@ class MainActivity : AppCompatActivity() {
 
         var sharedPref : SharedPreferences =applicationContext.getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
         MainFragment.token= sharedPref.getString("token","")!!
-        Log.e("ohoh",MainFragment.token)
 
     }
     fun haveTologin(){

@@ -1,6 +1,5 @@
 package com.kmj.ssgssg.ui.stamp
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,7 +30,6 @@ class StampViewModel : ViewModel() {
                 _diary.postValue(it)
             }.onFailure {
 
-                Log.e("실패", it.toString())
             }
         }
 
@@ -46,7 +44,6 @@ class StampViewModel : ViewModel() {
 
             }.onFailure {
 
-                Log.e("실패", it.toString())
             }
         }
 

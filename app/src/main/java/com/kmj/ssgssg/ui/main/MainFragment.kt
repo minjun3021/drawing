@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -137,7 +136,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
 
 
-        Log.e("onViewCreated", "MainFragment")
 
 
 
@@ -198,9 +196,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
                     UserApiClient.instance.unlink { error ->
                         if (error != null) {
-                            Log.e("E", "연결 끊기 실패", error)
                         } else {
-                            Log.e("E", "연결 끊기 성공. SDK에서 토큰 삭제 됨")
                         }
                     }
 

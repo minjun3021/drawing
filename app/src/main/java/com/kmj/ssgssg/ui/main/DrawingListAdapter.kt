@@ -42,7 +42,6 @@ class DrawingListAdapter :
 
     private var drawingList: ArrayList<DrawingListData> = ArrayList()
     override fun getItemCount(): Int {
-        Log.e(drawingList.size.toString(),"asdf")
         return drawingList.size
     }*/
 
@@ -121,7 +120,6 @@ class DrawingListAdapter :
         previousList: MutableList<DrawingListData>,
         currentList: MutableList<DrawingListData>,
     ) {
-        Log.e("onCurrentListChanged", "adapter")
         super.onCurrentListChanged(previousList, currentList)
     }
 

@@ -253,7 +253,6 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                     if (stamp.y >= binding.fragmentMainStampController.height - pixels) {
                         stamp.y = binding.fragmentMainStampController.height - pixels
                     }
-                    Log.e(stamp.x.toString(), stamp.y.toString())
 
                     binding.fragmentMainStampController.addView(stamp)
                     stamp.updateLayoutParams {
