@@ -245,9 +245,8 @@ class StampActivity : AppCompatActivity() {
         list.add(StampData("PERFECT",
             R.drawable.ic_stamp_perfect,
             R.drawable.ic_stamp96_perfect))
-        //TODO 얘네들이 들어가면 오류뜸 왜그런진 모르겟음
-//        list.add(StampData("OH",R.drawable.ic_stamp_oh,R.drawable.ic_stamp96_oh))
-//        list.add(StampData("ZZUGUL",R.drawable.ic_stamp_zzugul,R.drawable.ic_stamp96_zzugul))
+        list.add(StampData("OH",R.drawable.ic_stamp_oh,R.drawable.ic_stamp96_oh))
+        list.add(StampData("ZZUGUL",R.drawable.ic_stamp_zzugul,R.drawable.ic_stamp96_zzugul))
         list.add(StampData("HUNDRED",
             R.drawable.ic_stamp_hundred,
             R.drawable.ic_stamp96_hundred))

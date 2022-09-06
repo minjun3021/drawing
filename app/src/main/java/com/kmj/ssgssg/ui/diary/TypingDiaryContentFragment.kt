@@ -2,6 +2,7 @@ package com.kmj.ssgssg.ui.diary
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -59,7 +60,7 @@ class TypingDiaryContentFragment : Fragment(R.layout.fragment_typing_diary_conte
             //TODO bundle
             navController.popBackStack()
         }
-
+        Log.e(binding.etDiaryContent.width.toString(),binding.etDiaryContent.lineHeight.toString())
         binding.etDiaryContent.post {
             binding.etDiaryContent.background = DiaryActivity.createBitmap(requireContext(),
                 binding.etDiaryContent.width,
