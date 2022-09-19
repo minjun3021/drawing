@@ -15,8 +15,7 @@ class StampViewModel : ViewModel() {
     private val _diary = MutableLiveData<DiaryApiModel>()
     val diary: LiveData<DiaryApiModel> get() = _diary
 
-    private val _sendCount = MutableLiveData(0)
-    val sendCount: LiveData<Int> get() = _sendCount
+    val timeToNavigate=MutableLiveData(false)
 
 
 
@@ -40,7 +39,7 @@ class StampViewModel : ViewModel() {
             kotlin.runCatching {
                 Network.api.addStamp(MainFragment.token, diaryId,stampType,x,y)
             }.onSuccess {
-                _sendCount.value= _sendCount.value?.plus(1)
+                timeToNavigate.value=true
 
             }.onFailure {
 

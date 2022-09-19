@@ -24,6 +24,8 @@ class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
         const val VIEW_LOGIN = "login"
         const val VIEW_REGISTER = "register"
         const val VIEW_MAKING = "making"
+        const val VIEW_STAMP="stamp"
+
         const val WHERE_I_FROM = "from"
     }
 
@@ -40,6 +42,7 @@ class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
             VIEW_LOGIN -> binding.fragmentSuccessText.setText("로그인이 완료되었어요")
             VIEW_REGISTER -> binding.fragmentSuccessText.setText("회원가입이 완료되었어요")
             VIEW_MAKING -> binding.fragmentSuccessText.setText("오늘의 일기가 저장되었어요!")
+            VIEW_STAMP->binding.fragmentSuccessText.setText("도장 찍기가 완료되었어요!")
         }
 
 
@@ -68,6 +71,9 @@ class SuccessLottieFragment : Fragment(R.layout.fragment_success_lottie) {
                     VIEW_MAKING -> {
 
                         MainFragment.afterMakingDiary = true
+                        activity?.finish()
+                    }
+                    VIEW_STAMP->{
                         activity?.finish()
                     }
                 }

@@ -3,6 +3,7 @@ package com.kmj.ssgssg.ui.stamp
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ImageView
@@ -15,7 +16,8 @@ class StampAdapter(
     private val makeNewStamp: (Int) -> Unit,
     private val removeStamp: (Int) -> Unit,
 ) : ListAdapter<StampData, RecyclerView.ViewHolder>(diffutil) {
-
+    var isClickable: Boolean = true
+    var currentSelectedPosition: Int = -1
 
     companion object {
 
@@ -32,9 +34,13 @@ class StampAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        StampViewHolder(ItemRecyclerStampBinding.inflate(LayoutInflater.from(parent.context),
-            parent,
-            false))
+        StampViewHolder(
+            ItemRecyclerStampBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var item = getItem(position)
@@ -43,57 +49,58 @@ class StampAdapter(
 
     inner class StampViewHolder(val binding: ItemRecyclerStampBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val paddingValue=(8 * binding.root.context.resources.displayMetrics.density).toInt()
+
         init {
 
-            binding.recylerItemStampImage.setOnClickListener {
+            binding.recylerItemStampImage.setOnTouchListener { v, event ->
+                if (isClickable) {
 
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    getItem(adapterPosition).constantState?.let {
-                        removeStamp.invoke(adapterPosition)
-                        binding.recylerItemStampImage.apply {
-                            setPadding(0, paddingValue, 0, paddingValue)
-                            setImageResource(getItem(adapterPosition).stampID)
-                            setColorFilter(Color.parseColor("#D3D3D3"), PorterDuff.Mode.MULTIPLY)
+                    when (event.action) {
+
+                        MotionEvent.ACTION_CANCEL -> {
+                            if (currentSelectedPosition != adapterPosition)
+                                binding.recylerItemStampImage.setColorFilter(null)
                         }
+                        MotionEvent.ACTION_DOWN -> {
+                            if (currentSelectedPosition != adapterPosition)
+                                binding.recylerItemStampImage.setColorFilter(
+                                    Color.argb(51, 6, 6, 6)
+                                )
 
+                        }
                     }
-                        ?: run {
-                            makeNewStamp.invoke(adapterPosition)
-                            binding.recylerItemStampImage.apply {
-                                setImageResource(getItem(adapterPosition).stamp96ID)
-                                setPadding(0, 0, 0, 0)
-                                colorFilter = null
-                            }
-
-                        }
-
-
                 }
 
-
+                false
             }
+
+            binding.recylerItemStampImage.setOnClickListener {
+                if (isClickable) {
+                    currentSelectedPosition = adapterPosition
+                    binding.recylerItemStampImage.setColorFilter(Color.argb(127, 255, 255, 255))
+                    makeNewStamp.invoke(adapterPosition)
+                }
+            }
+
+
         }
 
         fun onBindView(item: StampData) {
-            item.constantState?.let {
-                binding.recylerItemStampImage.apply {
-                    setImageResource(item.stamp96ID)
-                    setPadding(0, 0, 0, 0)
 
-                    colorFilter = null
-                }
-
+            binding.recylerItemStampImage.apply {
+                setImageResource(item.stampID)
 
             }
-                ?: kotlin.run {
-                    binding.recylerItemStampImage.apply {
-                        setImageResource(item.stampID)
-                        setPadding(0, paddingValue, 0, paddingValue)
 
-                        setColorFilter(Color.parseColor("#D3D3D3"), PorterDuff.Mode.MULTIPLY)
-                    }
-                }
+
+            if (currentSelectedPosition == adapterPosition){
+                binding.recylerItemStampImage.setColorFilter(Color.argb(127, 255, 255, 255))
+
+            }
+            else {
+                binding.recylerItemStampImage.setColorFilter(null)
+            }
+
 
         }
     }

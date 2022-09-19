@@ -44,6 +44,7 @@
     <EditText
         android:id="@+id/et_diary_content"
         android:layout_width="match_parent"
+        android:hint="여기에 일기를 입력해주세요."
         android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"

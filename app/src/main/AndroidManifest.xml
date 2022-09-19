@@ -8,24 +8,26 @@
         android:name="com.kmj.ssgssg.GlobalApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_playstore_logo"
-        android:resizeableActivity="false"
         android:label="@string/app_name"
+        android:resizeableActivity="false"
         android:roundIcon="@drawable/ic_playstore_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Drwaing"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name="com.kmj.ssgssg.ui.stamp.StampActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
-      <activity
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name="com.kmj.ssgssg.ui.setting.SettingActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.kmj.ssgssg.ui.diary.DiaryActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -43,14 +45,14 @@
         </activity>
         <activity
             android:name="com.kmj.ssgssg.ui.login.LoginActivity"
-            android:screenOrientation="portrait"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
             android:name="com.kmj.ssgssg.ui.main.MainActivity"
-            android:screenOrientation="portrait"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -68,4 +70,5 @@
             <data android:mimeType='image/*' />
         </intent>
     </queries>
+
 </manifest>

@@ -4,12 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.1787037037037037" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/bg_completebutton.xml" value="0.1905" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/bg_completebuttton_pressed.xml" value="0.1905" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/bg_diary_content.xml" value="0.1355" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/bg_drawing.xml" value="0.1355" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/bg_line.xml" value="0.1355" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/bg_login_googlebutton.xml" value="0.1355" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/bg_login_kakaobutton.xml" value="0.1355" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/bg_makebutton.xml" value="0.1355" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/bg_makebutton_pressed.xml" value="0.1405" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/bg_making.xml" value="0.1355" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/bg_making2.xml" value="0.1215" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/bg_radius_square.xml" value="0.1355" />
@@ -18,18 +21,33 @@
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/ic_stamp96_lol.xml" value="0.1355" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/ic_stamp96_oh.xml" value="0.1355" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/ic_stamp96_zzugul.xml" value="0.1905" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/ic_stamp_dothis.xml" value="0.135" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/ic_stamp_good.xml" value="0.135" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/ic_stamp_gral.xml" value="0.1905" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/ic_stamp_greatjob.xml" value="0.135" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/ic_stamp_hundred_pressed.xml" value="0.1905" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/ic_stamp_oh.xml" value="0.1355" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/ic_stamp_zzugul.xml" value="0.1215" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/selector_complete_btn.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/selector_makebtn.xml" value="0.1405" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/activity_diary.xml" value="0.17753623188405798" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/activity_login.xml" value="0.14427083333333332" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/activity_setting.xml" value="0.14427083333333332" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/activity_stamp.xml" value="0.15" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/dialog_loading.xml" value="0.27239583333333334" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/dialog_stamp.xml" value="0.27239583333333334" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_drawing_diary_content.xml" value="0.27239583333333334" />
-        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_main.xml" value="0.4329470198675497" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_main.xml" value="0.33" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_making_diary.xml" value="0.33" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_set_font.xml" value="0.27239583333333334" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_social_login.xml" value="0.27239583333333334" />
-        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_success_lottie.xml" value="0.27239583333333334" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_stamp.xml" value="0.16" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_success_lottie.xml" value="0.2" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_typing_diary_content.xml" value="0.27239583333333334" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/item_recycler_drawing.xml" value="0.17753623188405798" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/item_recycler_stamp.xml" value="0.9" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/stamp.xml" value="0.14427083333333332" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2265" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/bg_button.xml" value="0.1" />
         <entry key="..\:/Users/minju/AndroidStudioProjects/Drwaing/app/src/main/res/drawable/bg_diary_content.xml" value="0.114" />

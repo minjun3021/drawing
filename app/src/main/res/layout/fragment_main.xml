@@ -98,13 +98,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/bg_makebutton"
-            app:backgroundTint="@null"
+            android:background="@drawable/selector_makebtn"
+
             android:minHeight="0dp"
             android:minWidth="0dp"
+            app:backgroundTint="@null"
+            android:stateListAnimator="@null"
             android:paddingHorizontal="20dp"
             android:paddingVertical="4dp"
-            android:stateListAnimator="@null"
+
 
             android:fontFamily="@font/pretendardsemibold"
             android:letterSpacing="0.05"

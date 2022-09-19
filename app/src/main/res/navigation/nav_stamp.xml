@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_stamp"
+    app:startDestination="@id/stampFragment">
+
+    <fragment
+        android:id="@+id/stampFragment"
+        android:name="com.kmj.ssgssg.ui.stamp.StampFragment"
+        android:label="fragment_stamp"
+        tools:layout="@layout/fragment_stamp" >
+        <action
+            android:id="@+id/action_stampFragment_to_successLottieFragment3"
+            app:destination="@id/successLottieFragment3" />
+    </fragment>
+    <fragment
+        android:id="@+id/successLottieFragment3"
+        tools:layout="@layout/fragment_success_lottie"
+        android:name="com.kmj.ssgssg.SuccessLottieFragment"
+        android:label="SuccessLottieFragment" />
+</navigation>
