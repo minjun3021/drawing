@@ -10,6 +10,8 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
@@ -400,19 +402,14 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
         val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         view.draw(canvas)
-
         getImageUri(requireContext(), bitmap)
     }
 
     fun getImageUri(context: Context, inImage: Bitmap) {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        path = MediaStore.Images.Media.insertImage(
-            context.contentResolver, //왜 널이 뜨지?
-            inImage,
-            "Title",
-            null
-        )
+        path = MediaStore.Images.Media.insertImage(context.contentResolver,  inImage, "Title", null)
+
 
         shareToInsta(Uri.parse(path))
 
@@ -439,6 +436,11 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
         if (activity.packageManager.resolveActivity(intent, 0) != null) {
             activity.startActivityForResult(intent, 0)
 
+            Handler(Looper.getMainLooper()).postDelayed({
+                context?.contentResolver?.delete(Uri.parse(path), null, null)
+
+            }, 10000)
+
 
         } else {
             val sharingIntent = Intent(Intent.ACTION_SEND)
@@ -446,6 +448,10 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
             sharingIntent.type = "image/jpeg"
             sharingIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri)
             startActivity(Intent.createChooser(sharingIntent, "쓱쓱 일기 공유"))
+            Handler(Looper.getMainLooper()).postDelayed({
+                context?.contentResolver?.delete(Uri.parse(path), null, null)
+
+            }, 30000)
         }
     }
 
