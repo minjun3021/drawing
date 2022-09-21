@@ -11,13 +11,19 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.updateLayoutParams
+import androidx.core.widget.doAfterTextChanged
+import androidx.core.widget.doBeforeTextChanged
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -51,7 +57,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
     private val binding by viewBinding(FragmentMakingDiaryBinding::bind)
 
-    var path :String =""
+    var path: String = ""
     private val viewModel: DrawingViewModel by activityViewModels()
     private var readyToUploadDiary = false
 
@@ -90,15 +96,15 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                 binding.fragmentMakingDrawing.setOnClickListener {
                     navController.navigate(R.id.action_makingDiaryFragment_to_drawingDiaryContentFragment)
                 }
-                binding.fragmentMakingContent.setOnClickListener {
-                    navController.navigate(R.id.action_makingDiaryFragment_to_typingDiaryContentFragment)
-                }
-                binding.fragmentMakingFake.setOnClickListener {
-                    navController.navigate(R.id.action_makingDiaryFragment_to_typingDiaryContentFragment)
-                }
+//                binding.fragmentMakingContent.setOnClickListener {
+//                    navController.navigate(R.id.action_makingDiaryFragment_to_typingDiaryContentFragment)
+//                }
+//                binding.fragmentMakingFake.setOnClickListener {
+//                    navController.navigate(R.id.action_makingDiaryFragment_to_typingDiaryContentFragment)
+//                }
                 binding.fragmentMakingOkay.setOnClickListener {
                     if (readyToUploadDiary) {
-
+                        viewModel.diaryText.value=viewModel.diaryText.value?.replace(" ", "\u00A0") ?: ""
                         val file = bitmapToFile(viewModel.bitmap.value)
                         if (file != null) {
                             viewModel.save(file)
@@ -109,11 +115,9 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                     }
                 }
                 binding.fragmentMakingBack.setOnClickListener {
-                    if(viewModel.bitmap.value==null && viewModel.diaryText.value.isNullOrEmpty())
-                    {
+                    if (viewModel.bitmap.value == null && viewModel.diaryText.value.isNullOrEmpty()) {
                         activity?.finish()
-                    }
-                    else{
+                    } else {
                         context?.showDialog {
                             title = "작성중인 일기가 사라집니다"
                             positiveText = "네"
@@ -127,10 +131,31 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
                         }
                     }
-
-
-
                 }
+
+                binding.fragmentMakingContent.addTextChangedListener(object : TextWatcher{
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {
+                        viewModel.diaryText.value=binding.fragmentMakingContent.text.toString()
+
+                    }
+                })
                 binding.fragmentMakingSun.setOnClickListener {
                     viewModel.setWeather(Weather.SUN)
                 }
@@ -146,11 +171,9 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                 }
                 callback = object : OnBackPressedCallback(true) {
                     override fun handleOnBackPressed() {
-                        if(viewModel.bitmap.value==null && viewModel.diaryText.value.isNullOrEmpty())
-                        {
+                        if (viewModel.bitmap.value == null && viewModel.diaryText.value.isNullOrEmpty()) {
                             activity?.finish()
-                        }
-                        else{
+                        } else {
                             context?.showDialog {
                                 title = "작성중인 일기가 사라집니다"
                                 positiveText = "네"
@@ -181,7 +204,12 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                     requireActivity().finish()
                 }
 
-
+                binding.fragmentMakingContent.apply {
+                    isCursorVisible = false
+                    isFocusable = false
+                    isClickable = false
+                    hint=""
+                }
                 submitStampData()
                 observeViewing()
                 viewModel.getDiary(activity?.intent?.extras?.getInt(DiaryActivity.EXTRA_DIARY_KEY)!!)
@@ -195,23 +223,23 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
 
         binding.fragmentMakingFake.post {
-            binding.fragmentMakingFake.background = DiaryActivity.createBitmap(requireContext(),
+            binding.fragmentMakingFake.background = DiaryActivity.createBitmap(
+                requireContext(),
                 binding.fragmentMakingContent.width,
-                binding.fragmentMakingContent.lineHeight)
+                binding.fragmentMakingContent.lineHeight
+            )
         }
         binding.fragmentMakingContent.post {
-            binding.fragmentMakingContent.background = DiaryActivity.createBitmap(requireContext(),
+            binding.fragmentMakingContent.background = DiaryActivity.createBitmap(
+                requireContext(),
                 binding.fragmentMakingContent.width,
-                binding.fragmentMakingContent.lineHeight)
+                binding.fragmentMakingContent.lineHeight
+            )
         }
 
     }
 
     private fun observeMaking() {
-        viewModel.diaryText.observe(viewLifecycleOwner) {
-            binding.fragmentMakingContent.text = it.replace(" ", "\u00A0")
-
-        }
 
         viewModel.bitmap.observe(viewLifecycleOwner) {
 
@@ -224,7 +252,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
         }
 
-        viewModel.url.observe(viewLifecycleOwner){
+        viewModel.url.observe(viewLifecycleOwner) {
             Glide.with(requireContext())
                 .load(viewModel.url.value)
                 .preload()
@@ -250,13 +278,21 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
                 .load(viewModel.diary.value!!.imageUrl)
                 .into(binding.fragmentMakingDrawing)
 
-            binding.fragmentMakingContent.text = viewModel.diary.value!!.content
+            binding.fragmentMakingContent.apply {
+                setText(viewModel.diary.value?.content ?: "")
+
+            }
+
+
+
             setIcon()
 
             if (viewModel.diary.value?.stampList?.size != 0) {
-                val pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                val pixels = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
                     96f,
-                    requireContext().resources.displayMetrics)
+                    requireContext().resources.displayMetrics
+                )
 
                 for (i in 0..viewModel.diary.value?.stampList!!.size - 1) {
 
@@ -294,23 +330,28 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
                 fragmentShareDate.typeface = MainFragment.typeface
                 fragmentShareContent.typeface = MainFragment.typeface
-                var resource= when (viewModel.diary.value!!.weather) {
+                var resource = when (viewModel.diary.value!!.weather) {
                     Weather.SUN.name -> R.drawable.ic_sunny_selected
-                    Weather.CLOUD.name ->R.drawable.ic_cloudy_selected
+                    Weather.CLOUD.name -> R.drawable.ic_cloudy_selected
                     Weather.RAIN.name -> R.drawable.ic_rainy_selected
-                    Weather.SNOW.name ->R.drawable.ic_snowy_selected
-                    else ->  R.drawable.ic_sunny_selected
+                    Weather.SNOW.name -> R.drawable.ic_snowy_selected
+                    else -> R.drawable.ic_sunny_selected
                 }
 
-                fragmentShareWeather.setImageDrawable(ContextCompat.getDrawable(
-                    requireContext(),
-                    resource))
+                fragmentShareWeather.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        resource
+                    )
+                )
 
 
                 fragmentShareContent.background =
-                    DiaryActivity.createBitmap(requireContext(),
+                    DiaryActivity.createBitmap(
+                        requireContext(),
                         fragmentShareContent.width,
-                        fragmentShareContent.lineHeight)
+                        fragmentShareContent.lineHeight
+                    )
 
 
                 fragmentShareDate.text =
@@ -319,7 +360,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
                 Glide.with(requireContext())
                     .load(viewModel.diary.value!!.imageUrl)
-                    .listener(object : RequestListener<Drawable>{
+                    .listener(object : RequestListener<Drawable> {
                         override fun onLoadFailed(
                             e: GlideException?,
                             model: Any?,
@@ -350,7 +391,6 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
             }
 
 
-
         }
 
 
@@ -367,10 +407,12 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
     fun getImageUri(context: Context, inImage: Bitmap) {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        path = MediaStore.Images.Media.insertImage(context.contentResolver, //왜 널이 뜨지?
+        path = MediaStore.Images.Media.insertImage(
+            context.contentResolver, //왜 널이 뜨지?
             inImage,
             "Title",
-            null)
+            null
+        )
 
         shareToInsta(Uri.parse(path))
 
@@ -388,9 +430,11 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
         intent.putExtra("bottom_background_color", "#EDEDED")
 
         val activity: Activity? = activity
-        activity!!.grantUriPermission("com.instagram.android",
+        activity!!.grantUriPermission(
+            "com.instagram.android",
             stickerAssetUri,
-            Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            Intent.FLAG_GRANT_READ_URI_PERMISSION
+        )
 
         if (activity.packageManager.resolveActivity(intent, 0) != null) {
             activity.startActivityForResult(intent, 0)
@@ -406,7 +450,7 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
     }
 
     private fun checkDoEveryThing() {
-        if (viewModel.weather.value != null && viewModel.bitmap.value!=null) {
+        if (viewModel.weather.value != null && viewModel.bitmap.value != null) {
             binding.fragmentMakingOkay.setTextColor(Color.parseColor("#111111"))
             readyToUploadDiary = true
         }
@@ -414,45 +458,85 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
 
     private fun changeIcon() {
         checkDoEveryThing()
-        binding.fragmentMakingSun.setImageDrawable(ContextCompat.getDrawable(requireContext(),
-            R.drawable.ic_sunny_enabled))
-        binding.fragmentMakingCloud.setImageDrawable(ContextCompat.getDrawable(requireContext(),
-            R.drawable.ic_cloudy_enabled))
-        binding.fragmentMakingRain.setImageDrawable(ContextCompat.getDrawable(requireContext(),
-            R.drawable.ic_rainy_enabled))
-        binding.fragmentMakingSnow.setImageDrawable(ContextCompat.getDrawable(requireContext(),
-            R.drawable.ic_snowy_enabled))
+        binding.fragmentMakingSun.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_sunny_enabled
+            )
+        )
+        binding.fragmentMakingCloud.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_cloudy_enabled
+            )
+        )
+        binding.fragmentMakingRain.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_rainy_enabled
+            )
+        )
+        binding.fragmentMakingSnow.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_snowy_enabled
+            )
+        )
 
         when (viewModel.weather.value!!.name) {
-            Weather.SUN.name -> binding.fragmentMakingSun.setImageDrawable(ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_sunny_selected))
-            Weather.CLOUD.name -> binding.fragmentMakingCloud.setImageDrawable(ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_cloudy_selected))
-            Weather.RAIN.name -> binding.fragmentMakingRain.setImageDrawable(ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_rainy_selected))
-            Weather.SNOW.name -> binding.fragmentMakingSnow.setImageDrawable(ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_snowy_selected))
+            Weather.SUN.name -> binding.fragmentMakingSun.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_sunny_selected
+                )
+            )
+            Weather.CLOUD.name -> binding.fragmentMakingCloud.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_cloudy_selected
+                )
+            )
+            Weather.RAIN.name -> binding.fragmentMakingRain.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_rainy_selected
+                )
+            )
+            Weather.SNOW.name -> binding.fragmentMakingSnow.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_snowy_selected
+                )
+            )
         }
     }
 
     private fun setIcon() {
         when (viewModel.diary.value!!.weather) {
-            Weather.SUN.name -> binding.fragmentMakingSun.setImageDrawable(ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_sunny_selected))
-            Weather.CLOUD.name -> binding.fragmentMakingCloud.setImageDrawable(ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_cloudy_selected))
-            Weather.RAIN.name -> binding.fragmentMakingRain.setImageDrawable(ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_rainy_selected))
-            Weather.SNOW.name -> binding.fragmentMakingSnow.setImageDrawable(ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_snowy_selected))
+            Weather.SUN.name -> binding.fragmentMakingSun.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_sunny_selected
+                )
+            )
+            Weather.CLOUD.name -> binding.fragmentMakingCloud.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_cloudy_selected
+                )
+            )
+            Weather.RAIN.name -> binding.fragmentMakingRain.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_rainy_selected
+                )
+            )
+            Weather.SNOW.name -> binding.fragmentMakingSnow.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_snowy_selected
+                )
+            )
         }
     }
 
@@ -460,18 +544,26 @@ class MakingDiaryFragment : Fragment(R.layout.fragment_making_diary) {
         list.add(StampData("GRAL", R.drawable.ic_stamp_gral, R.drawable.ic_stamp96_gral))
         list.add(StampData("DOTHIS", R.drawable.ic_stamp_dothis, R.drawable.ic_stamp96_dothis))
         list.add(StampData("GOOD", R.drawable.ic_stamp_good, R.drawable.ic_stamp96_good))
-        list.add(StampData("GREATJOB",
-            R.drawable.ic_stamp_greatjob,
-            R.drawable.ic_stamp96_greatjob))
+        list.add(
+            StampData(
+                "GREATJOB",
+                R.drawable.ic_stamp_greatjob,
+                R.drawable.ic_stamp96_greatjob
+            )
+        )
         list.add(StampData("PERFECT", R.drawable.ic_stamp_perfect, R.drawable.ic_stamp96_perfect))
-        //TODO 얘네들이 들어가면 오류뜸 왜그런진 모르겟음
-//        list.add(StampData("OH",R.drawable.ic_stamp_oh,R.drawable.ic_stamp96_oh))
-//        list.add(StampData("ZZUGUL",R.drawable.ic_stamp_zzugul,R.drawable.ic_stamp96_zzugul))
+
+        list.add(StampData("OH", R.drawable.ic_stamp_oh, R.drawable.ic_stamp96_oh))
+        list.add(StampData("ZZUGUL", R.drawable.ic_stamp_zzugul, R.drawable.ic_stamp96_zzugul))
         list.add(StampData("HUNDRED", R.drawable.ic_stamp_hundred, R.drawable.ic_stamp96_hundred))
         list.add(StampData("HOENG", R.drawable.ic_stamp_hoeng, R.drawable.ic_stamp96_hoeng))
-        list.add(StampData("INTERESTING",
-            R.drawable.ic_stamp_interesting,
-            R.drawable.ic_stamp96_interesting))
+        list.add(
+            StampData(
+                "INTERESTING",
+                R.drawable.ic_stamp_interesting,
+                R.drawable.ic_stamp96_interesting
+            )
+        )
         list.add(StampData("LOL", R.drawable.ic_stamp_lol, R.drawable.ic_stamp96_lol))
         list.add(StampData("ZZANG", R.drawable.ic_stamp_zzang, R.drawable.ic_stamp96_zzang))
     }

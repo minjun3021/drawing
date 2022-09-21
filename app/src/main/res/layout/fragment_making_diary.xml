@@ -170,7 +170,30 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <TextView
+
+
+            <EditText
+                android:id="@+id/fragment_making_fake"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/uhbeeseulvely2"
+                android:privateImeOptions="defaultInputmode=Korean"
+                android:focusable="false"
+                android:clickable="false"
+                android:cursorVisible="false"
+
+                android:letterSpacing="0.15"
+                android:lineSpacingExtra="4sp"
+                android:textColor="#111111"
+                android:textSize="16sp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/fragment_main_stamp_controller"
+                app:layout_constraintStart_toStartOf="@id/fragment_main_stamp_controller"
+                app:layout_constraintTop_toBottomOf="@id/fragment_main_stamp_controller" />
+            <EditText
                 android:id="@+id/fragment_making_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -178,27 +201,10 @@
                 android:layout_marginBottom="24dp"
                 android:fontFamily="@font/uhbeeseulvely2"
                 android:letterSpacing="0.15"
-                android:lineSpacingExtra="4sp"
+                android:lineSpacingExtra="12sp"
                 android:textColor="#111111"
                 android:textSize="16sp"
-
-                app:layout_constraintEnd_toEndOf="@id/fragment_main_stamp_controller"
-                app:layout_constraintStart_toStartOf="@id/fragment_main_stamp_controller"
-                app:layout_constraintTop_toBottomOf="@id/fragment_main_stamp_controller" />
-
-            <TextView
-                android:id="@+id/fragment_making_fake"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="24dp"
-                android:fontFamily="@font/uhbeeseulvely2"
-                android:letterSpacing="0.15"
-                android:lineSpacingExtra="4sp"
-                android:textColor="#111111"
-                android:textSize="16sp"
-
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:hint="여기에 일기를 입력해주세요."
                 app:layout_constraintEnd_toEndOf="@id/fragment_main_stamp_controller"
                 app:layout_constraintStart_toStartOf="@id/fragment_main_stamp_controller"
                 app:layout_constraintTop_toBottomOf="@id/fragment_main_stamp_controller" />
