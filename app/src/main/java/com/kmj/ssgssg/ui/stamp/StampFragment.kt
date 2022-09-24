@@ -173,7 +173,6 @@ class StampFragment : Fragment(R.layout.fragment_stamp) {
     private fun removeStamp(position: Int) {}
 
     private fun makeNewStamp(position: Int) {
-        //TODO
 
         currentSelectedStampPosition?.let {
             stampAdatper.notifyItemChanged(it)

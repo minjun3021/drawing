@@ -26,51 +26,63 @@ class DrawingView @JvmOverloads constructor(
         private const val TOUCH_TOLERANCE = 4
     }
 
-    private val points = ArrayList<PaintPoint>()
+    val points = ArrayList<PaintPoint>()
+    var modifedPointPosition = -1
     private var currentPath: Path? = null
     private var lastXY: Pair<Float, Float>? = null
     private val lastX get() = lastXY?.first ?: 0f
     private val lastY get() = lastXY?.second ?: 0f
     private var bitmap: Bitmap? = null
 
+    private var checkDrawn=false
     var currentColor: Int = Palette.black
     var currentSize: Float = 10.dp
     var drawMode = Mode.DRAW
 
     init {
         setOnTouchListener(this)
+
     }
 
     override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
         val x = motionEvent.x
         val y = motionEvent.y
+
         when (motionEvent.action) {
             MotionEvent.ACTION_MOVE -> {
                 val dx = abs(x - lastX)
                 val dy = abs(y - lastY)
                 if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+                    checkDrawn=true
                     currentPath?.quadTo(lastX, lastY, (x + lastX) / 2, (y + lastY) / 2)
                     lastXY = Pair(x, y)
                 }
                 invalidate()
             }
             MotionEvent.ACTION_UP -> {
+                if (checkDrawn){
+                    if((modifedPointPosition+1<points.size)){
+                        do{
+                            points.removeLast()
+                        }while(modifedPointPosition+1!=points.size)
+
+                    }
+                    points.add(PaintPoint(currentPath!!,createPaint()))
+                    modifedPointPosition=points.size-1
+                }
                 currentPath = null
                 invalidate()
             }
             MotionEvent.ACTION_DOWN -> {
+                checkDrawn=false
                 currentPath = Path()
                 currentPath?.moveTo(x, y)
-                val point = PaintPoint(
-                    currentPath!!,
-                    createPaint()
-                )
-                points.add(point)
+
                 lastXY = Pair(x, y)
                 invalidate()
             }
         }
-        return true
+        return false
     }
 
     private fun createPaint(): Paint = Paint(Paint.DITHER_FLAG).apply {
@@ -88,9 +100,24 @@ class DrawingView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         bitmap?.let { canvas.drawBitmap(it, 0f, 0f, paint) }
-        points.forEach {
-            canvas.drawPath(it.path, it.paint)
+
+        currentPath?.let {
+            canvas.drawPath(currentPath!!,createPaint())
         }
+        run loop@{
+            var index = 0
+            points.forEach {
+                if(index<=modifedPointPosition){
+                    canvas.drawPath(it.path, it.paint)
+                    index++
+
+                }
+                else return@loop
+
+
+            }
+        }
+
     }
 
     fun getBitmap(): Bitmap {

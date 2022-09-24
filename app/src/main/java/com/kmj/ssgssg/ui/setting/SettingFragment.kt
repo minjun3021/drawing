@@ -88,7 +88,6 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
 
 
                     logout()
-                    //TODO retrofit
                 }
                 onNegativeClickListener = {
                     dismiss()

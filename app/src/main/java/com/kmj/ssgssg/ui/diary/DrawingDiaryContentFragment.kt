@@ -2,6 +2,7 @@ package com.kmj.ssgssg.ui.diary
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import androidx.activity.OnBackPressedCallback
@@ -23,7 +24,7 @@ class DrawingDiaryContentFragment : Fragment(R.layout.fragment_drawing_diary_con
     private val binding by viewBinding(FragmentDrawingDiaryContentBinding::bind)
 
     private val viewModel: DrawingViewModel by activityViewModels()
-
+    private var isvisible=false
     private val navController : NavController
         get() = Navigation.findNavController(
             requireActivity(),
@@ -38,12 +39,12 @@ class DrawingDiaryContentFragment : Fragment(R.layout.fragment_drawing_diary_con
 
 
     private fun initView() {
-
+        calcBtnState()
         binding.drawer.loadBitmap(viewModel.bitmap.value)
         binding.sbSizePicker.apply {
             setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                    binding.drawer.currentSize = (p1 + 10).dp
+                    binding.drawer.currentSize = (p1 + 5).dp
                 }
 
                 override fun onStartTrackingTouch(p0: SeekBar?) {}
@@ -68,8 +69,35 @@ class DrawingDiaryContentFragment : Fragment(R.layout.fragment_drawing_diary_con
                 R.id.radio_pencil -> binding.drawer.drawMode = DrawingView.Mode.DRAW
             }
         }
+        binding.drawer.setOnClickListener {
+            if (!isvisible){
+                binding.forward.visibility=View.VISIBLE
+                binding.backward.visibility=View.VISIBLE
+                isvisible=true
+            }
+            calcBtnState()
 
-        //TODO: onBackPressed
+        }
+
+        binding.backward.setOnClickListener {
+            binding.drawer.apply {
+                if(modifedPointPosition!=-1) modifedPointPosition--
+                calcBtnState()
+                invalidate()
+            }
+        }
+
+        binding.forward.setOnClickListener {
+
+            binding.drawer.apply {
+                if(modifedPointPosition!=points.size-1) modifedPointPosition++
+                calcBtnState()
+                invalidate()
+            }
+
+
+        }
+
 
         binding.fragmentDrawingBack.setOnClickListener {
             context?.showDialog {
@@ -88,6 +116,27 @@ class DrawingDiaryContentFragment : Fragment(R.layout.fragment_drawing_diary_con
             viewModel.saveBitmap(binding.drawer.getBitmap())
             navController.popBackStack()
         }
+    }
+
+    fun calcBtnState(){
+        when(binding.drawer.modifedPointPosition)
+        {
+            -1->{
+                binding.backward.setImageResource(R.drawable.ic_backward_disabled)
+                binding.forward.setImageResource(R.drawable.ic_forward_enabled)
+                }
+            binding.drawer.points.size-1 ->{
+
+                binding.backward.setImageResource(R.drawable.ic_backward_enabled)
+                binding.forward.setImageResource(R.drawable.ic_forward_disabled)
+
+            }
+            else ->{
+                binding.backward.setImageResource(R.drawable.ic_backward_enabled)
+                binding.forward.setImageResource(R.drawable.ic_forward_enabled)
+            }
+        }
+
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)

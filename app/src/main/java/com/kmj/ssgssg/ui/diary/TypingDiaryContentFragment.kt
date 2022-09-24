@@ -16,7 +16,6 @@ import com.kmj.ssgssg.extension.viewBinding
 import com.kmj.ssgssg.ui.main.MainFragment
 
 
-// TODO : 타이핑 줄 그려지는거 작업 되서 그냥 없애고 일기화면에서 해도 될듯?
 class TypingDiaryContentFragment : Fragment(R.layout.fragment_typing_diary_content) {
 
     private lateinit var callback: OnBackPressedCallback
@@ -57,7 +56,6 @@ class TypingDiaryContentFragment : Fragment(R.layout.fragment_typing_diary_conte
 
         binding.fragmentContentOkay.setOnClickListener {
             viewModel.diaryText.value = binding.etDiaryContent.text?.toString() ?: ""
-            //TODO bundle
             navController.popBackStack()
         }
 

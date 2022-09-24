@@ -19,11 +19,9 @@
 
         <ImageView
             android:id="@+id/fragment_making_back"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
             android:src="@drawable/ic_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

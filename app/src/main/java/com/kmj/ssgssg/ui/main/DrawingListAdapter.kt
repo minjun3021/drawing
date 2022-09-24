@@ -83,7 +83,6 @@ class DrawingListAdapter :
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
-            // TODO : Header xml 구현
             1 -> HeaderViewHolder(
                 ItemRecyclerFirstTitleBinding.inflate(
                     LayoutInflater.from(parent.context),

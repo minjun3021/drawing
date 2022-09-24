@@ -18,6 +18,8 @@
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/bg_radius_square.xml" value="0.1355" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/bg_share.xml" value="0.1355" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/bg_stamp_diary.xml" value="0.1215" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/ic_back.xml" value="0.191" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/ic_backward_disabled.xml" value="0.191" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/ic_stamp96_lol.xml" value="0.1355" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/ic_stamp96_oh.xml" value="0.1355" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/drawable/ic_stamp96_zzugul.xml" value="0.1905" />
@@ -37,9 +39,10 @@
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/activity_stamp.xml" value="0.15" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/dialog_loading.xml" value="0.27239583333333334" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/dialog_stamp.xml" value="0.27239583333333334" />
-        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_drawing_diary_content.xml" value="0.27239583333333334" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_drawing_diary_content.xml" value="0.16" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_main.xml" value="0.33" />
-        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_making_diary.xml" value="0.33" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_making_diary.xml" value="0.25" />
+        <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_notice.xml" value="0.27239583333333334" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_set_font.xml" value="0.27239583333333334" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_social_login.xml" value="0.27239583333333334" />
         <entry key="..\:/AndroidStudioProjects/drawing/app/src/main/res/layout/fragment_stamp.xml" value="0.16" />
