@@ -41,6 +41,7 @@ class DrawingDiaryContentFragment : Fragment(R.layout.fragment_drawing_diary_con
     private fun initView() {
         calcBtnState()
         binding.drawer.loadBitmap(viewModel.bitmap.value)
+
         binding.sbSizePicker.apply {
             setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {

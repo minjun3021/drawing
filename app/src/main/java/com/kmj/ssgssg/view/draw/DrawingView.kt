@@ -101,9 +101,7 @@ class DrawingView @JvmOverloads constructor(
         super.onDraw(canvas)
         bitmap?.let { canvas.drawBitmap(it, 0f, 0f, paint) }
 
-        currentPath?.let {
-            canvas.drawPath(currentPath!!,createPaint())
-        }
+
         run loop@{
             var index = 0
             points.forEach {
@@ -116,6 +114,9 @@ class DrawingView @JvmOverloads constructor(
 
 
             }
+        }
+        currentPath?.let {
+            canvas.drawPath(currentPath!!,createPaint())
         }
 
     }
